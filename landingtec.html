@@ -1,132 +1,380 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>Tudo Está Conectado | NoHeroes</title>
   <link href="https://fonts.googleapis.com/css2?family=Unbounded:wght@400;700&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;700&display=swap" rel="stylesheet">
+  <script src="https://unpkg.com/gsap@3/dist/gsap.min.js"></script>
+  <script src="https://unpkg.com/gsap@3/dist/ScrollTrigger.min.js"></script>
+  <script src="https://unpkg.com/scrollreveal"></script>
   <style>
     :root {
       --roxo: #a855f7;
-      --cinza: #1f1f1f;
+      --roxo-glow: #c084fc;
       --fundo: #0a0a0a;
+      --cinza: #17171a;
+      --cinza2: #23232a;
+      --dourado: #facc15;
       --claro: #f4f4f4;
+      --erro: #ff5252;
+      --sucesso: #32de84;
     }
 
     * {
-      margin: 0;
-      padding: 0;
-      box-sizing: border-box;
-      font-family: 'Unbounded', sans-serif;
+      margin: 0; padding: 0; box-sizing: border-box;
     }
-
-    body {
+    html, body {
+      width: 100vw; min-height: 100vh;
       background: var(--fundo);
       color: var(--claro);
+      font-family: 'Inter', sans-serif;
+      scroll-behavior: smooth;
       overflow-x: hidden;
     }
 
-    header {
-      height: 100vh;
-      background: url('https://images.unsplash.com/photo-1602524811207-1d8ad3777e96') no-repeat center center/cover;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      justify-content: center;
-      text-align: center;
-      padding: 2rem;
+    /* Barra de progresso */
+    #progressbar {
+      position: fixed; top: 0; left: 0;
+      width: 0; height: 6px; z-index: 100;
+      background: linear-gradient(90deg, var(--roxo) 40%, var(--dourado) 100%);
+      box-shadow: 0 2px 8px var(--roxo);
+      transition: width 0.15s;
+      border-radius: 0 4px 4px 0;
     }
 
-    header h1 {
-      font-size: 3rem;
-      color: var(--claro);
-      text-shadow: 0 0 10px var(--roxo);
-    }
-
-    header p {
-      font-size: 1.2rem;
-      max-width: 600px;
-      margin: 1rem 0;
-    }
-
-    .cta-btn {
-      background: var(--roxo);
-      color: #000;
-      padding: 1rem 2rem;
-      border: none;
-      border-radius: 8px;
-      font-weight: bold;
-      font-size: 1rem;
-      cursor: pointer;
-      transition: background 0.3s ease;
-    }
-
-    .cta-btn:hover {
-      background: #c084fc;
-    }
-
-    section {
-      padding: 4rem 2rem;
-      background: var(--cinza);
+    /* Header */
+    .hero {
+      min-height: 100vh;
+      display: flex; flex-direction: column; align-items: center; justify-content: center;
+      background: radial-gradient(circle at 60% 30%, #1e0029 0%, #0a0a0a 100%);
+      position: relative; overflow: hidden;
       text-align: center;
     }
-
-    section h2 {
+    .hero::before {
+      content: '';
+      position: absolute; inset: 0;
+      background: url('https://images.unsplash.com/photo-1506744038136-46273834b3fb?auto=format&fit=crop&w=1350&q=80') center/cover;
+      opacity: 0.07;
+      z-index: 0;
+      pointer-events: none;
+    }
+    .glow {
       color: var(--roxo);
+      text-shadow: 0 0 18px var(--roxo-glow), 0 0 48px var(--roxo-glow);
+      animation: glow-pulse 2.3s infinite alternate;
+    }
+    @keyframes glow-pulse {
+      0%   { text-shadow: 0 0 18px var(--roxo-glow);}
+      100% { text-shadow: 0 0 44px var(--roxo-glow);}
+    }
+    .hero-title {
+      font-family: 'Unbounded', sans-serif;
+      font-size: 3rem;
+      letter-spacing: 2px;
+      z-index: 2;
+      font-weight: 700;
+    }
+    .hero-desc {
+      margin: 2rem auto 2.5rem auto;
+      max-width: 600px;
+      font-size: 1.3rem;
+      color: var(--claro);
+      background: rgba(20, 8, 28, 0.64);
+      border-radius: 1rem;
+      padding: 1.2rem;
+      backdrop-filter: blur(2px);
+      box-shadow: 0 4px 40px #000a;
+    }
+    .hero-cta {
+      margin-top: 1.8rem;
+      display: flex; flex-direction: column; align-items: center; gap: 1.2rem;
+      z-index: 2;
+    }
+    .cta-btn {
+      background: linear-gradient(90deg, var(--roxo), var(--dourado));
+      color: #181825;
+      padding: 1rem 2.7rem;
+      border: none;
+      border-radius: 2em;
+      font-family: 'Unbounded', sans-serif;
+      font-size: 1.2rem;
+      font-weight: bold;
+      box-shadow: 0 0 12px var(--roxo);
+      letter-spacing: 1px;
+      cursor: pointer;
+      transition: filter 0.2s, transform 0.15s;
+      position: relative;
+      overflow: hidden;
+      outline: none;
+      animation: btn-glow 2.7s infinite alternate;
+    }
+    .cta-btn:hover, .cta-btn:focus {
+      filter: brightness(1.1) drop-shadow(0 0 8px var(--roxo-glow));
+      transform: scale(1.05);
+    }
+    @keyframes btn-glow {
+      0%   { box-shadow: 0 0 12px var(--roxo);}
+      100% { box-shadow: 0 0 26px var(--roxo-glow);}
+    }
+
+    /* Seções */
+    section {
+      width: 100vw; padding: 6rem 1.5rem 4rem 1.5rem;
+      background: var(--cinza);
+      position: relative;
+      z-index: 2;
+    }
+    .section-title {
+      font-family: 'Unbounded', sans-serif;
+      font-size: 2.1rem;
+      color: var(--roxo-glow);
+      margin-bottom: 2.1rem;
+      letter-spacing: 1px;
+      text-shadow: 0 0 12px var(--roxo);
+    }
+
+    /* Sintomas/Causas */
+    .causas-blocos {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      gap: 2rem;
+    }
+    .causa-card {
+      background: linear-gradient(140deg, var(--cinza2) 75%, var(--roxo) 100%);
+      color: var(--claro);
+      min-width: 260px;
+      max-width: 330px;
+      flex: 1 1 260px;
+      border-radius: 1.4rem;
+      box-shadow: 0 4px 24px #0e0123bb;
+      padding: 2rem 1.3rem;
+      margin-bottom: 2rem;
+      border: 2px solid var(--roxo);
+      position: relative;
+      overflow: hidden;
+      transition: transform 0.2s, box-shadow 0.2s;
+      will-change: transform;
+    }
+    .causa-card:hover {
+      transform: translateY(-8px) scale(1.035) rotate(-1deg);
+      box-shadow: 0 12px 40px var(--roxo-glow);
+      border-color: var(--dourado);
+    }
+    .causa-icon {
+      font-size: 2.2rem;
+      margin-bottom: 0.8rem;
+      display: block;
+      color: var(--dourado);
+      filter: drop-shadow(0 0 8px var(--roxo));
+    }
+    .causa-title {
+      font-size: 1.1rem; font-weight: bold; margin-bottom: 0.6rem;
+      letter-spacing: 0.5px;
+      color: var(--dourado);
+    }
+    .causa-desc {
+      font-size: 1rem; opacity: 0.93;
+    }
+
+    /* Depoimentos */
+    .depoimentos-container {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(270px, 1fr));
+      gap: 2.2rem;
+      margin-top: 2rem;
+    }
+    .depoimento-box {
+      background: linear-gradient(120deg, var(--cinza2) 75%, var(--roxo) 100%);
+      color: var(--claro);
+      border-radius: 1.1rem;
+      padding: 2rem 1.5rem 1.5rem 1.5rem;
+      box-shadow: 0 6px 24px #12022f99;
+      border: 2px solid var(--roxo-glow);
+      position: relative;
+      opacity: 0.95;
+      transition: box-shadow 0.25s, border 0.23s, transform 0.22s;
+      will-change: transform;
+    }
+    .depoimento-box:hover {
+      box-shadow: 0 0 32px var(--roxo-glow);
+      border: 2.5px solid var(--dourado);
+      transform: translateY(-4px) scale(1.04);
+    }
+    .depoimento-nome {
+      margin-top: 1.5rem;
+      font-weight: bold;
+      font-size: 1.08rem;
+      color: var(--dourado);
+      letter-spacing: 1px;
+    }
+    .depoimento-aspecto {
+      font-size: 0.92rem;
+      color: var(--roxo-glow);
       margin-bottom: 1rem;
     }
-
-    .bloco {
-      max-width: 800px;
-      margin: auto;
-      margin-bottom: 2rem;
+    .depoimento-avatar {
+      width: 48px; height: 48px;
+      border-radius: 50%; object-fit: cover;
+      box-shadow: 0 2px 12px var(--roxo);
+      position: absolute;
+      top: -26px; left: 12px;
+      border: 3px solid var(--roxo-glow);
+      background: var(--cinza);
     }
 
-    footer {
-      padding: 2rem;
-      text-align: center;
-      background: #111;
+    /* Quiz */
+    .quiz-box {
+      background: linear-gradient(115deg, var(--roxo) 45%, var(--cinza2) 95%);
+      color: #fff;
+      border-radius: 1.1rem;
+      max-width: 600px; margin: 2.5rem auto;
+      padding: 2.1rem 1.3rem 2.7rem 1.3rem;
+      box-shadow: 0 4px 32px #13012577;
+      border: 2px solid var(--dourado);
+      display: flex; flex-direction: column; align-items: center;
+    }
+    .quiz-pergunta {
+      font-size: 1.15rem; margin-bottom: 1.2rem;
+      color: var(--dourado);
+      font-family: 'Unbounded', sans-serif;
+    }
+    .quiz-opcoes {
+      display: flex; flex-direction: column; gap: 0.8rem;
+      margin-bottom: 1.1rem;
+      width: 100%;
+    }
+    .quiz-btn {
+      background: var(--cinza2);
+      border: 2px solid var(--roxo-glow);
       color: var(--claro);
-      font-size: 0.9rem;
+      padding: 0.7rem 1.4rem;
+      border-radius: 0.9rem;
+      font-size: 1rem;
+      cursor: pointer;
+      transition: background 0.17s, border 0.2s;
+      width: 100%;
+      text-align: left;
+      outline: none;
+    }
+    .quiz-btn:hover, .quiz-btn.selected {
+      background: var(--dourado);
+      color: #23232a;
+      border: 2px solid var(--roxo);
+    }
+    .quiz-feedback {
+      font-size: 1rem;
+      margin-top: 0.8rem;
+      color: var(--sucesso);
+      min-height: 20px;
+    }
+
+    /* CTA final */
+    .cta-final {
+      text-align: center; margin-top: 3.5rem;
+    }
+    .cta-final-btns {
+      display: flex; flex-wrap: wrap;
+      gap: 1.6rem; justify-content: center; margin: 2.2rem 0;
+    }
+
+    /* Parallax effect */
+    .parallax {
+      will-change: transform;
+      transition: transform 0.3s;
+    }
+
+    /* Responsividade */
+    @media (max-width: 800px) {
+      .causas-blocos { flex-direction: column; gap: 1.2rem; }
+      .depoimentos-container { grid-template-columns: 1fr; }
+      .hero-title { font-size: 2.2rem; }
+      .hero-desc { font-size: 1.08rem; }
+    }
+    @media (max-width: 420px) {
+      .causa-card, .depoimento-box, .quiz-box { padding: 1.1rem 0.5rem; }
     }
   </style>
 </head>
 <body>
-  <header>
-    <h1>Tudo Está Conectado</h1>
-    <p>Um eBook gratuito que conecta corpo, mente e espírito — e revela um portal real dentro do universo NoHeroes.</p>
-    <button class="cta-btn" onclick="window.location.href='ebook.pdf'">Desbloquear o PDF Agora</button>
-  </header>
+  <div id="progressbar"></div>
+  <!-- HERO -->
+  <div class="hero" id="hero">
+    <h1 class="hero-title glow">Tudo Está Conectado</h1>
+    <div class="hero-desc">
+      Um portal para restaurar seu sistema.  
+      Sinta o corpo, mente e energia desbloqueando juntos.<br>
+      <strong>Sintomas desconexos? Aqui tudo faz sentido: da caspa à ansiedade, do intestino à criatividade.</strong>
+    </div>
+    <div class="hero-cta">
+      <button class="cta-btn" onclick="window.location.href='ebook.pdf'">
+        <span>Desbloquear eBook Grátis</span>
+      </button>
+      <div>
+        <span style="font-size:1rem;color:#c084fc;">Ou acesse pelo QR code:</span><br>
+        <img src="https://api.qrserver.com/v1/create-qr-code/?size=100x100&data=https://seulink.com/ebook.pdf" width="100" height="100" alt="QR code para eBook" style="margin-top:0.6rem; border-radius:10px;box-shadow:0 0 14px #a855f7;">
+      </div>
+    </div>
+  </div>
 
-  <section>
-    <h2>O que você vai desbloquear</h2>
-    <div class="bloco">
-      <p><strong>Sintomas físicos e mentais conectados:</strong> cansaço, bloqueios, caspa, ansiedade... tudo tem origem comum.</p>
-    </div>
-    <div class="bloco">
-      <p><strong>Reconexão sistêmica:</strong> Entenda como restaurar seu sistema por completo com passos simples e sombriamente reveladores.</p>
-    </div>
-    <div class="bloco">
-      <p><strong>Desbloqueios secretos:</strong> ao final do eBook, você terá acesso ao Sistema Vivo — a próxima fase.</p>
+  <!-- SINTOMAS/CAUSAS -->
+  <section id="causas">
+    <h2 class="section-title">Tudo está conectado:</h2>
+    <div class="causas-blocos">
+      <div class="causa-card parallax">
+        <div class="causa-icon">🦠</div>
+        <div class="causa-title">Fungos & Pele</div>
+        <div class="causa-desc">
+          Fungos recorrentes, caspa, manchas, coceira: reflexo direto do desequilíbrio intestinal, estresse crônico ou baixa imunidade.  
+          <em>Solução: ajuste sua microbiota, melhore o sistema inteiro.</em>
+        </div>
+      </div>
+      <div class="causa-card parallax">
+        <div class="causa-icon">🧠</div>
+        <div class="causa-title">Fadiga Mental & Ansiedade</div>
+        <div class="causa-desc">
+          Pensamentos acelerados, insônia, desânimo? Seu sistema nervoso está em modo de alerta.  
+          <em>Solução: Integração de corpo, mente e rotina de auto-observação.</em>
+        </div>
+      </div>
+      <div class="causa-card parallax">
+        <div class="causa-icon">⚡</div>
+        <div class="causa-title">Cansaço & Falta de Energia</div>
+        <div class="causa-desc">
+          Falta de energia, desânimo físico, dores e imunidade baixa mostram falha de comunicação entre células, alimentação e emoções.  
+          <em>Solução: pequenas ações diárias restauram o ciclo vital inteiro.</em>
+        </div>
+      </div>
+      <div class="causa-card parallax">
+        <div class="causa-icon">🎭</div>
+        <div class="causa-title">Crise de Propósito & Bloqueio Criativo</div>
+        <div class="causa-desc">
+          Sentimento de estagnação, vazio ou desmotivação? Sinal de um sistema sufocado por padrões tóxicos e desconexão.  
+          <em>Solução: Desbloqueie o ritual sistêmico. Tudo muda junto.</em>
+        </div>
+      </div>
     </div>
   </section>
 
-  <section>
-    <h2>Depoimento</h2>
-    <div class="bloco">
-      <p>"Achei que era só um livro. Agora meu corpo responde diferente ao que como, sinto, penso... Algo está mudando. E eu não volto atrás."</p>
-    </div>
-  </section>
-
-  <section>
-    <h2>Pronto para começar?</h2>
-    <button class="cta-btn" onclick="window.location.href='ebook.pdf'">Baixar Agora</button>
-    <br/><br/>
-    <button class="cta-btn" onclick="window.location.href='https://noheroes.com.br'">Explorar o Sistema Vivo</button>
-  </section>
-
-  <footer>
-    &copy; 2025 NoHeroes. Todos os direitos reservados.
-  </footer>
-</body>
-</html>
+  <!-- DEPOIMENTOS -->
+  <section id="depoimentos">
+    <h2 class="section-title">Quem já desbloqueou sabe:</h2>
+    <div class="depoimentos-container">
+      <div class="depoimento-box parallax">
+        <img class="depoimento-avatar" src="https://randomuser.me/api/portraits/men/32.jpg" alt="Avatar1"/>
+        <div class="depoimento-aspecto">Corpo físico</div>
+        <div>“Achava que minhas alergias e fungos eram casos isolados. Depois do eBook, entendi a conexão com minha alimentação e ansiedade. Não voltei a ter crise até hoje.”</div>
+        <div class="depoimento-nome">Bruno T.</div>
+      </div>
+      <div class="depoimento-box parallax">
+        <img class="depoimento-avatar" src="https://randomuser.me/api/portraits/women/49.jpg" alt="Avatar2"/>
+        <div class="depoimento-aspecto">Mente & emoções</div>
+        <div>“Ansiedade, insônia, ataques de pânico… tudo melhorou quando comecei a praticar o que aprendi no NoHeroes. Agora tudo faz sentido: a mente não está separada do corpo.”</div>
+        <div class="depoimento-nome">Elisa M.</div>
+      </div>
+      <div class="depoimento-box parallax">
+        <img class="depoimento-avatar" src="https://randomuser.me/api/portraits/men/85.jpg" alt="Avatar3"/>
+        <div class="depoimento-aspecto">Energia & desempenho</div>
+        <div>“Passei anos cansado, sem força nem vontade. Mudei
