@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Tudo Está Conectado | NoHeroes</title>
+  <link href="https://fonts.googleapis.com/css2?family=Unbounded:wght@400;700&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --roxo: #a855f7;
+      --cinza: #1f1f1f;
+      --fundo: #0a0a0a;
+      --claro: #f4f4f4;
+    }
+
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      font-family: 'Unbounded', sans-serif;
+    }
+
+    body {
+      background: var(--fundo);
+      color: var(--claro);
+      overflow-x: hidden;
+    }
+
+    header {
+      height: 100vh;
+      background: url('https://images.unsplash.com/photo-1602524811207-1d8ad3777e96') no-repeat center center/cover;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+      padding: 2rem;
+    }
+
+    header h1 {
+      font-size: 3rem;
+      color: var(--claro);
+      text-shadow: 0 0 10px var(--roxo);
+    }
+
+    header p {
+      font-size: 1.2rem;
+      max-width: 600px;
+      margin: 1rem 0;
+    }
+
+    .cta-btn {
+      background: var(--roxo);
+      color: #000;
+      padding: 1rem 2rem;
+      border: none;
+      border-radius: 8px;
+      font-weight: bold;
+      font-size: 1rem;
+      cursor: pointer;
+      transition: background 0.3s ease;
+    }
+
+    .cta-btn:hover {
+      background: #c084fc;
+    }
+
+    section {
+      padding: 4rem 2rem;
+      background: var(--cinza);
+      text-align: center;
+    }
+
+    section h2 {
+      color: var(--roxo);
+      margin-bottom: 1rem;
+    }
+
+    .bloco {
+      max-width: 800px;
+      margin: auto;
+      margin-bottom: 2rem;
+    }
+
+    footer {
+      padding: 2rem;
+      text-align: center;
+      background: #111;
+      color: var(--claro);
+      font-size: 0.9rem;
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <h1>Tudo Está Conectado</h1>
+    <p>Um eBook gratuito que conecta corpo, mente e espírito — e revela um portal real dentro do universo NoHeroes.</p>
+    <button class="cta-btn" onclick="window.location.href='ebook.pdf'">Desbloquear o PDF Agora</button>
+  </header>
+
+  <section>
+    <h2>O que você vai desbloquear</h2>
+    <div class="bloco">
+      <p><strong>Sintomas físicos e mentais conectados:</strong> cansaço, bloqueios, caspa, ansiedade... tudo tem origem comum.</p>
+    </div>
+    <div class="bloco">
+      <p><strong>Reconexão sistêmica:</strong> Entenda como restaurar seu sistema por completo com passos simples e sombriamente reveladores.</p>
+    </div>
+    <div class="bloco">
+      <p><strong>Desbloqueios secretos:</strong> ao final do eBook, você terá acesso ao Sistema Vivo — a próxima fase.</p>
+    </div>
+  </section>
+
+  <section>
+    <h2>Depoimento</h2>
+    <div class="bloco">
+      <p>"Achei que era só um livro. Agora meu corpo responde diferente ao que como, sinto, penso... Algo está mudando. E eu não volto atrás."</p>
+    </div>
+  </section>
+
+  <section>
+    <h2>Pronto para começar?</h2>
+    <button class="cta-btn" onclick="window.location.href='ebook.pdf'">Baixar Agora</button>
+    <br/><br/>
+    <button class="cta-btn" onclick="window.location.href='https://noheroes.com.br'">Explorar o Sistema Vivo</button>
+  </section>
+
+  <footer>
+    &copy; 2025 NoHeroes. Todos os direitos reservados.
+  </footer>
+</body>
+</html>
