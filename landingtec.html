@@ -1,380 +1,209 @@
-<!DOCTYPE html>
-<html lang="pt-BR">
+<!DOCTYPE html><html lang="pt-BR">
 <head>
   <meta charset="UTF-8"/>
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>Tudo Está Conectado | NoHeroes</title>
-  <link href="https://fonts.googleapis.com/css2?family=Unbounded:wght@400;700&display=swap" rel="stylesheet">
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;700&display=swap" rel="stylesheet">
-  <script src="https://unpkg.com/gsap@3/dist/gsap.min.js"></script>
-  <script src="https://unpkg.com/gsap@3/dist/ScrollTrigger.min.js"></script>
+  <!-- Fontes -->
+  <link href="https://fonts.googleapis.com/css2?family=Unbounded:wght@400;700&family=Inter:wght@400;700&display=swap" rel="stylesheet">
+  <!-- Bibliotecas -->
   <script src="https://unpkg.com/scrollreveal"></script>
   <style>
     :root {
       --roxo: #a855f7;
       --roxo-glow: #c084fc;
+      --dourado: #facc15;
       --fundo: #0a0a0a;
       --cinza: #17171a;
       --cinza2: #23232a;
-      --dourado: #facc15;
       --claro: #f4f4f4;
-      --erro: #ff5252;
       --sucesso: #32de84;
+      --erro: #ff5252;
     }
-
-    * {
-      margin: 0; padding: 0; box-sizing: border-box;
-    }
+    * { margin:0; padding:0; box-sizing:border-box; }
     html, body {
-      width: 100vw; min-height: 100vh;
-      background: var(--fundo);
-      color: var(--claro);
-      font-family: 'Inter', sans-serif;
-      scroll-behavior: smooth;
-      overflow-x: hidden;
+      width:100vw; min-height:100vh;
+      background:var(--fundo); color:var(--claro);
+      font-family:'Inter',sans-serif; scroll-behavior:smooth;
+      overflow-x:hidden;
     }
-
-    /* Barra de progresso */
-    #progressbar {
-      position: fixed; top: 0; left: 0;
-      width: 0; height: 6px; z-index: 100;
-      background: linear-gradient(90deg, var(--roxo) 40%, var(--dourado) 100%);
-      box-shadow: 0 2px 8px var(--roxo);
-      transition: width 0.15s;
-      border-radius: 0 4px 4px 0;
+    /* Barra de Progresso */
+    #progressbar { position:fixed; top:0; left:0; height:6px; width:0;
+      background:linear-gradient(90deg,var(--roxo) 40%,var(--dourado) 100%);
+      border-radius:0 4px 4px 0; z-index:999; }
+    /* Hero */
+    .hero { position:relative; min-height:100vh; display:flex;
+      flex-direction:column; align-items:center; justify-content:center;
+      text-align:center; background:radial-gradient(circle at 60% 30%,#1e0029 0%,#0a0a0a 100%);
+      overflow:hidden;
     }
-
-    /* Header */
-    .hero {
-      min-height: 100vh;
-      display: flex; flex-direction: column; align-items: center; justify-content: center;
-      background: radial-gradient(circle at 60% 30%, #1e0029 0%, #0a0a0a 100%);
-      position: relative; overflow: hidden;
-      text-align: center;
+    .hero::before { content:''; position:absolute;inset:0;
+      background:url('https://images.unsplash.com/photo-1506744038136-46273834b3fb?auto=format&fit=crop&w=1350&q=80')center/cover;
+      opacity:0.07; pointer-events:none;
     }
-    .hero::before {
-      content: '';
-      position: absolute; inset: 0;
-      background: url('https://images.unsplash.com/photo-1506744038136-46273834b3fb?auto=format&fit=crop&w=1350&q=80') center/cover;
-      opacity: 0.07;
-      z-index: 0;
-      pointer-events: none;
-    }
-    .glow {
-      color: var(--roxo);
-      text-shadow: 0 0 18px var(--roxo-glow), 0 0 48px var(--roxo-glow);
-      animation: glow-pulse 2.3s infinite alternate;
+    .glow { color:var(--roxo); text-shadow:0 0 18px var(--roxo-glow),0 0 48px var(--roxo-glow);
+      animation:glow-pulse 2.3s infinite alternate;
     }
     @keyframes glow-pulse {
-      0%   { text-shadow: 0 0 18px var(--roxo-glow);}
-      100% { text-shadow: 0 0 44px var(--roxo-glow);}
+      0% {text-shadow:0 0 18px var(--roxo-glow);} 100% {text-shadow:0 0 44px var(--roxo-glow);} }
+    .hero-title { font-family:'Unbounded',sans-serif; font-size:3rem; letter-spacing:2px; z-index:2; }
+    .hero-desc { margin:2rem auto; max-width:600px; font-size:1.3rem;
+      background:rgba(20,8,28,0.7); padding:1.2rem; border-radius:1rem; backdrop-filter:blur(2px);
+      box-shadow:0 4px 40px #000a;
     }
-    .hero-title {
-      font-family: 'Unbounded', sans-serif;
-      font-size: 3rem;
-      letter-spacing: 2px;
-      z-index: 2;
-      font-weight: 700;
+    .hero-cta { margin-top:1.8rem; display:flex; flex-direction:column; align-items:center; gap:1rem; z-index:2; }
+    .cta-btn { background:linear-gradient(90deg,var(--roxo),var(--dourado)); color:#181825;
+      padding:1rem 2.5rem; border:none; border-radius:2em;
+      font-family:'Unbounded',sans-serif; font-size:1.1rem; font-weight:700;
+      cursor:pointer; transition:transform .2s,filter .2s;
     }
-    .hero-desc {
-      margin: 2rem auto 2.5rem auto;
-      max-width: 600px;
-      font-size: 1.3rem;
-      color: var(--claro);
-      background: rgba(20, 8, 28, 0.64);
-      border-radius: 1rem;
-      padding: 1.2rem;
-      backdrop-filter: blur(2px);
-      box-shadow: 0 4px 40px #000a;
-    }
-    .hero-cta {
-      margin-top: 1.8rem;
-      display: flex; flex-direction: column; align-items: center; gap: 1.2rem;
-      z-index: 2;
-    }
-    .cta-btn {
-      background: linear-gradient(90deg, var(--roxo), var(--dourado));
-      color: #181825;
-      padding: 1rem 2.7rem;
-      border: none;
-      border-radius: 2em;
-      font-family: 'Unbounded', sans-serif;
-      font-size: 1.2rem;
-      font-weight: bold;
-      box-shadow: 0 0 12px var(--roxo);
-      letter-spacing: 1px;
-      cursor: pointer;
-      transition: filter 0.2s, transform 0.15s;
-      position: relative;
-      overflow: hidden;
-      outline: none;
-      animation: btn-glow 2.7s infinite alternate;
-    }
-    .cta-btn:hover, .cta-btn:focus {
-      filter: brightness(1.1) drop-shadow(0 0 8px var(--roxo-glow));
-      transform: scale(1.05);
-    }
-    @keyframes btn-glow {
-      0%   { box-shadow: 0 0 12px var(--roxo);}
-      100% { box-shadow: 0 0 26px var(--roxo-glow);}
-    }
-
+    .cta-btn:hover { transform:scale(1.05); filter:brightness(1.1);}    
     /* Seções */
-    section {
-      width: 100vw; padding: 6rem 1.5rem 4rem 1.5rem;
-      background: var(--cinza);
-      position: relative;
-      z-index: 2;
+    section { padding:5rem 1.5rem; background:var(--cinza); }
+    .section-title { font-family:'Unbounded',sans-serif; font-size:2rem;
+      color:var(--roxo-glow); margin-bottom:2rem; text-shadow:0 0 8px var(--roxo);
     }
-    .section-title {
-      font-family: 'Unbounded', sans-serif;
-      font-size: 2.1rem;
-      color: var(--roxo-glow);
-      margin-bottom: 2.1rem;
-      letter-spacing: 1px;
-      text-shadow: 0 0 12px var(--roxo);
-    }
-
     /* Sintomas/Causas */
-    .causas-blocos {
-      display: flex;
-      flex-wrap: wrap;
-      justify-content: center;
-      gap: 2rem;
+    .causas { display:flex; flex-wrap:wrap; gap:1.5rem; justify-content:center; }
+    .causa-card { background:linear-gradient(140deg,var(--cinza2) 75%,var(--roxo) 100%);
+      padding:1.8rem 1rem; border-radius:1.2rem; max-width:300px; flex:1 1 250px;
+      border:2px solid var(--roxo); box-shadow:0 4px 20px #0e0123bb;
+      transition:transform .2s,box-shadow .2s;
     }
-    .causa-card {
-      background: linear-gradient(140deg, var(--cinza2) 75%, var(--roxo) 100%);
-      color: var(--claro);
-      min-width: 260px;
-      max-width: 330px;
-      flex: 1 1 260px;
-      border-radius: 1.4rem;
-      box-shadow: 0 4px 24px #0e0123bb;
-      padding: 2rem 1.3rem;
-      margin-bottom: 2rem;
-      border: 2px solid var(--roxo);
-      position: relative;
-      overflow: hidden;
-      transition: transform 0.2s, box-shadow 0.2s;
-      will-change: transform;
-    }
-    .causa-card:hover {
-      transform: translateY(-8px) scale(1.035) rotate(-1deg);
-      box-shadow: 0 12px 40px var(--roxo-glow);
-      border-color: var(--dourado);
-    }
-    .causa-icon {
-      font-size: 2.2rem;
-      margin-bottom: 0.8rem;
-      display: block;
-      color: var(--dourado);
-      filter: drop-shadow(0 0 8px var(--roxo));
-    }
-    .causa-title {
-      font-size: 1.1rem; font-weight: bold; margin-bottom: 0.6rem;
-      letter-spacing: 0.5px;
-      color: var(--dourado);
-    }
-    .causa-desc {
-      font-size: 1rem; opacity: 0.93;
-    }
-
+    .causa-card:hover { transform:translateY(-6px); box-shadow:0 8px 30px var(--roxo-glow);}    
+    .causa-icon { font-size:2.2rem; color:var(--dourado); margin-bottom:0.8rem; }
+    .causa-title { font-size:1.1rem; color:var(--dourado); margin-bottom:0.5rem; font-weight:700; }
+    .causa-desc { font-size:0.95rem; line-height:1.3; }
     /* Depoimentos */
-    .depoimentos-container {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(270px, 1fr));
-      gap: 2.2rem;
-      margin-top: 2rem;
+    .depoimentos { display:grid; grid-template-columns:repeat(auto-fit,minmax(260px,1fr)); gap:1.8rem; }
+    .depo { position:relative; background:linear-gradient(120deg,var(--cinza2) 75%,var(--roxo) 100%);
+      border-radius:1rem; padding:1.8rem 1.3rem 1rem; border:2px solid var(--roxo-glow);
+      box-shadow:0 4px 20px #12022f99; transition:transform .2s;
     }
-    .depoimento-box {
-      background: linear-gradient(120deg, var(--cinza2) 75%, var(--roxo) 100%);
-      color: var(--claro);
-      border-radius: 1.1rem;
-      padding: 2rem 1.5rem 1.5rem 1.5rem;
-      box-shadow: 0 6px 24px #12022f99;
-      border: 2px solid var(--roxo-glow);
-      position: relative;
-      opacity: 0.95;
-      transition: box-shadow 0.25s, border 0.23s, transform 0.22s;
-      will-change: transform;
+    .depo:hover { transform:translateY(-4px); border-color:var(--dourado); }
+    .avatar { width:48px;height:48px;border-radius:50%;border:3px solid var(--roxo-glow);
+      position:absolute;top:-24px;left:12px; background:#222;
     }
-    .depoimento-box:hover {
-      box-shadow: 0 0 32px var(--roxo-glow);
-      border: 2.5px solid var(--dourado);
-      transform: translateY(-4px) scale(1.04);
+    .aspecto { font-size:0.9rem; color:var(--roxo-glow); margin-bottom:0.8rem; }
+    .nome { margin-top:1.2rem; font-weight:700; color:var(--dourado); }
+    /* Sistema Vivo */
+    #sistema-vivo { background:linear-gradient(135deg,rgba(20,0,45,0.85),rgba(0,0,0,0.85)); }
+    #sistema-vivo .section-title { color:var(--dourado); text-shadow:0 0 8px var(--dourado); }
+    .subtitulo { font-size:1.05rem; max-width:700px; margin:1rem auto 2rem; opacity:0.9; }
+    .beneficios { list-style:none; max-width:700px; margin:0 auto 2rem; padding-left:1.2rem; }
+    .beneficios li { position:relative; margin-bottom:1rem; padding-left:1.5rem; line-height:1.4; }
+    .beneficios li:before { content:'▶'; position:absolute; left:0; color:var(--roxo); }
+    .preco { text-align:center; margin:1.5rem 0; }
+    .orig { color:#888; text-decoration:line-through; font-size:1.1rem; }
+    .novo { color:var(--sucesso); font-size:1.4rem; font-weight:700; margin-left:1rem;
+      text-shadow:0 0 6px var(--sucesso);
     }
-    .depoimento-nome {
-      margin-top: 1.5rem;
-      font-weight: bold;
-      font-size: 1.08rem;
-      color: var(--dourado);
-      letter-spacing: 1px;
-    }
-    .depoimento-aspecto {
-      font-size: 0.92rem;
-      color: var(--roxo-glow);
-      margin-bottom: 1rem;
-    }
-    .depoimento-avatar {
-      width: 48px; height: 48px;
-      border-radius: 50%; object-fit: cover;
-      box-shadow: 0 2px 12px var(--roxo);
-      position: absolute;
-      top: -26px; left: 12px;
-      border: 3px solid var(--roxo-glow);
-      background: var(--cinza);
-    }
-
     /* Quiz */
-    .quiz-box {
-      background: linear-gradient(115deg, var(--roxo) 45%, var(--cinza2) 95%);
-      color: #fff;
-      border-radius: 1.1rem;
-      max-width: 600px; margin: 2.5rem auto;
-      padding: 2.1rem 1.3rem 2.7rem 1.3rem;
-      box-shadow: 0 4px 32px #13012577;
-      border: 2px solid var(--dourado);
-      display: flex; flex-direction: column; align-items: center;
+    .quiz-box { background:var(--cinza2); max-width:600px; margin:2rem auto; padding:1.8rem;
+      border-radius:1rem; box-shadow:0 4px 20px #0008;
     }
-    .quiz-pergunta {
-      font-size: 1.15rem; margin-bottom: 1.2rem;
-      color: var(--dourado);
-      font-family: 'Unbounded', sans-serif;
+    .quiz-pergunta { font-size:1.05rem; margin-bottom:1rem; color:var(--dourado); }
+    .quiz-opcoes { list-style:none; }
+    .quiz-opcoes li { margin-bottom:0.8rem; }
+    .quiz-btn { background:var(--cinza); color:var(--claro); padding:0.7rem;
+      border:2px solid var(--roxo-glow); border-radius:0.6rem; width:100%; text-align:left;
+      cursor:pointer; transition:background .2s;
     }
-    .quiz-opcoes {
-      display: flex; flex-direction: column; gap: 0.8rem;
-      margin-bottom: 1.1rem;
-      width: 100%;
-    }
-    .quiz-btn {
-      background: var(--cinza2);
-      border: 2px solid var(--roxo-glow);
-      color: var(--claro);
-      padding: 0.7rem 1.4rem;
-      border-radius: 0.9rem;
-      font-size: 1rem;
-      cursor: pointer;
-      transition: background 0.17s, border 0.2s;
-      width: 100%;
-      text-align: left;
-      outline: none;
-    }
-    .quiz-btn:hover, .quiz-btn.selected {
-      background: var(--dourado);
-      color: #23232a;
-      border: 2px solid var(--roxo);
-    }
-    .quiz-feedback {
-      font-size: 1rem;
-      margin-top: 0.8rem;
-      color: var(--sucesso);
-      min-height: 20px;
-    }
-
-    /* CTA final */
-    .cta-final {
-      text-align: center; margin-top: 3.5rem;
-    }
-    .cta-final-btns {
-      display: flex; flex-wrap: wrap;
-      gap: 1.6rem; justify-content: center; margin: 2.2rem 0;
-    }
-
-    /* Parallax effect */
-    .parallax {
-      will-change: transform;
-      transition: transform 0.3s;
-    }
-
-    /* Responsividade */
-    @media (max-width: 800px) {
-      .causas-blocos { flex-direction: column; gap: 1.2rem; }
-      .depoimentos-container { grid-template-columns: 1fr; }
-      .hero-title { font-size: 2.2rem; }
-      .hero-desc { font-size: 1.08rem; }
-    }
-    @media (max-width: 420px) {
-      .causa-card, .depoimento-box, .quiz-box { padding: 1.1rem 0.5rem; }
-    }
+    .quiz-btn:hover { background:var(--roxo); color:#fff; }
+    .feedback { min-height:24px; margin-top:0.8rem; font-size:0.95rem; }
+    /* CTA Final */
+    .cta-final { text-align:center; padding:3rem 1rem; }
+    .cta-final .cta-btn { margin-top:1rem; }
+    /* Responsivo */
+    @media(max-width:600px){ .hero-title{font-size:2.2rem;} .hero-desc{font-size:1.1rem;} }
   </style>
 </head>
 <body>
   <div id="progressbar"></div>
-  <!-- HERO -->
   <div class="hero" id="hero">
     <h1 class="hero-title glow">Tudo Está Conectado</h1>
-    <div class="hero-desc">
-      Um portal para restaurar seu sistema.  
-      Sinta o corpo, mente e energia desbloqueando juntos.<br>
-      <strong>Sintomas desconexos? Aqui tudo faz sentido: da caspa à ansiedade, do intestino à criatividade.</strong>
-    </div>
+    <p class="hero-desc">Um portal para restaurar seu sistema. Da caspa à ansiedade, do intestino à criatividade: todos os sintomas refletem um único desequilíbrio.</p>
     <div class="hero-cta">
-      <button class="cta-btn" onclick="window.location.href='ebook.pdf'">
-        <span>Desbloquear eBook Grátis</span>
-      </button>
-      <div>
-        <span style="font-size:1rem;color:#c084fc;">Ou acesse pelo QR code:</span><br>
-        <img src="https://api.qrserver.com/v1/create-qr-code/?size=100x100&data=https://seulink.com/ebook.pdf" width="100" height="100" alt="QR code para eBook" style="margin-top:0.6rem; border-radius:10px;box-shadow:0 0 14px #a855f7;">
-      </div>
+      <button class="cta-btn" onclick="location.href='ebook.pdf'">Desbloquear eBook Grátis</button>
+      <img src="https://api.qrserver.com/v1/create-qr-code/?size=100x100&data=https://seulink.com/ebook.pdf" alt="QR code" style="margin-top:0.5rem;border-radius:8px;box-shadow:0 0 8px var(--roxo)">
     </div>
-  </div>
-
-  <!-- SINTOMAS/CAUSAS -->
-  <section id="causas">
+  </div>  <section id="causas">
     <h2 class="section-title">Tudo está conectado:</h2>
-    <div class="causas-blocos">
-      <div class="causa-card parallax">
+    <div class="causas">
+      <div class="causa-card">
         <div class="causa-icon">🦠</div>
         <div class="causa-title">Fungos & Pele</div>
-        <div class="causa-desc">
-          Fungos recorrentes, caspa, manchas, coceira: reflexo direto do desequilíbrio intestinal, estresse crônico ou baixa imunidade.  
-          <em>Solução: ajuste sua microbiota, melhore o sistema inteiro.</em>
-        </div>
+        <p class="causa-desc">Fungos recorrentes e caspa indicam desequilíbrio intestinal e queda de imunidade. <em>Restaure sua microbiota e fortaleça todo o sistema.</em></p>
       </div>
-      <div class="causa-card parallax">
+      <div class="causa-card">
         <div class="causa-icon">🧠</div>
-        <div class="causa-title">Fadiga Mental & Ansiedade</div>
-        <div class="causa-desc">
-          Pensamentos acelerados, insônia, desânimo? Seu sistema nervoso está em modo de alerta.  
-          <em>Solução: Integração de corpo, mente e rotina de auto-observação.</em>
-        </div>
+        <div class="causa-title">Ansiedade & Insônia</div>
+        <p class="causa-desc">Pensamentos acelerados e noites em claro são sinais de sistema nervoso sobrecarregado. <em>Aprenda a sincronizar mente e corpo.</em></p>
       </div>
-      <div class="causa-card parallax">
+      <div class="causa-card">
         <div class="causa-icon">⚡</div>
-        <div class="causa-title">Cansaço & Falta de Energia</div>
-        <div class="causa-desc">
-          Falta de energia, desânimo físico, dores e imunidade baixa mostram falha de comunicação entre células, alimentação e emoções.  
-          <em>Solução: pequenas ações diárias restauram o ciclo vital inteiro.</em>
-        </div>
+        <div class="causa-title">Cansaço Crônico</div>
+        <p class="causa-desc">Baixa energia e fadiga refletem falhas na comunicação celular. <em>Pequenos rituais diários recarregam sua força vital.</em></p>
       </div>
-      <div class="causa-card parallax">
+      <div class="causa-card">
         <div class="causa-icon">🎭</div>
-        <div class="causa-title">Crise de Propósito & Bloqueio Criativo</div>
-        <div class="causa-desc">
-          Sentimento de estagnação, vazio ou desmotivação? Sinal de um sistema sufocado por padrões tóxicos e desconexão.  
-          <em>Solução: Desbloqueie o ritual sistêmico. Tudo muda junto.</em>
-        </div>
+        <div class="causa-title">Bloqueio Criativo</div>
+        <p class="causa-desc">Vazio e falta de propósito indicam desconexão sistêmica. <em>Desentrelaçe padrões tóxicos e recupere sua visão.</em></p>
       </div>
     </div>
-  </section>
-
-  <!-- DEPOIMENTOS -->
-  <section id="depoimentos">
+  </section>  <section id="depoimentos">
     <h2 class="section-title">Quem já desbloqueou sabe:</h2>
-    <div class="depoimentos-container">
-      <div class="depoimento-box parallax">
-        <img class="depoimento-avatar" src="https://randomuser.me/api/portraits/men/32.jpg" alt="Avatar1"/>
-        <div class="depoimento-aspecto">Corpo físico</div>
-        <div>“Achava que minhas alergias e fungos eram casos isolados. Depois do eBook, entendi a conexão com minha alimentação e ansiedade. Não voltei a ter crise até hoje.”</div>
-        <div class="depoimento-nome">Bruno T.</div>
-      </div>
-      <div class="depoimento-box parallax">
-        <img class="depoimento-avatar" src="https://randomuser.me/api/portraits/women/49.jpg" alt="Avatar2"/>
-        <div class="depoimento-aspecto">Mente & emoções</div>
-        <div>“Ansiedade, insônia, ataques de pânico… tudo melhorou quando comecei a praticar o que aprendi no NoHeroes. Agora tudo faz sentido: a mente não está separada do corpo.”</div>
-        <div class="depoimento-nome">Elisa M.</div>
-      </div>
-      <div class="depoimento-box parallax">
-        <img class="depoimento-avatar" src="https://randomuser.me/api/portraits/men/85.jpg" alt="Avatar3"/>
-        <div class="depoimento-aspecto">Energia & desempenho</div>
-        <div>“Passei anos cansado, sem força nem vontade. Mudei
+    <div class="depoimentos">
+      <div class="depo"><img class="avatar" src="https://randomuser.me/api/portraits/men/32.jpg"><p class="aspecto">Saúde Física</p><p>“Minhas alergias sumiram quando descobri que estavam ligadas à minha ansiedade. Agora vivo sem crises.”</p><p class="nome">Bruno T.</p></div>
+      <div class="depo"><img class="avatar" src="https://randomuser.me/api/portraits/women/49.jpg"><p class="aspecto">Bem-Estar Mental</p><p>“Ansiedade e insônia eram rotina. O eBook me deu métodos reais para sincronizar mente e corpo.”</p><p class="nome">Elisa M.</p></div>
+      <div class="depo"><img class="avatar" src="https://randomuser.me/api/portraits/men/85.jpg"><p class="aspecto">Energia</p><p>“Passei anos exausto. Agora recarrego minha energia com práticas simples e duradouras.”</p><p class="nome">Lucas F.</p></div>
+      <div class="depo"><img class="avatar" src="https://randomuser.me/api/portraits/women/66.jpg"><p class="aspecto">Criatividade</p><p>“Meu bloqueio criativo desapareceu. Tudo faz sentido quando entendemos o sistema por completo.”</p><p class="nome">Mariana S.</p></div>
+    </div>
+  </section>  <section id="sistema-vivo">
+    <h2 class="section-title">Desbloqueie a próxima camada: o Sistema Vivo</h2>
+    <p class="subtitulo">O que você experimentou até aqui foi só o início. A restauração completa acontece no Sistema Vivo.</p>
+    <ul class="beneficios">
+      <li>🔓 Restauração total de corpo, mente e energia.</li>
+      <li>🧠 Técnicas emocionais e neurobiológicas comprovadas.</li>
+      <li>🦠 Guia avançado para reconstrução intestinal.</li>
+      <li>🔍 Acesso ao painel secreto interativo no site.</li>
+      <li>💠 Rituais e desafios semanais dentro do universo NoHeroes.</li>
+    </ul>
+    <div class="preco"><span class="orig">R$120,00</span><span class="novo">R$29,97</span></div>
+    <div style="text-align:center;"><button class="cta-btn" onclick="location.href='landingsv.html'">Acessar o Sistema Vivo</button></div>
+  </section>  <section id="quiz">
+    <div class="quiz-box">
+      <p class="quiz-pergunta">Como você se sente mais frequentemente?</p>
+      <ul class="quiz-opcoes">
+        <li><button class="quiz-btn" data-feedback="Você pode fortalecer seu sistema nervoso com práticas de respiração." onclick="answerQuiz(this)">Ansioso(a)</button></li>
+        <li><button class="quiz-btn" data-feedback="Sua microbiota pode estar desequilibrada; conheça exercícios simples no eBook." onclick="answerQuiz(this)">Fadigado(a)</button></li>
+        <li><button class="quiz-btn" data-feedback="Bloqueios criativos podem ser sinal de desconexão sistêmica." onclick="answerQuiz(this)">Criativamente bloqueado(a)</button></li>
+        <li><button class="quiz-btn" data-feedback="Você sente múltiplos sintomas; busque o Sistema Vivo para integração completa." onclick="answerQuiz(this)">Todos os anteriores</button></li>
+      </ul>
+      <p class="feedback" id="quiz-feedback"></p>
+    </div>
+  </section>  <section class="cta-final">
+    <h2 class="section-title">Sua escolha:</h2>
+    <p>Permaneça onde está ou <strong>entre no Sistema Vivo</strong> e transforme tudo de uma vez.</p>
+    <button class="cta-btn" onclick="location.href='landingsv.html'">Entrar no Sistema Vivo</button>
+  </section>  <script>
+    // Progressbar
+    window.addEventListener('scroll',()=>{
+      const docHeight=document.documentElement.scrollHeight - window.innerHeight;
+      const scrolled=(window.scrollY/docHeight)*100;
+      document.getElementById('progressbar').style.width=scrolled+'%';
+    });
+    // ScrollReveal
+    ScrollReveal().reveal('.hero-title, .hero-desc, .hero-cta',{delay:200, distance:'30px', origin:'bottom'});
+    ScrollReveal().reveal('.causa-card',{interval:100, distance:'20px', origin:'bottom'});
+    ScrollReveal().reveal('.depo',{interval:120, distance:'20px', origin:'bottom'});
+    ScrollReveal().reveal('#sistema-vivo .section-title, #sistema-vivo .subtitulo, .beneficios li',{interval:100, distance:'20px', origin:'bottom'});
+    ScrollReveal().reveal('.quiz-box',{delay:200, distance:'30px', origin:'bottom'});
+    ScrollReveal().reveal('.cta-final',{delay:200, distance:'30px', origin:'bottom'});
+    // Quiz
+    function answerQuiz(btn){
+      document.querySelectorAll('.quiz-btn').forEach(b=>b.disabled=true);
+      btn.classList.add('selected');
+      document.getElementById('quiz-feedback').textContent = btn.dataset.feedback;
+    }
+  </script></body>
+</html>
