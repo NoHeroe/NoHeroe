@@ -472,6 +472,18 @@
   transform: scale(1.1);
   box-shadow: 0 0 6px var(--accent-purple);
 }
+.edit-button {
+  margin-left: 6px;
+  background: transparent;
+  border: none;
+  color: var(--accent-purple);
+  font-size: 0.9rem;
+  cursor: pointer;
+  transition: color 0.2s ease;
+}
+.edit-button:hover {
+  color: var(--text-light);
+}
   </style>
 </head>
 <body>
@@ -494,14 +506,33 @@
         <!-- Conteúdo de “Overview” (show/hide via JS) -->
         <div class="pane-overview active">
           <div class="left-title">Overview</div>
-          <div class="left-text">
-            Aqui vai um **resumo geral** do usuário.  
-            Exemplo:
-            <ul style="margin-top: 8px; list-style: disc inside; color: var(--text-light); opacity: 0.9;">
-              <li>Nome do herói: <strong>Seu Nome</strong></li>
-              <li>Descrição resumida: “None”</li>
-            </ul>
-          </div>
+          <div class="info-row">
+  <span class="info-label">Nome:</span>
+  <span id="nome-personagem">Ghoul Pionkim <button class="edit-button" onclick="editarNome()">✎</button></span>
+</div>
+
+<div class="info-row">
+  <span class="info-label">Classe:</span>
+  <span>Portador das Sombras</span>
+</div>
+
+<div class="info-row">
+  <span class="info-label">Facção:</span>
+  <span>Noctis Ordinem</span>
+</div>
+
+<div class="info-row" style="margin-top: 16px;">
+  <span class="info-label">Despertar Vitalista</span>
+  <span id="valor-despertar">128.000 / 1.000.000</span>
+</div>
+
+<div class="bar-container" style="height: 12px; border: 2px solid #333; background: #000;">
+  <div class="bar-fill" id="barra-despertar"
+       style="background: linear-gradient(90deg, red, orange, yellow, green, cyan, blue, violet);
+              width: 12.8%;
+              box-shadow: inset 0 0 6px #000;">
+  </div>
+</div>
 
           <div class="quick-info-title">Atributos</div>
 
@@ -826,6 +857,13 @@
     });
     atualizarInterface();
   });
+function editarNome() {
+  const nomeAtual = document.getElementById("nome-personagem").textContent.trim();
+  const novoNome = prompt("Digite um novo nome para o personagem:", nomeAtual.replace("✎", "").trim());
+  if (novoNome && novoNome.length > 1) {
+    document.getElementById("nome-personagem").innerHTML = novoNome + ' <button class="edit-button" onclick="editarNome()">✎</button>';
+  }
+}
 </script>
 </body>
 </html>
