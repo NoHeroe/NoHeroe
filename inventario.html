@@ -430,6 +430,17 @@
 .content-container.inventory-active {
   min-height: 0 !important;
 }
+/* Mochila em grid 6x3 */
+.backpack-grid {
+  display: grid;
+  grid-template-columns: repeat(6, 1fr);
+  gap: 8px;
+}
+
+/* Ajuste visual se quiser diferenciar slots da mochila */
+.backpack-grid .equip-slot {
+  opacity: 0.6;
+}
   </style>
 </head>
 <body>
@@ -613,34 +624,99 @@
 </div>
 
         <div class="pane-equipment-right" style="display:none;flex-direction:column;gap:16px;">
-          <div class="equip-section">
-            <div class="equip-title">Primary Slot</div>
-            <div class="equip-slots"><div class="equip-slot"></div></div>
-          </div>
-          <div class="equip-section">
-            <div class="equip-title">Secondary Slot</div>
-            <div class="equip-slots"><div class="equip-slot"></div></div>
-          </div>
-          <div class="equip-section">
-            <div class="equip-title">Tools</div>
-            <div class="equip-slots">
-              <div class="equip-slot"></div>
-              <div class="equip-slot"></div>
-              <div class="equip-slot"></div>
-            </div>
-          </div>
-          <div class="equip-section">
-            <div class="equip-title">Skill</div>
-            <div class="equip-slots">
-              <div class="equip-slot"></div>
-              <div class="equip-slot"></div>
-              <div class="equip-slot"></div>
-            </div>
-          </div>
-        </div>
-      </div>
+
+  <!-- Primary + Secondary + Tools -->
+  <div class="equip-section">
+    <div class="equip-title">Primary Slot</div>
+    <div class="equip-slots">
+      <div class="equip-slot"></div>
     </div>
   </div>
+  <div class="equip-section">
+    <div class="equip-title">Secondary Slot</div>
+    <div class="equip-slots">
+      <div class="equip-slot"></div>
+    </div>
+  </div>
+  <div class="equip-section">
+    <div class="equip-title">Tools</div>
+    <div class="equip-slots">
+      <div class="equip-slot"></div>
+      <div class="equip-slot"></div>
+      <div class="equip-slot"></div>
+    </div>
+  </div>
+
+  <!-- Skill (agora 4 slots) -->
+  <div class="equip-section">
+    <div class="equip-title">Skill</div>
+    <div class="equip-slots">
+      <div class="equip-slot"></div>
+      <div class="equip-slot"></div>
+      <div class="equip-slot"></div>
+      <div class="equip-slot"></div>
+    </div>
+  </div>
+
+  <!-- Armadura: 4 slots à esquerda e 4 à direita -->
+  <div class="equip-section">
+    <div class="equip-title">Armadura Esquerda</div>
+    <div class="equip-slots">
+      <div class="equip-slot"></div>
+      <div class="equip-slot"></div>
+      <div class="equip-slot"></div>
+      <div class="equip-slot"></div>
+    </div>
+  </div>
+  <div class="equip-section">
+    <div class="equip-title">Armadura Direita</div>
+    <div class="equip-slots">
+      <div class="equip-slot"></div>
+      <div class="equip-slot"></div>
+      <div class="equip-slot"></div>
+      <div class="equip-slot"></div>
+    </div>
+  </div>
+
+  <!-- Seções adicionais -->
+  <div class="equip-section">
+    <div class="equip-title">Acessórios</div>
+    <div class="equip-slots">
+      <div class="equip-slot"></div>
+      <div class="equip-slot"></div>
+      <div class="equip-slot"></div>
+    </div>
+  </div>
+  <div class="equip-section">
+    <div class="equip-title">Troféus</div>
+    <div class="equip-slots">
+      <div class="equip-slot"></div>
+      <div class="equip-slot"></div>
+      <div class="equip-slot"></div>
+    </div>
+  </div>
+  <div class="equip-section">
+    <div class="equip-title">Insígnias</div>
+    <div class="equip-slots">
+      <div class="equip-slot"></div>
+    </div>
+  </div>
+
+  <!-- Mochila: 18 slots em grid estilo inventory -->
+  <div class="equip-section">
+    <div class="equip-title">Mochila</div>
+    <div class="backpack-grid">
+      <!-- 18 slots -->
+      <div class="equip-slot"></div><div class="equip-slot"></div><div class="equip-slot"></div>
+      <div class="equip-slot"></div><div class="equip-slot"></div><div class="equip-slot"></div>
+      <div class="equip-slot"></div><div class="equip-slot"></div><div class="equip-slot"></div>
+      <div class="equip-slot"></div><div class="equip-slot"></div><div class="equip-slot"></div>
+      <div class="equip-slot"></div><div class="equip-slot"></div><div class="equip-slot"></div>
+      <div class="equip-slot"></div><div class="equip-slot"></div><div class="equip-slot"></div>
+    </div>
+  </div>
+
+</div>
 
   <script>
     // Tab switching
