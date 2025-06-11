@@ -322,20 +322,6 @@
       cursor: default;
     }
 
-    /*— Tree (árvore de habilidades / mock) —*/
-    .pane-tree {
-      display: none;
-      flex: 1 1 auto;
-      color: var(--text-light);
-      font-size: 1rem;
-      text-align: center;
-      padding: 12px;
-    }
-
-    .pane-tree.active {
-      display: block;
-    }
-
     /*— Loja (lista de ícones / mock) —*/
     .pane-store {
       display: none;
@@ -479,8 +465,6 @@
     <button class="tab active" data-tab="overview">Overview</button>
     <button class="tab" data-tab="inventory">Inventário</button>
     <button class="tab" data-tab="equipment">Equipamento</button>
-    <button class="tab" data-tab="tree">Tree</button>
-  </div>
   <div class="tab-store-wrapper">
     <button class="tab tab-store" data-tab="store">⛩ Loja</button>
   </div>
@@ -558,12 +542,6 @@
           <div class="left-text">
             Seus slots de equipamento aparecem aqui.  
           </div>
-        </div>
-
-        <!-- Conteúdo de “Tree” (oculto por padrão) -->
-        <div class="pane-tree">
-          <div class="left-title">Tree</div>
-          <div class="left-text">Árvore de habilidades (mock).</div>
         </div>
 
         <!-- Conteúdo de “Loja” (oculto por padrão) -->
@@ -703,14 +681,6 @@
           </div>
         </div>
 
-        <!-- TREE do lado direito -->
-        <div class="pane-tree-right" style="display: none; flex:1 1 auto;">
-          <div class="equip-title">Tree</div>
-          <div style="margin-top:12px; color: var(--text-light); opacity:0.9; font-size:1rem;">
-            Estrutura de árvore de habilidades (placeholder).
-          </div>
-        </div>
-
         <!-- LOJA do lado direito -->
         <div class="pane-store-right" style="display: none; flex:1 1 auto;">
           <div class="equip-title">Loja</div>
@@ -728,14 +698,12 @@
       overview: document.querySelector(".pane-overview"),
       inventory: document.querySelector(".pane-inventory"),
       equipment: document.querySelector(".pane-equipment"),
-      tree: document.querySelector(".pane-tree"),
       store: document.querySelector(".pane-store"),
     };
     const rightPanes = {
       overview: document.querySelector(".pane-overview-right"),
       inventory: document.querySelector(".pane-inventory-right"),
       equipment: document.querySelector(".pane-equipment-right"),
-      tree: document.querySelector(".pane-tree-right"),
       store: document.querySelector(".pane-store-right"),
     };
     const centerAvatar = document.querySelector(".avatar-placeholder");
