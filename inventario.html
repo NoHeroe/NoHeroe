@@ -455,6 +455,23 @@
   border-radius: 16px;
   box-shadow: 0 0 18px rgba(168, 85, 247, 0.3);
 }
+.add-point {
+  background: linear-gradient(to right, #3d214d, #6d28d9);
+  color: #fff;
+  font-weight: bold;
+  border: none;
+  border-radius: 8px;
+  padding: 0 10px;
+  margin-left: 8px;
+  cursor: pointer;
+  font-size: 1rem;
+  box-shadow: 0 0 4px #000;
+  transition: transform 0.2s ease;
+}
+.add-point:hover {
+  transform: scale(1.1);
+  box-shadow: 0 0 6px var(--accent-purple);
+}
   </style>
 </head>
 <body>
@@ -487,45 +504,57 @@
           </div>
 
           <div class="quick-info-title">Atributos</div>
-          <!-- Exemplo de status com barras -->
-          <div>
-            <div class="info-row">
-              <span class="info-label">Dano</span>
-              <span>4560</span>
-            </div>
-            <div class="bar-container">
-              <div class="bar-fill" style="width: 72%;"></div>
-            </div>
-          </div>
-          <div>
-            <div class="info-row">
-              <span class="info-label">Defesa</span>
-              <span>651</span>
-            </div>
-            <div class="bar-container"><div class="bar-fill" style="width: 48%;"></div></div>
-          </div>
-          <div>
-            <div class="info-row">
-              <span class="info-label">Saúde</span>
-              <span>2246</span>
-            </div>
-            <div class="bar-container"><div class="bar-fill" style="width: 64%;"></div></div>
-          </div>
-          <div>
-            <div class="info-row">
-              <span class="info-label">Mana</span>
-              <span>2560</span>
-            </div>
-            <div class="bar-container"><div class="bar-fill" style="width: 80%;"></div></div>
-          </div>
-          <div>
-            <div class="info-row">
-              <span class="info-label">Crítico</span>
-              <span>24%</span>
-            </div>
-            <div class="bar-container"><div class="bar-fill" style="width: 24%;"></div></div>
-          </div>
-        </div>
+          <!-- NOVO BLOCO: XP e Nível -->
+<div class="info-row">
+  <span class="info-label">Nível</span>
+  <span>7</span>
+</div>
+<div class="bar-container" style="height: 12px; border: 2px solid #333; background: #000;">
+  <div class="bar-fill" style="background: #4CAF50; width: 67%; box-shadow: inset 0 0 6px #000;"></div>
+</div>
+<div class="info-row" style="margin-top: 12px;">
+  <span class="info-label">Pontos Disponíveis</span>
+  <span>4</span>
+</div>
+
+<!-- Atributos RPG -->
+<div class="quick-info-title">Atributos</div>
+
+<div class="info-row">
+  <span class="info-label">Força</span>
+  <span>12 <button class="add-point">+</button></span>
+</div>
+<div class="bar-container"><div class="bar-fill" style="width: 60%;"></div></div>
+
+<div class="info-row">
+  <span class="info-label">Destreza</span>
+  <span>10 <button class="add-point">+</button></span>
+</div>
+<div class="bar-container"><div class="bar-fill" style="width: 50%;"></div></div>
+
+<div class="info-row">
+  <span class="info-label">Constituição</span>
+  <span>13 <button class="add-point">+</button></span>
+</div>
+<div class="bar-container"><div class="bar-fill" style="width: 65%;"></div></div>
+
+<div class="info-row">
+  <span class="info-label">Inteligência</span>
+  <span>9 <button class="add-point">+</button></span>
+</div>
+<div class="bar-container"><div class="bar-fill" style="width: 45%;"></div></div>
+
+<div class="info-row">
+  <span class="info-label">Espírito</span>
+  <span>8 <button class="add-point">+</button></span>
+</div>
+<div class="bar-container"><div class="bar-fill" style="width: 40%;"></div></div>
+
+<div class="info-row">
+  <span class="info-label">Carisma</span>
+  <span>6 <button class="add-point">+</button></span>
+</div>
+<div class="bar-container"><div class="bar-fill" style="width: 30%;"></div></div>
 
         <!-- Conteúdo de “Inventário” (oculto por padrão) -->
         <div class="pane-inventory">
