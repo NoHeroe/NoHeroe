@@ -54,6 +54,15 @@
       flex-direction: column;
     }
 
+    /*— Abas do topo wrapper —*/
+    .tabs-container-wrapper {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 8px;
+      padding: 12px 0;
+    }
+
     /*— Abas do topo —*/
     .tabs-container {
       display: flex;
@@ -63,17 +72,29 @@
       gap: 24px;
       font-size: 1.1rem;
       font-weight: 700;
+      overflow-x: auto;
+      scroll-snap-type: x proximity;
+    }
+    .tabs-container::-webkit-scrollbar {
+      display: none;
+    }
+    .tabs-container {
+      scrollbar-width: none;
     }
 
+    /*— Aba padrão —*/
     .tab {
-      background: none;
-      border: none;
+      flex: 0 0 auto;
+      background: var(--panel-bg);
+      border: 2px solid var(--accent-purple);
       color: var(--text-light);
-      padding: 8px 16px;
-      border-radius: 16px 16px 0 0;
+      padding: 6px 16px;
+      border-radius: 12px;
+      font-size: 0.95rem;
+      font-weight: 600;
       cursor: pointer;
       transition: background 0.2s, box-shadow 0.2s;
-      position: relative;
+      white-space: nowrap;
     }
 
     .tab.active {
@@ -82,9 +103,31 @@
         var(--accent-purple-dark) 60%,
         var(--accent-purple) 100%
       );
-      box-shadow: 0 2px 24px rgba(168, 85, 247, 0.5);
+      box-shadow: 0 2px 18px rgba(168, 85, 247, 0.5);
       color: #fff;
-      z-index: 2;
+    }
+
+    /*— Botão Loja —*/
+    .tab-store-wrapper {
+      display: flex;
+      justify-content: center;
+      width: 100%;
+    }
+
+    .tab-store {
+      background: linear-gradient(120deg, #1e121f 60%, #3d214d 100%);
+      border: 2px dashed var(--accent-purple);
+      color: var(--accent-purple);
+      font-size: 1rem;
+      font-weight: 700;
+      padding: 10px 24px;
+      border-radius: 16px;
+      box-shadow: 0 0 18px rgba(168, 85, 247, 0.3);
+      cursor: pointer;
+      transition: transform 0.2s ease;
+    }
+    .tab-store:hover {
+      transform: scale(1.05);
     }
 
     /*— Conteúdo principal (Left - Center - Right) —*/
@@ -94,7 +137,7 @@
       min-height: 580px;
     }
 
-    /*  – Left Panel (“Overview” ou título geral)  */
+    /*  – Left Panel */ 
     .left-panel {
       flex: 0 0 260px;
       background: var(--panel-bg);
@@ -105,22 +148,7 @@
       gap: 24px;
     }
 
-    .left-title {
-      font-size: 1.4rem;
-      font-weight: 700;
-      color: var(--accent-purple);
-      text-shadow: 0 0 8px rgba(168, 85, 247, 0.7);
-      margin-bottom: 12px;
-    }
-
-    .left-text {
-      font-size: 1rem;
-      line-height: 1.4;
-      color: var(--text-light);
-      opacity: 0.95;
-    }
-
-    /*  – Center Panel (Arte do personagem / placeholder)  */
+    /*  – Center Panel */ 
     .center-panel {
       flex: 1 1 auto;
       background: var(--dark-bg);
@@ -145,7 +173,7 @@
       text-shadow: 0 0 24px rgba(168, 85, 247, 0.6);
     }
 
-    /*  – Right Panel (slots / inventário etc)  */
+    /*  – Right Panel */ 
     .right-panel {
       flex: 0 0 320px;
       background: var(--panel-bg);
@@ -157,24 +185,34 @@
       position: relative;
     }
 
-    /*— Overview: “Quick Info” com labels + barras —*/
-    .pane-overview {
+    /*— Left Panes —*/
+    .pane-overview,
+    .pane-inventory,
+    .pane-equipment {
       display: none;
       flex-direction: column;
       gap: 24px;
     }
-
-    .pane-overview.active {
+    .pane-overview.active,
+    .pane-inventory.active,
+    .pane-equipment.active {
       display: flex;
     }
 
-    .quick-info-title {
-      font-size: 1.3rem;
+    /*— Quick Info & Bars —*/
+    .left-title {
+      font-size: 1.4rem;
       font-weight: 700;
       color: var(--accent-purple);
-      margin-bottom: 8px;
+      text-shadow: 0 0 8px rgba(168, 85, 247, 0.7);
+      margin-bottom: 12px;
     }
-
+    .left-text {
+      font-size: 1rem;
+      line-height: 1.4;
+      color: var(--text-light);
+      opacity: 0.95;
+    }
     .info-row {
       display: flex;
       justify-content: space-between;
@@ -183,11 +221,9 @@
       color: var(--text-gray);
       margin-bottom: 6px;
     }
-
     .info-label {
       color: var(--text-light);
     }
-
     .bar-container {
       width: 100%;
       height: 10px;
@@ -196,33 +232,21 @@
       overflow: hidden;
       margin-top: 4px;
     }
-
     .bar-fill {
       height: 100%;
       background: var(--bar-fill);
       border-radius: 6px 0 0 6px;
-      width: 0%; /* preencher via JS depois */
+      width: 0%;
       transition: width 0.4s;
     }
 
-    /*— Inventário: categorias + grid de slots vazios —*/
-    .pane-inventory {
-      display: none;
-      flex-direction: column;
-      gap: 16px;
-    }
-
-    .pane-inventory.active {
-      display: flex;
-    }
-
+    /*— Inventory Tabs & Grid —*/
     .inv-categories {
       display: flex;
       gap: 12px;
       overflow-x: auto;
       padding-bottom: 8px;
     }
-
     .inv-cat-tab {
       flex: 0 0 auto;
       background: var(--panel-bg);
@@ -236,13 +260,11 @@
       transition: background 0.2s, box-shadow 0.2s;
       white-space: nowrap;
     }
-
     .inv-cat-tab.active {
       background: var(--accent-purple);
       box-shadow: 0 0 12px rgba(168, 85, 247, 0.6);
       color: #fff;
     }
-
     .inv-grid {
       display: grid;
       grid-template-columns: repeat(2, 1fr);
@@ -251,7 +273,6 @@
       max-height: 360px;
       overflow-y: auto;
     }
-
     .inv-slot {
       width: 100%;
       aspect-ratio: 1 / 1;
@@ -266,8 +287,6 @@
       opacity: 0.4;
       cursor: default;
     }
-
-    /* Label grande (sem item) */
     .inv-empty-label {
       font-size: 0.95rem;
       color: var(--text-gray);
@@ -276,35 +295,22 @@
       opacity: 0.8;
     }
 
-    /*— Equipamento: slots semelhantes ao “primary/secondary/tools/skills” —*/
-    .pane-equipment {
-      display: none;
-      flex-direction: column;
-      gap: 22px;
-    }
-
-    .pane-equipment.active {
-      display: flex;
-    }
-
+    /*— Equipment Slots —*/
     .equip-section {
       display: flex;
       flex-direction: column;
       gap: 8px;
     }
-
     .equip-title {
       font-size: 1.1rem;
       font-weight: 700;
       color: var(--accent-purple);
     }
-
     .equip-slots {
       display: flex;
       gap: 12px;
       flex-wrap: wrap;
     }
-
     .equip-slot {
       width: 64px;
       height: 64px;
@@ -320,31 +326,25 @@
       cursor: default;
     }
 
-
-    /*— Scrollbar customizada (simples) —*/
+    /*— Scrollbar customizada —*/
     ::-webkit-scrollbar {
       width: 6px;
       height: 6px;
     }
-
     ::-webkit-scrollbar-track {
       background: rgba(50, 30, 60, 0.3);
       border-radius: 3px;
     }
-
     ::-webkit-scrollbar-thumb {
       background: var(--accent-purple);
       border-radius: 3px;
     }
 
-    /*— Responsividade até 1024px —*/
+    /*— Responsividade —*/
     @media (max-width: 1024px) {
       .left-panel {
         flex: 0 0 240px;
         padding: 20px 16px 16px 16px;
-      }
-      .center-panel {
-        flex: 1 1 auto;
       }
       .avatar-placeholder {
         width: 300px;
@@ -355,8 +355,6 @@
         padding: 20px 12px 12px 12px;
       }
     }
-
-    /*— Responsividade até 720px —*/
     @media (max-width: 720px) {
       .tabs-container {
         flex-wrap: wrap;
@@ -382,326 +380,176 @@
         height: 340px;
       }
     }
-.tabs-container-wrapper {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 8px;
-  padding: 12px 0;
-}
-
-.scroll-x {
-  display: flex;
-  gap: 12px;
-  overflow-x: auto;
-  width: 100%;
-  padding: 0 12px;
-  scroll-snap-type: x proximity;
-  scrollbar-width: none;
-}
-.scroll-x::-webkit-scrollbar {
-  display: none;
-}
-
-.tab {
-  flex: 0 0 auto;
-  background: var(--panel-bg);
-  border: 2px solid var(--accent-purple);
-  color: var(--text-light);
-  padding: 6px 16px;
-  border-radius: 12px;
-  font-size: 0.95rem;
-  font-weight: 600;
-  cursor: pointer;
-  transition: background 0.2s, box-shadow 0.2s;
-  white-space: nowrap;
-}
-
-.tab.active {
-  background: linear-gradient(90deg, var(--accent-purple-dark) 60%, var(--accent-purple) 100%);
-  box-shadow: 0 2px 18px rgba(168, 85, 247, 0.5);
-  color: #fff;
-}
-
-.tab-store-wrapper {
-  display: flex;
-  justify-content: center;
-  width: 100%;
-}
-
-.tab-store {
-  background: linear-gradient(120deg, #1e121f 60%, #3d214d 100%);
-  border: 2px dashed var(--accent-purple);
-  color: var(--accent-purple);
-  font-size: 1rem;
-  font-weight: 700;
-  padding: 10px 24px;
-  border-radius: 16px;
-  box-shadow: 0 0 18px rgba(168, 85, 247, 0.3);
-}
-.add-point {
-  background: linear-gradient(to right, #3d214d, #6d28d9);
-  color: #fff;
-  font-weight: bold;
-  border: none;
-  border-radius: 8px;
-  padding: 0 10px;
-  margin-left: 8px;
-  cursor: pointer;
-  font-size: 1rem;
-  box-shadow: 0 0 4px #000;
-  transition: transform 0.2s ease;
-}
-.add-point:hover {
-  transform: scale(1.1);
-  box-shadow: 0 0 6px var(--accent-purple);
-}
-.edit-button {
-  margin-left: 6px;
-  background: transparent;
-  border: none;
-  color: var(--accent-purple);
-  font-size: 0.9rem;
-  cursor: pointer;
-  transition: color 0.2s ease;
-}
-.edit-button:hover {
-  color: var(--text-light);
-}
   </style>
 </head>
 <body>
   <div class="ui-root">
-    <!-- Abas do topo -->
     <div class="tabs-container-wrapper">
-  <div class="tabs-container scroll-x">
-    <button class="tab active" data-tab="overview">Overview</button>
-    <button class="tab" data-tab="inventory">Inventário</button>
-    <button class="tab" data-tab="equipment">Equipamento</button>
-  <div class="tab-store-wrapper">
-    <button class="tab-store" onclick="window.location.href='store.html'">⛩ Loja</button>
-  </div>
-</div>
+      <div class="tabs-container scroll-x">
+        <button class="tab active" data-tab="overview">Overview</button>
+        <button class="tab" data-tab="inventory">Inventário</button>
+        <button class="tab" data-tab="equipment">Equipamento</button>
+        <div class="tab-store-wrapper">
+          <button class="tab-store" onclick="window.location.href='store.html'">⛩ Loja</button>
+        </div>
+      </div>
+    </div>
 
-    <!-- Área principal (Left-Center-Right) -->
     <div class="content-container">
-      <!-- LEFT PANEL (Overview text ou resumo estático) -->
       <div class="left-panel">
-        <!-- Conteúdo de “Overview” (show/hide via JS) -->
         <div class="pane-overview active">
           <div class="left-title">Overview</div>
           <div class="info-row">
-  <span class="info-label">Nome:</span>
-  <span id="nome-personagem">Ghoul Pionkim <button class="edit-button" onclick="editarNome()">✎</button></span>
-</div>
-
-<div class="info-row">
-  <span class="info-label">Classe:</span>
-  <span>Portador das Sombras</span>
-</div>
-
-<div class="info-row">
-  <span class="info-label">Facção:</span>
-  <span>Noctis Ordinem</span>
-</div>
-
-<div class="info-row" style="margin-top: 16px;">
-  <span class="info-label">Despertar Vitalista</span>
-  <span id="valor-despertar">128.000 / 1.000.000</span>
-</div>
-
-<div class="bar-container" style="height: 12px; border: 2px solid #333; background: #000;">
-  <div class="bar-fill" id="barra-despertar"
-       style="background: linear-gradient(90deg, red, orange, yellow, green, cyan, blue, violet);
-              width: 12.8%;
-              box-shadow: inset 0 0 6px #000;">
-  </div>
-</div>
+            <span class="info-label">Nome:</span>
+            <span id="nome-personagem">Ghoul Pionkim <button class="edit-button" onclick="editarNome()">✎</button></span>
+          </div>
+          <div class="info-row">
+            <span class="info-label">Classe:</span><span>Portador das Sombras</span>
+          </div>
+          <div class="info-row">
+            <span class="info-label">Facção:</span><span>Noctis Ordinem</span>
+          </div>
+          <div class="info-row" style="margin-top:16px;">
+            <span class="info-label">Despertar Vitalista</span>
+            <span id="valor-despertar">128.000 / 1.000.000</span>
+          </div>
+          <div class="bar-container" style="height:12px;border:2px solid #333;background:#000;">
+            <div class="bar-fill" id="barra-despertar"
+                 style="background:linear-gradient(90deg,red,orange,yellow,green,cyan,blue,violet);width:12.8%;box-shadow:inset 0 0 6px #000;">
+            </div>
+          </div>
 
           <div class="quick-info-title">Atributos</div>
+          <div class="info-row"><span class="info-label">Nível</span><span id="nivel">3</span></div>
+          <div class="bar-container" style="height:12px;border:2px solid #333;background:#000;">
+            <div class="bar-fill" id="xp-bar" style="background:#4CAF50;width:67%;box-shadow:inset 0 0 6px #000;"></div>
+          </div>
+          <div class="info-row" style="margin-top:12px;">
+            <span class="info-label">Pontos Disponíveis</span><span id="pontos-disponiveis">4</span>
+          </div>
 
-<!-- Nível -->
-<div class="info-row">
-  <span class="info-label">Nível</span>
-  <span id="nivel">3</span>
-</div>
+          <!-- Força -->
+          <div class="info-row">
+            <span class="info-label">Força</span>
+            <span id="valor-forca">1 <button class="add-point" data-add="forca">+</button></span>
+          </div>
+          <div class="bar-container"><div class="bar-fill" id="barra-forca" style="width:60%;"></div></div>
 
-<!-- Barra de XP estilo Minecraft -->
-<div class="bar-container" style="height: 12px; border: 2px solid #333; background: #000;">
-  <div class="bar-fill" id="xp-bar" style="background: #4CAF50; width: 67%; box-shadow: inset 0 0 6px #000;"></div>
-</div>
+          <!-- Destreza -->
+          <div class="info-row">
+            <span class="info-label">Destreza</span>
+            <span id="valor-destreza">1 <button class="add-point" data-add="destreza">+</button></span>
+          </div>
+          <div class="bar-container"><div class="bar-fill" id="barra-destreza" style="width:50%;"></div></div>
 
-<!-- Pontos disponíveis -->
-<div class="info-row" style="margin-top: 12px;">
-  <span class="info-label">Pontos Disponíveis</span>
-  <span id="pontos-disponiveis">4</span>
-</div>
+          <!-- Constituição -->
+          <div class="info-row">
+            <span class="info-label">Constituição</span>
+            <span id="valor-constituicao">1 <button class="add-point" data-add="constituicao">+</button></span>
+          </div>
+          <div class="bar-container"><div class="bar-fill" id="barra-constituicao" style="width:65%;"></div></div>
 
-<!-- Força -->
-<div class="info-row">
-  <span class="info-label">Força</span>
-  <span id="valor-forca">1 <button class="add-point" data-add="forca">+</button></span>
-</div>
-<div class="bar-container"><div class="bar-fill" id="barra-forca" style="width: 60%;"></div></div>
+          <!-- Inteligência -->
+          <div class="info-row">
+            <span class="info-label">Inteligência</span>
+            <span id="valor-inteligencia">1 <button class="add-point" data-add="inteligencia">+</button></span>
+          </div>
+          <div class="bar-container"><div class="bar-fill" id="barra-inteligencia" style="width:45%;"></div></div>
 
-<!-- Destreza -->
-<div class="info-row">
-  <span class="info-label">Destreza</span>
-  <span id="valor-destreza">1 <button class="add-point" data-add="destreza">+</button></span>
-</div>
-<div class="bar-container"><div class="bar-fill" id="barra-destreza" style="width: 50%;"></div></div>
+          <!-- Espírito -->
+          <div class="info-row">
+            <span class="info-label">Espírito</span>
+            <span id="valor-espirito">1 <button class="add-point" data-add="espirito">+</button></span>
+          </div>
+          <div class="bar-container"><div class="bar-fill" id="barra-espirito" style="width:40%;"></div></div>
 
-<!-- Constituição -->
-<div class="info-row">
-  <span class="info-label">Constituição</span>
-  <span id="valor-constituicao">1 <button class="add-point" data-add="constituicao">+</button></span>
-</div>
-<div class="bar-container"><div class="bar-fill" id="barra-constituicao" style="width: 65%;"></div></div>
+          <!-- Carisma -->
+          <div class="info-row">
+            <span class="info-label">Carisma</span>
+            <span id="valor-carisma">1 <button class="add-point" data-add="carisma">+</button></span>
+          </div>
+          <div class="bar-container"><div class="bar-fill" id="barra-carisma" style="width:30%;"></div></div>
+        </div>
 
-<!-- Inteligência -->
-<div class="info-row">
-  <span class="info-label">Inteligência</span>
-  <span id="valor-inteligencia">1 <button class="add-point" data-add="inteligencia">+</button></span>
-</div>
-<div class="bar-container"><div class="bar-fill" id="barra-inteligencia" style="width: 45%;"></div></div>
-
-<!-- Espírito -->
-<div class="info-row">
-  <span class="info-label">Espírito</span>
-  <span id="valor-espirito">1 <button class="add-point" data-add="espirito">+</button></span>
-</div>
-<div class="bar-container"><div class="bar-fill" id="barra-espirito" style="width: 40%;"></div></div>
-
-<!-- Carisma -->
-<div class="info-row">
-  <span class="info-label">Carisma</span>
-  <span id="valor-carisma">1 <button class="add-point" data-add="carisma">+</button></span>
-</div>
-<div class="bar-container"><div class="bar-fill" id="barra-carisma" style="width: 30%;"></div></div>
-
-        <!-- Conteúdo de “Inventário” (oculto por padrão) -->
         <div class="pane-inventory">
           <div class="left-title">Inventário</div>
           <div class="left-text">
-            Aqui você vê tudo o que já comprou.  
-            Clique em cada categoria para ver os slots.  
+            Aqui você vê tudo o que já comprou.<br />
+            Clique em cada categoria para ver os slots.
           </div>
         </div>
 
-        <!-- Conteúdo de “Equipamento” (oculto por padrão) -->
         <div class="pane-equipment">
           <div class="left-title">Equipamento</div>
           <div class="left-text">
-            Seus slots de equipamento aparecem aqui.  
+            Seus slots de equipamento aparecem aqui.
           </div>
         </div>
+      </div>
 
-      <!-- RIGHT PANEL (slots específicos de cada aba) -->
+      <div class="center-panel">
+        <div class="avatar-placeholder">Avatar</div>
+      </div>
+
       <div class="right-panel">
-        <!-- OVERVIEW do lado direito (não usado, mas deixei escondido) -->
         <div class="pane-overview-right"></div>
 
-        <!-- INVENTÁRIO do lado direito -->
-        <div class="pane-inventory-right" style="display: none; flex-direction: column; gap:12px;">
+        <div class="pane-inventory-right" style="display:none;flex-direction:column;gap:12px;">
           <!-- CAT 1: Animes -->
           <div>
-            <div
-              class="equip-title"
-              style="font-size: 1.05rem; margin-bottom:8px;"
-            >
-              Animes
-            </div>
+            <div class="equip-title" style="font-size:1.05rem;margin-bottom:8px;">Animes</div>
             <div class="inv-grid">
-              <div class="inv-slot"></div>
-              <div class="inv-slot"></div>
-              <div class="inv-slot"></div>
-              <div class="inv-slot"></div>
+              <div class="inv-slot"></div><div class="inv-slot"></div>
+              <div class="inv-slot"></div><div class="inv-slot"></div>
             </div>
             <div class="inv-empty-label">Sem Animes comprados.</div>
           </div>
-
           <!-- CAT 2: Mangás -->
           <div>
-            <div
-              class="equip-title"
-              style="font-size: 1.05rem; margin-bottom:8px;"
-            >
-              Mangás
-            </div>
+            <div class="equip-title" style="font-size:1.05rem;margin-bottom:8px;">Mangás</div>
             <div class="inv-grid">
-              <div class="inv-slot"></div>
-              <div class="inv-slot"></div>
-              <div class="inv-slot"></div>
-              <div class="inv-slot"></div>
+              <div class="inv-slot"></div><div class="inv-slot"></div>
+              <div class="inv-slot"></div><div class="inv-slot"></div>
             </div>
             <div class="inv-empty-label">Sem Mangás comprados.</div>
           </div>
-
           <!-- CAT 3: eBooks -->
           <div>
-            <div
-              class="equip-title"
-              style="font-size: 1.05rem; margin-bottom:8px;"
-            >
-              eBooks
-            </div>
+            <div class="equip-title" style="font-size:1.05rem;margin-bottom:8px;">eBooks</div>
             <div class="inv-grid">
-              <div class="inv-slot"></div>
-              <div class="inv-slot"></div>
-              <div class="inv-slot"></div>
-              <div class="inv-slot"></div>
+              <div class="inv-slot"></div><div class="inv-slot"></div>
+              <div class="inv-slot"></div><div class="inv-slot"></div>
             </div>
             <div class="inv-empty-label">Sem eBooks comprados.</div>
           </div>
-
           <!-- CAT 4: Mentorias -->
           <div>
-            <div
-              class="equip-title"
-              style="font-size: 1.05rem; margin-bottom:8px;"
-            >
-              Mentorias
-            </div>
+            <div class="equip-title" style="font-size:1.05rem;margin-bottom:8px;">Mentorias</div>
             <div class="inv-grid">
-              <div class="inv-slot"></div>
-              <div class="inv-slot"></div>
-              <div class="inv-slot"></div>
-              <div class="inv-slot"></div>
+              <div class="inv-slot"></div><div class="inv-slot"></div>
+              <div class="inv-slot"></div><div class="inv-slot"></div>
             </div>
             <div class="inv-empty-label">Sem Mentorias compradas.</div>
           </div>
-
           <!-- CAT 5: Extras -->
           <div>
-            <div
-              class="equip-title"
-              style="font-size: 1.05rem; margin-bottom:8px;"
-            >
-              Extras
-            </div>
+            <div class="equip-title" style="font-size:1.05rem;margin-bottom:8px;">Extras</div>
             <div class="inv-grid">
-              <div class="inv-slot"></div>
-              <div class="inv-slot"></div>
-              <div class="inv-slot"></div>
-              <div class="inv-slot"></div>
+              <div class="inv-slot"></div><div class="inv-slot"></div>
+              <div class="inv-slot"></div><div class="inv-slot"></div>
             </div>
             <div class="inv-empty-label">Sem Extras disponíveis.</div>
           </div>
         </div>
 
-        <!-- EQUIPAMENTO do lado direito -->
-        <div class="pane-equipment-right" style="display: none; flex-direction: column; gap:16px;">
+        <div class="pane-equipment-right" style="display:none;flex-direction:column;gap:16px;">
           <div class="equip-section">
             <div class="equip-title">Primary Slot</div>
-            <div class="equip-slots">
-              <div class="equip-slot"></div>
-            </div>
+            <div class="equip-slots"><div class="equip-slot"></div></div>
           </div>
           <div class="equip-section">
             <div class="equip-title">Secondary Slot</div>
-            <div class="equip-slots">
-              <div class="equip-slot"></div>
-            </div>
+            <div class="equip-slots"><div class="equip-slot"></div></div>
           </div>
           <div class="equip-section">
             <div class="equip-title">Tools</div>
@@ -720,11 +568,12 @@
             </div>
           </div>
         </div>
-</div>
-</div>
-</div>
+      </div>
+    </div>
+  </div>
+
   <script>
-    // ===== Seleção de abas (Top Tabs) =====
+    // Tab switching
     const tabs = document.querySelectorAll(".tab");
     const leftPanes = {
       overview: document.querySelector(".pane-overview"),
@@ -736,104 +585,94 @@
       inventory: document.querySelector(".pane-inventory-right"),
       equipment: document.querySelector(".pane-equipment-right"),
     };
-    const centerAvatar = document.querySelector(".avatar-placeholder");
 
     tabs.forEach((t) => {
       t.addEventListener("click", () => {
-        // 1) Desmarcar todas as abas
         tabs.forEach((x) => x.classList.remove("active"));
-        // 2) Marcar aba clicada
         t.classList.add("active");
 
-        // 3) Hide Left Panes
-        Object.values(leftPanes).forEach((pane) => (pane.style.display = "none"));
-        // 4) Show Left Pane correspondente
-        leftPanes[t.dataset.tab].style.display = "flex"; // ou block, dependendo do estilo
+        Object.values(leftPanes).forEach((p) => p.classList.remove("active"));
+        leftPanes[t.dataset.tab].classList.add("active");
 
-        // 5) Hide Right Panes
-        Object.values(rightPanes).forEach((pane) => (pane.style.display = "none"));
-        // 6) Show Right Pane correspondente
-        rightPanes[t.dataset.tab].style.display = "flex"; // ou block
-
-        // 7) (Opcional) Você pode trocar a “imagem do avatar” aqui, se quiser
-        // Exemplo: centerAvatar.style.backgroundImage = 'url("avatar_'+t.dataset.tab+'.png")';
+        Object.values(rightPanes).forEach((p) => (p.style.display = "none"));
+        rightPanes[t.dataset.tab].style.display = "flex";
       });
     });
 
-  const estado = {
-    nivel: 3,
-    xp: 6700,
-    xpMax: 10000,
-    pontosDisponiveis: 4,
-    atributos: {
-      forca: 1,
-      destreza: 1,
-      constituicao: 1,
-      inteligencia: 1,
-      espirito: 1,
-      carisma: 1
-    }
-  };
+    const estado = {
+      nivel: 3,
+      xp: 6700,
+      xpMax: 10000,
+      pontosDisponiveis: 4,
+      atributos: {
+        forca: 1,
+        destreza: 1,
+        constituicao: 1,
+        inteligencia: 1,
+        espirito: 1,
+        carisma: 1,
+      },
+    };
 
-  function atualizarInterface() {
-    // XP e Nível
-    document.getElementById("nivel").textContent = estado.nivel;
-    document.getElementById("xp-bar").style.width = (estado.xp / estado.xpMax * 100) + "%";
-    document.getElementById("pontos-disponiveis").textContent = estado.pontosDisponiveis;
+    function atualizarInterface() {
+      document.getElementById("nivel").textContent = estado.nivel;
+      document.getElementById(
+        "xp-bar"
+      ).style.width = (estado.xp / estado.xpMax) * 100 + "%";
+      document.getElementById(
+        "pontos-disponiveis"
+      ).textContent = estado.pontosDisponiveis;
 
-    // Atributos
-    for (let key in estado.atributos) {
-      const container = document.getElementById("valor-" + key);
-      if (container) {
-        // Atualiza o número e mantém o botão
-        container.childNodes[0].nodeValue = estado.atributos[key] + " ";
-        // Atualiza a barra proporcional (máximo visual: 20)
-        const barra = document.getElementById("barra-" + key);
-        if (barra) {
-          barra.style.width = Math.min(estado.atributos[key] / 20 * 100, 100) + "%";
+      for (let key in estado.atributos) {
+        const container = document.getElementById("valor-" + key);
+        if (container) {
+          container.childNodes[0].nodeValue = estado.atributos[key] + " ";
+          const barra = document.getElementById("barra-" + key);
+          if (barra) {
+            barra.style.width =
+              Math.min((estado.atributos[key] / 20) * 100, 100) + "%";
+          }
         }
       }
     }
-  }
 
-  function adicionarPonto(atributo) {
-    if (estado.pontosDisponiveis <= 0) return;
-    estado.atributos[atributo]++;
-    estado.pontosDisponiveis--;
-    atualizarInterface();
-  }
-
-  // (Futuro) XP dinâmico
-  function ganharXp(qtd) {
-    estado.xp += qtd;
-    while (estado.xp >= estado.xpMax) {
-      estado.xp -= estado.xpMax;
-      estado.nivel++;
-      estado.pontosDisponiveis += 2;
+    function adicionarPonto(atributo) {
+      if (estado.pontosDisponiveis <= 0) return;
+      estado.atributos[atributo]++;
+      estado.pontosDisponiveis--;
+      atualizarInterface();
     }
-    atualizarInterface();
-  }
 
-  // Inicialização
-  document.addEventListener("DOMContentLoaded", function () {
-    document.querySelectorAll("[data-add]").forEach(btn => {
-      btn.addEventListener("click", () => {
-        const atributo = btn.getAttribute("data-add");
-        adicionarPonto(atributo);
+    function ganharXp(qtd) {
+      estado.xp += qtd;
+      while (estado.xp >= estado.xpMax) {
+        estado.xp -= estado.xpMax;
+        estado.nivel++;
+        estado.pontosDisponiveis += 2;
+      }
+      atualizarInterface();
+    }
+
+    function editarNome() {
+      const span = document.getElementById("nome-personagem");
+      const nomeAtual = span.textContent.trim().replace("✎", "");
+      const novo = prompt("Digite um novo nome para o personagem:", nomeAtual);
+      if (novo && novo.length > 1) {
+        span.innerHTML =
+          novo + ' <button class="edit-button" onclick="editarNome()">✎</button>';
+      }
+    }
+
+    document.addEventListener("DOMContentLoaded", () => {
+      document.querySelectorAll("[data-add]").forEach((btn) => {
+        btn.addEventListener("click", () =>
+          adicionarPonto(btn.getAttribute("data-add"))
+        );
       });
+      atualizarInterface();
+      const initial = document.querySelector(".tab.active");
+      if (initial) initial.click();
     });
-    atualizarInterface();
-  });
-function editarNome() {
-  const nomeAtual = document.getElementById("nome-personagem").textContent.trim();
-  const novoNome = prompt("Digite um novo nome para o personagem:", nomeAtual.replace("✎", "").trim());
-  if (novoNome && novoNome.length > 1) {
-    document.getElementById("nome-personagem").innerHTML = novoNome + ' <button class="edit-button" onclick="editarNome()">✎</button>';
-  }
-}
-// Ao carregar, simula clique na aba marcada como .active no HTML
-const initial = document.querySelector('.tab.active');
-if (initial) initial.click();
-</script>
+  </script>
 </body>
 </html>
