@@ -460,31 +460,40 @@
 /* Avatar no centro */
 .armor-left { margin-right: 16px; }
 .armor-right { margin-left: 16px; }
+
 @media (max-width: 720px) {
-  /* Avatar + Armadura: aproxima e permite wrap */
+  /* 1) Avatar + Armadura lado a lado, sem wrap */
   .avatar-armor-container {
-    gap: 4px;
-    flex-wrap: wrap;
-    justify-content: center;
+    display: flex !important;
+    flex-wrap: nowrap !important;
+    gap: 4px !important;
+    justify-content: center !important;
   }
   .armor-side {
-    flex-direction: row;    /* empilha horizontalmente */
-    margin: 0;              /* remove margens laterais */
+    display: flex !important;
+    flex-direction: column !important;
+    gap: 4px !important;
   }
   .armor-side .equip-slot {
-    width: 40px;
-    height: 40px;           /* slots menores */
-    margin: 0 2px;          /* espaço mínimo entre slots */
+    width: 28px !important;
+    height: 28px !important;
   }
 
-  /* Mochila: de 6 → 3 colunas, sem cortes */
+  /* 2) Avatar menor para caber */
+  .avatar-placeholder {
+    width: 120px !important;
+    height: 160px !important;
+  }
+
+  /* 3) Mochila: 18 slots em 3 colunas, sem multiplicar */
   .backpack-grid {
+    display: grid !important;
     grid-template-columns: repeat(3, 1fr) !important;
     gap: 4px !important;
   }
   .backpack-grid .equip-slot {
-    width: 100%;            /* ocupa totalmente a célula */
-    height: auto;           /* mantém proporção */
+    width: 32px !important;
+    height: 32px !important;
   }
 }
   </style>
