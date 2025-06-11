@@ -107,28 +107,35 @@
       color: #fff;
     }
 
-    /*— Botão Loja —*/
-    .tab-store-wrapper {
-      display: flex;
-      justify-content: center;
-      width: 100%;
-    }
+    /* remova .tab-store-wrapper e regras associadas */
 
-    .tab-store {
-      background: linear-gradient(120deg, #1e121f 60%, #3d214d 100%);
-      border: 2px dashed var(--accent-purple);
-      color: var(--accent-purple);
-      font-size: 1rem;
-      font-weight: 700;
-      padding: 10px 24px;
-      border-radius: 16px;
-      box-shadow: 0 0 18px rgba(168, 85, 247, 0.3);
-      cursor: pointer;
-      transition: transform 0.2s ease;
-    }
-    .tab-store:hover {
-      transform: scale(1.05);
-    }
+.tabs-container {
+  display: flex;
+  gap: 16px;
+  padding: 12px 20px;
+  border-bottom: 2px solid rgba(168,85,247,0.33);
+}
+
+.store-row {
+  display: flex;
+  justify-content: center;
+  padding: 8px 0 16px;
+}
+
+/* mantém o estilo original do botão Loja */
+.tab-store {
+  background: linear-gradient(120deg,#1e121f 60%,#3d214d 100%);
+  border: 2px dashed var(--accent-purple);
+  color: var(--accent-purple);
+  font-weight:700;
+  padding:10px 24px;
+  border-radius:16px;
+  box-shadow:0 0 18px rgba(168,85,247,0.3);
+  cursor:pointer;
+  transition:transform .2s;
+}
+
+.tab-store:hover { transform: scale(1.05); }
 
     /*— Conteúdo principal (Left - Center - Right) —*/
     .content-container {
@@ -384,14 +391,17 @@
 </head>
 <body>
   <div class="ui-root">
-    <div class="tabs-container-wrapper">
-      <div class="tabs-container scroll-x">
-        <button class="tab active" data-tab="overview">Overview</button>
-        <button class="tab" data-tab="inventory">Inventário</button>
-        <button class="tab" data-tab="equipment">Equipamento</button>
-        <div class="tab-store-wrapper">
-          <button class="tab-store" onclick="window.location.href='store.html'">⛩ Loja</button>
-        </div>
+    <div <!-- Abas principais -->
+<div class="tabs-container">
+  <button class="tab active" data-tab="overview">Overview</button>
+  <button class="tab"       data-tab="inventory">Inventário</button>
+  <button class="tab"       data-tab="equipment">Equipamento</button>
+</div>
+
+<!-- Botão Loja abaixo, centralizado -->
+<div class="store-row">
+  <button class="tab-store" onclick="location.href='store.html'">⛩ Loja</button>
+</div>
       </div>
     </div>
 
