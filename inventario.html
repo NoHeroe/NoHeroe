@@ -767,66 +767,70 @@
       });
     });
 
-    // Inicializa: mostra “Overview” por padrão
-    document.querySelector(".tab.active").click();
-// ====== Sistema de Atributos com Pontos ======
+  const estado = {
+    nivel: 3,
+    xp: 6700,
+    xpMax: 10000,
+    pontosDisponiveis: 4,
+    atributos: {
+      forca: 1,
+      destreza: 1,
+      constituicao: 1,
+      inteligencia: 1,
+      espirito: 1,
+      carisma: 1
+    }
+  };
 
-let estado = {
-  nivel: 7,
-  xp: 6700,
-  xpMax: 10000,
-  pontosDisponiveis: 4,
-  atributos: {
-    forca: 12,
-    destreza: 10,
-    constituicao: 13,
-    inteligencia: 9,
-    espirito: 8,
-    carisma: 6,
-  },
-};
+  function atualizarInterface() {
+    // XP e Nível
+    document.getElementById("nivel").textContent = estado.nivel;
+    document.getElementById("xp-bar").style.width = (estado.xp / estado.xpMax * 100) + "%";
+    document.getElementById("pontos-disponiveis").textContent = estado.pontosDisponiveis;
 
-function atualizarInterface() {
-  // XP
-  document.getElementById("nivel").textContent = estado.nivel;
-  document.getElementById("xp-bar").style.width = (estado.xp / estado.xpMax * 100) + "%";
-  document.getElementById("pontos-disponiveis").textContent = estado.pontosDisponiveis;
-
-  // Atributos
-for (let key in estado.atributos) {
-  const container = document.getElementById("valor-" + key);
-  container.childNodes[0].nodeValue = estado.atributos[key] + " ";
-  document.getElementById("barra-" + key).style.width = (estado.atributos[key] / 20 * 100) + "%";
-}
-
-function adicionarPonto(atributo) {
-  if (estado.pontosDisponiveis <= 0) return;
-  estado.atributos[atributo]++;
-  estado.pontosDisponiveis--;
-  atualizarInterface();
-}
-
-// (Opcional) Quando XP chegar ao máximo, subir nível
-function ganharXp(qtd) {
-  estado.xp += qtd;
-  while (estado.xp >= estado.xpMax) {
-    estado.xp -= estado.xpMax;
-    estado.nivel++;
-    estado.pontosDisponiveis += 2; // ganho por nível
+    // Atributos
+    for (let key in estado.atributos) {
+      const container = document.getElementById("valor-" + key);
+      if (container) {
+        // Atualiza o número e mantém o botão
+        container.childNodes[0].nodeValue = estado.atributos[key] + " ";
+        // Atualiza a barra proporcional (máximo visual: 20)
+        const barra = document.getElementById("barra-" + key);
+        if (barra) {
+          barra.style.width = Math.min(estado.atributos[key] / 20 * 100, 100) + "%";
+        }
+      }
+    }
   }
-  atualizarInterface();
-}
 
-// ====== Inicialização ======
-document.addEventListener("DOMContentLoaded", function () {
-  document.querySelectorAll("[data-add]").forEach(btn => {
-    btn.addEventListener("click", () => {
-      const atributo = btn.getAttribute("data-add");
-      adicionarPonto(atributo);
+  function adicionarPonto(atributo) {
+    if (estado.pontosDisponiveis <= 0) return;
+    estado.atributos[atributo]++;
+    estado.pontosDisponiveis--;
+    atualizarInterface();
+  }
+
+  // (Futuro) XP dinâmico
+  function ganharXp(qtd) {
+    estado.xp += qtd;
+    while (estado.xp >= estado.xpMax) {
+      estado.xp -= estado.xpMax;
+      estado.nivel++;
+      estado.pontosDisponiveis += 2;
+    }
+    atualizarInterface();
+  }
+
+  // Inicialização
+  document.addEventListener("DOMContentLoaded", function () {
+    document.querySelectorAll("[data-add]").forEach(btn => {
+      btn.addEventListener("click", () => {
+        const atributo = btn.getAttribute("data-add");
+        adicionarPonto(atributo);
+      });
     });
+    atualizarInterface();
   });
-  atualizarInterface();
-});
-  </script>
+</script>
 </body>
 </html>
