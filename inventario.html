@@ -382,11 +382,8 @@
       .right-panel {
         padding: 16px 12px 12px 12px;
       }
-      .avatar-placeholder {
-        width: 240px;
-        height: 340px;
-      }
     }
+
 /* centraliza Loja em linha própria */
 .store-row {
   display: flex;
@@ -404,7 +401,7 @@
 /* Inventário: filtro e painel   */
 /* ============================= */
 .inventory-filter {
-  display: none;
+  display: none; /* Controlado por JS, aparece na aba Inventário */
   flex-wrap: wrap;
   gap: 8px;
   justify-content: center;
@@ -453,7 +450,7 @@
   gap: 8px; /* Espaçamento entre os slots de armadura */
 }
 
-/* Estilo para os slots de armadura no painel de Equipamento */
+/* Estilo padrão para os slots de armadura e mochila (desktop) */
 .equip-slot {
   width: 64px;
   height: 64px;
@@ -469,7 +466,7 @@
   cursor: default;
 }
 
-/* === Mochila: 18 slots em grid 6x3 no desktop e 3 colunas no mobile === */
+/* === Mochila: 18 slots em grid 6x3 no desktop === */
 .backpack-grid {
   display: grid;
   grid-template-columns: repeat(6, 1fr); /* 6 colunas para desktop */
@@ -477,16 +474,17 @@
   width: 100%; /* Garante que o grid ocupe a largura disponível */
 }
 
-/* Ajuste visual se quiser diferenciar slots da mochila */
+/* Ajuste visual para diferenciar slots da mochila (opcional) */
 .backpack-grid .equip-slot {
-  opacity: 0.8; /* Um pouco mais opaco para diferenciar, se desejar */
+  opacity: 0.8;
 }
 
+/* Media query para mobile */
 @media (max-width: 720px) {
-  /* 1) Avatar + Armadura lado a lado, sem wrap */
+  /* AVATAR E ARMADURA NA ABA EQUIPAMENTO */
   .avatar-armor-container {
     flex-wrap: nowrap !important;
-    gap: 8px !important; /* Ajusta o espaçamento para mobile */
+    gap: 8px !important; /* Espaçamento ajustado para mobile */
   }
 
   .armor-side {
@@ -498,21 +496,28 @@
     height: 40px !important;
   }
 
-  /* 2) Avatar menor para caber */
   .avatar-placeholder {
     width: 180px !important; /* Tamanho do avatar para mobile */
     height: 240px !important;
     font-size: 1.8rem !important; /* Fonte menor para caber */
   }
 
-  /* 3) Mochila: 18 slots em 3 colunas */
+  /* MOCHILA NO PAINEL EQUIPAMENTO */
   .backpack-grid {
     grid-template-columns: repeat(3, 1fr) !important; /* 3 colunas para mobile */
     gap: 6px !important; /* Espaçamento menor para mobile */
   }
   .backpack-grid .equip-slot {
-    width: auto !important; /* Ajusta a largura automaticamente */
-    height: 60px !important; /* Mantém uma altura razoável */
+    width: auto !important; /* Largura automática para preencher o grid */
+    height: 60px !important; /* Altura fixa para manter proporção */
+  }
+
+  /* INVENTÁRIO (garante que o center-panel se esconda e o filtro apareça) */
+  .content-container.inventory-active .center-panel {
+    display: none; /* Esconde o center-panel quando o inventário está ativo no mobile */
+  }
+  .inventory-filter {
+    display: flex; /* Garante que o filtro apareça quando o inventário está ativo no mobile */
   }
 }
   </style>
