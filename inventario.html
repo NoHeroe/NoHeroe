@@ -504,54 +504,65 @@
           </div>
 
           <div class="quick-info-title">Atributos</div>
-          <!-- NOVO BLOCO: XP e Nível -->
+
+<!-- Nível -->
 <div class="info-row">
   <span class="info-label">Nível</span>
-  <span>7</span>
+  <span id="nivel">3</span>
 </div>
+
+<!-- Barra de XP estilo Minecraft -->
 <div class="bar-container" style="height: 12px; border: 2px solid #333; background: #000;">
-  <div class="bar-fill" style="background: #4CAF50; width: 67%; box-shadow: inset 0 0 6px #000;"></div>
+  <div class="bar-fill" id="xp-bar" style="background: #4CAF50; width: 67%; box-shadow: inset 0 0 6px #000;"></div>
 </div>
+
+<!-- Pontos disponíveis -->
 <div class="info-row" style="margin-top: 12px;">
   <span class="info-label">Pontos Disponíveis</span>
-  <span>4</span>
+  <span id="pontos-disponiveis">4</span>
 </div>
 
+<!-- Força -->
 <div class="info-row">
   <span class="info-label">Força</span>
-  <span>12 <button class="add-point">+</button></span>
+  <span id="valor-forca">1 <button class="add-point" data-add="forca">+</button></span>
 </div>
-<div class="bar-container"><div class="bar-fill" style="width: 60%;"></div></div>
+<div class="bar-container"><div class="bar-fill" id="barra-forca" style="width: 60%;"></div></div>
 
+<!-- Destreza -->
 <div class="info-row">
   <span class="info-label">Destreza</span>
-  <span>10 <button class="add-point">+</button></span>
+  <span id="valor-destreza">1 <button class="add-point" data-add="destreza">+</button></span>
 </div>
-<div class="bar-container"><div class="bar-fill" style="width: 50%;"></div></div>
+<div class="bar-container"><div class="bar-fill" id="barra-destreza" style="width: 50%;"></div></div>
 
+<!-- Constituição -->
 <div class="info-row">
   <span class="info-label">Constituição</span>
-  <span>13 <button class="add-point">+</button></span>
+  <span id="valor-constituicao">1 <button class="add-point" data-add="constituicao">+</button></span>
 </div>
-<div class="bar-container"><div class="bar-fill" style="width: 65%;"></div></div>
+<div class="bar-container"><div class="bar-fill" id="barra-constituicao" style="width: 65%;"></div></div>
 
+<!-- Inteligência -->
 <div class="info-row">
   <span class="info-label">Inteligência</span>
-  <span>9 <button class="add-point">+</button></span>
+  <span id="valor-inteligencia">1 <button class="add-point" data-add="inteligencia">+</button></span>
 </div>
-<div class="bar-container"><div class="bar-fill" style="width: 45%;"></div></div>
+<div class="bar-container"><div class="bar-fill" id="barra-inteligencia" style="width: 45%;"></div></div>
 
+<!-- Espírito -->
 <div class="info-row">
   <span class="info-label">Espírito</span>
-  <span>8 <button class="add-point">+</button></span>
+  <span id="valor-espirito">1 <button class="add-point" data-add="espirito">+</button></span>
 </div>
-<div class="bar-container"><div class="bar-fill" style="width: 40%;"></div></div>
+<div class="bar-container"><div class="bar-fill" id="barra-espirito" style="width: 40%;"></div></div>
 
+<!-- Carisma -->
 <div class="info-row">
   <span class="info-label">Carisma</span>
-  <span>6 <button class="add-point">+</button></span>
+  <span id="valor-carisma">1 <button class="add-point" data-add="carisma">+</button></span>
 </div>
-<div class="bar-container"><div class="bar-fill" style="width: 30%;"></div></div>
+<div class="bar-container"><div class="bar-fill" id="barra-carisma" style="width: 30%;"></div></div>
 
         <!-- Conteúdo de “Inventário” (oculto por padrão) -->
         <div class="pane-inventory">
