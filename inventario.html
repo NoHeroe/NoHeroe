@@ -412,18 +412,79 @@
         height: 340px;
       }
     }
+.tabs-container-wrapper {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+  padding: 12px 0;
+}
+
+.scroll-x {
+  display: flex;
+  gap: 12px;
+  overflow-x: auto;
+  width: 100%;
+  padding: 0 12px;
+  scroll-snap-type: x proximity;
+  scrollbar-width: none;
+}
+.scroll-x::-webkit-scrollbar {
+  display: none;
+}
+
+.tab {
+  flex: 0 0 auto;
+  background: var(--panel-bg);
+  border: 2px solid var(--accent-purple);
+  color: var(--text-light);
+  padding: 6px 16px;
+  border-radius: 12px;
+  font-size: 0.95rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background 0.2s, box-shadow 0.2s;
+  white-space: nowrap;
+}
+
+.tab.active {
+  background: linear-gradient(90deg, var(--accent-purple-dark) 60%, var(--accent-purple) 100%);
+  box-shadow: 0 2px 18px rgba(168, 85, 247, 0.5);
+  color: #fff;
+}
+
+.tab-store-wrapper {
+  display: flex;
+  justify-content: center;
+  width: 100%;
+}
+
+.tab-store {
+  background: linear-gradient(120deg, #1e121f 60%, #3d214d 100%);
+  border: 2px dashed var(--accent-purple);
+  color: var(--accent-purple);
+  font-size: 1rem;
+  font-weight: 700;
+  padding: 10px 24px;
+  border-radius: 16px;
+  box-shadow: 0 0 18px rgba(168, 85, 247, 0.3);
+}
   </style>
 </head>
 <body>
   <div class="ui-root">
     <!-- Abas do topo -->
-    <div class="tabs-container">
-      <button class="tab active" data-tab="overview">Overview</button>
-      <button class="tab" data-tab="inventory">Inventário</button>
-      <button class="tab" data-tab="equipment">Equipamento</button>
-      <button class="tab" data-tab="tree">Tree</button>
-      <button class="tab" data-tab="store">Loja</button>
-    </div>
+    <div class="tabs-container-wrapper">
+  <div class="tabs-container scroll-x">
+    <button class="tab active" data-tab="overview">Overview</button>
+    <button class="tab" data-tab="inventory">Inventário</button>
+    <button class="tab" data-tab="equipment">Equipamento</button>
+    <button class="tab" data-tab="tree">Tree</button>
+  </div>
+  <div class="tab-store-wrapper">
+    <button class="tab tab-store" data-tab="store">⛩ Loja</button>
+  </div>
+</div>
 
     <!-- Área principal (Left-Center-Right) -->
     <div class="content-container">
