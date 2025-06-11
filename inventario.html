@@ -144,7 +144,7 @@
       min-height: 580px;
     }
 
-    /*  – Left Panel */ 
+    /*  – Left Panel */
     .left-panel {
       flex: 0 0 260px;
       background: var(--panel-bg);
@@ -155,7 +155,7 @@
       gap: 24px;
     }
 
-    /*  – Center Panel */ 
+    /*  – Center Panel */
     .center-panel {
       flex: 1 1 auto;
       background: var(--dark-bg);
@@ -180,7 +180,7 @@
       text-shadow: 0 0 24px rgba(168, 85, 247, 0.6);
     }
 
-    /*  – Right Panel */ 
+    /*  – Right Panel */
     .right-panel {
       flex: 0 0 320px;
       background: var(--panel-bg);
@@ -430,70 +430,89 @@
 .content-container.inventory-active {
   min-height: 0 !important;
 }
-/* Mochila em grid 6x3 */
+
+/* === Avatar + Armadura alinhadas só no Equipamentos === */
+/* Centraliza o container principal do avatar e armadura */
+.center-panel {
+  display: flex;
+  flex-direction: column; /* Para alinhar o filtro (se houver) abaixo do avatar */
+  align-items: center;
+  justify-content: center; /* Garante que o avatar esteja no centro */
+  padding: 20px 0; /* Adiciona um pouco de padding para não ficar colado nas bordas */
+}
+
+.avatar-armor-container {
+  display: flex;
+  align-items: center; /* Alinha os slots de armadura com o avatar */
+  gap: 16px; /* Espaçamento entre as colunas de armadura e o avatar */
+}
+
+.armor-side {
+  display: flex;
+  flex-direction: column;
+  gap: 8px; /* Espaçamento entre os slots de armadura */
+}
+
+/* Estilo para os slots de armadura no painel de Equipamento */
+.equip-slot {
+  width: 64px;
+  height: 64px;
+  background: var(--slot-bg);
+  border: 2px dashed var(--slot-border);
+  border-radius: 8px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--accent-purple);
+  font-size: 1.2rem;
+  opacity: 0.5;
+  cursor: default;
+}
+
+/* === Mochila: 18 slots em grid 6x3 no desktop e 3 colunas no mobile === */
 .backpack-grid {
   display: grid;
-  grid-template-columns: repeat(6, 1fr);
+  grid-template-columns: repeat(6, 1fr); /* 6 colunas para desktop */
   gap: 8px;
+  width: 100%; /* Garante que o grid ocupe a largura disponível */
 }
 
 /* Ajuste visual se quiser diferenciar slots da mochila */
 .backpack-grid .equip-slot {
-  opacity: 0.6;
+  opacity: 0.8; /* Um pouco mais opaco para diferenciar, se desejar */
 }
-/* === Avatar + Armadura alinhadas só no Equipamentos === */
-.center-panel {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-}
-.avatar-armor-container {
-  display: flex;
-  align-items: center;
-  gap: 16px;
-}
-.armor-side {
-  display: flex;
-  flex-direction: column;
-  gap: 8px;
-}
-/* Avatar no centro */
-.armor-left { margin-right: 16px; }
-.armor-right { margin-left: 16px; }
 
 @media (max-width: 720px) {
   /* 1) Avatar + Armadura lado a lado, sem wrap */
   .avatar-armor-container {
-    display: flex !important;
     flex-wrap: nowrap !important;
-    gap: 4px !important;
-    justify-content: center !important;
+    gap: 8px !important; /* Ajusta o espaçamento para mobile */
   }
+
   .armor-side {
-    display: flex !important;
-    flex-direction: column !important;
-    gap: 4px !important;
+    gap: 4px !important; /* Espaçamento menor entre slots para mobile */
   }
+
   .armor-side .equip-slot {
-    width: 28px !important;
-    height: 28px !important;
+    width: 40px !important; /* Tamanho do slot de armadura para mobile */
+    height: 40px !important;
   }
 
   /* 2) Avatar menor para caber */
   .avatar-placeholder {
-    width: 120px !important;
-    height: 160px !important;
+    width: 180px !important; /* Tamanho do avatar para mobile */
+    height: 240px !important;
+    font-size: 1.8rem !important; /* Fonte menor para caber */
   }
 
-  /* 3) Mochila: 18 slots em 3 colunas, sem multiplicar */
+  /* 3) Mochila: 18 slots em 3 colunas */
   .backpack-grid {
-    display: grid !important;
-    grid-template-columns: repeat(3, 1fr) !important;
-    gap: 4px !important;
+    grid-template-columns: repeat(3, 1fr) !important; /* 3 colunas para mobile */
+    gap: 6px !important; /* Espaçamento menor para mobile */
   }
   .backpack-grid .equip-slot {
-    width: 32px !important;
-    height: 32px !important;
+    width: auto !important; /* Ajusta a largura automaticamente */
+    height: 60px !important; /* Mantém uma altura razoável */
   }
 }
   </style>
@@ -501,8 +520,7 @@
 <body>
   <div class="ui-root">
     <div
- <!-- Abas principais -->
-<div class="tabs-container scroll-x">
+ <div class="tabs-container scroll-x">
   <button class="tab active" data-tab="overview">Overview</button>
   <button class="tab"       data-tab="inventory">Inventário</button>
   <button class="tab"       data-tab="equipment">Equipamento</button>
@@ -546,42 +564,36 @@
             <span class="info-label">Pontos Disponíveis</span><span id="pontos-disponiveis">4</span>
           </div>
 
-          <!-- Força -->
           <div class="info-row">
             <span class="info-label">Força</span>
             <span id="valor-forca">1 <button class="add-point" data-add="forca">+</button></span>
           </div>
           <div class="bar-container"><div class="bar-fill" id="barra-forca" style="width:60%;"></div></div>
 
-          <!-- Destreza -->
           <div class="info-row">
             <span class="info-label">Destreza</span>
             <span id="valor-destreza">1 <button class="add-point" data-add="destreza">+</button></span>
           </div>
           <div class="bar-container"><div class="bar-fill" id="barra-destreza" style="width:50%;"></div></div>
 
-          <!-- Constituição -->
           <div class="info-row">
             <span class="info-label">Constituição</span>
             <span id="valor-constituicao">1 <button class="add-point" data-add="constituicao">+</button></span>
           </div>
           <div class="bar-container"><div class="bar-fill" id="barra-constituicao" style="width:65%;"></div></div>
 
-          <!-- Inteligência -->
           <div class="info-row">
             <span class="info-label">Inteligência</span>
             <span id="valor-inteligencia">1 <button class="add-point" data-add="inteligencia">+</button></span>
           </div>
           <div class="bar-container"><div class="bar-fill" id="barra-inteligencia" style="width:45%;"></div></div>
 
-          <!-- Espírito -->
           <div class="info-row">
             <span class="info-label">Espírito</span>
             <span id="valor-espirito">1 <button class="add-point" data-add="espirito">+</button></span>
           </div>
           <div class="bar-container"><div class="bar-fill" id="barra-espirito" style="width:40%;"></div></div>
 
-          <!-- Carisma -->
           <div class="info-row">
             <span class="info-label">Carisma</span>
             <span id="valor-carisma">1 <button class="add-point" data-add="carisma">+</button></span>
@@ -605,10 +617,8 @@
         </div>
       </div>
 
-<!-- === INÍCIO center-panel para Equipamentos === -->
 <div class="center-panel">
   <div class="avatar-armor-container">
-    <!-- Armadura Esquerda (oculto por padrão) -->
     <div class="armor-side armor-left" style="display:none;">
       <div class="equip-slot"></div>
       <div class="equip-slot"></div>
@@ -616,12 +626,10 @@
       <div class="equip-slot"></div>
     </div>
 
-    <!-- Avatar -->
     <div class="avatar-panel">
       <div class="avatar-placeholder">Avatar</div>
     </div>
 
-    <!-- Armadura Direita (oculto por padrão) -->
     <div class="armor-side armor-right" style="display:none;">
       <div class="equip-slot"></div>
       <div class="equip-slot"></div>
@@ -630,7 +638,6 @@
     </div>
   </div>
 
-  <!-- Filtro: aparece somente quando passo para “Inventário” -->
   <div class="inventory-filter" style="display:none;">
     <button class="filter-btn active" data-filter="all">Tudo</button>
     <button class="filter-btn" data-filter="anime">Animes</button>
@@ -640,12 +647,11 @@
     <button class="filter-btn" data-filter="extras">Extras</button>
   </div>
 </div>
- 
+
       <div class="right-panel">
         <div class="pane-overview-right"></div>
 
        <div class="pane-inventory-right" style="display:none;flex-direction:column;gap:12px;">
-  <!-- CAT 1: Animes -->
   <div class="category-container" data-category="anime">
     <div class="equip-title" style="font-size:1.05rem;margin-bottom:8px;">Animes</div>
     <div class="inv-grid">
@@ -655,7 +661,6 @@
     <div class="inv-empty-label">Sem Animes comprados.</div>
   </div>
 
-  <!-- CAT 2: Mangás -->
   <div class="category-container" data-category="manga">
     <div class="equip-title" style="font-size:1.05rem;margin-bottom:8px;">Mangás</div>
     <div class="inv-grid">
@@ -665,7 +670,6 @@
     <div class="inv-empty-label">Sem Mangás comprados.</div>
   </div>
 
-  <!-- CAT 3: eBooks -->
   <div class="category-container" data-category="ebook">
     <div class="equip-title" style="font-size:1.05rem;margin-bottom:8px;">eBooks</div>
     <div class="inv-grid">
@@ -675,7 +679,6 @@
     <div class="inv-empty-label">Sem eBooks comprados.</div>
   </div>
 
-  <!-- CAT 4: Mentorias -->
   <div class="category-container" data-category="mentor">
     <div class="equip-title" style="font-size:1.05rem;margin-bottom:8px;">Mentorias</div>
     <div class="inv-grid">
@@ -685,8 +688,7 @@
     <div class="inv-empty-label">Sem Mentorias compradas.</div>
   </div>
 
-  <!-- CAT 5: Extras -->
-  <div class="category-container" data-category="extras">
+ <div class="category-container" data-category="extras">
     <div class="equip-title" style="font-size:1.05rem;margin-bottom:8px;">Extras</div>
     <div class="inv-grid">
       <div class="inv-slot"></div><div class="inv-slot"></div>
@@ -698,7 +700,6 @@
 
         <div class="pane-equipment-right" style="display:none;flex-direction:column;gap:16px;">
 
-  <!-- Primary + Secondary + Tools -->
   <div class="equip-section">
     <div class="equip-title">Primary Slot</div>
     <div class="equip-slots">
@@ -720,7 +721,6 @@
     </div>
   </div>
 
-  <!-- Skill (agora 4 slots) -->
   <div class="equip-section">
     <div class="equip-title">Skill</div>
     <div class="equip-slots">
@@ -731,27 +731,6 @@
     </div>
   </div>
 
-  <!-- Armadura: 4 slots à esquerda e 4 à direita -->
-  <div class="equip-section">
-    <div class="equip-title">Armadura Esquerda</div>
-    <div class="equip-slots">
-      <div class="equip-slot"></div>
-      <div class="equip-slot"></div>
-      <div class="equip-slot"></div>
-      <div class="equip-slot"></div>
-    </div>
-  </div>
-  <div class="equip-section">
-    <div class="equip-title">Armadura Direita</div>
-    <div class="equip-slots">
-      <div class="equip-slot"></div>
-      <div class="equip-slot"></div>
-      <div class="equip-slot"></div>
-      <div class="equip-slot"></div>
-    </div>
-  </div>
-
-  <!-- Seções adicionais -->
   <div class="equip-section">
     <div class="equip-title">Acessórios</div>
     <div class="equip-slots">
@@ -775,11 +754,9 @@
     </div>
   </div>
 
-  <!-- Mochila: 18 slots em grid estilo inventory -->
   <div class="equip-section">
     <div class="equip-title">Mochila</div>
     <div class="backpack-grid">
-      <!-- 18 slots -->
       <div class="equip-slot"></div><div class="equip-slot"></div><div class="equip-slot"></div>
       <div class="equip-slot"></div><div class="equip-slot"></div><div class="equip-slot"></div>
       <div class="equip-slot"></div><div class="equip-slot"></div><div class="equip-slot"></div>
@@ -791,7 +768,7 @@
 
 </div>
 
-  <script>
+<script>
   // Seletores principais
   const tabs             = document.querySelectorAll(".tab");
   const leftPanes        = { overview:    document.querySelector(".pane-overview"),
@@ -818,25 +795,27 @@
     tabs.forEach(t => t.classList.toggle("active", t === tab));
 
     // 2) mostra leftPane
-    Object.entries(leftPanes).forEach(([k,p]) => 
+    Object.entries(leftPanes).forEach(([k,p]) =>
       p.classList.toggle("active", k === key)
     );
 
     // 3) mostra rightPane
-    Object.entries(rightPanes).forEach(([k,p]) => 
+    Object.entries(rightPanes).forEach(([k,p]) =>
       p.style.display = (k === key ? "flex" : "none")
     );
 
     // 4) mostra/oculta center-panel
+    // O center-panel deve sempre ser flex quando não é inventário.
     centerPanel.style.display = (isInv ? "none" : "flex");
     contentContainer.classList.toggle("inventory-active", isInv);
+
 
     // 5) filtro vs avatar
     invFilter.style.display   = (isInv ? "flex" : "none");
     avatarPanel.style.display = (isInv ? "none" : "flex");
 
     // 6) armadura apenas no equipamento
-    armorSides.forEach(el => 
+    armorSides.forEach(el =>
       el.style.display = (isEq ? "flex" : "none")
     );
 
@@ -849,7 +828,7 @@
   }
 
   // Associa click às tabs
-  tabs.forEach(tab => 
+  tabs.forEach(tab =>
     tab.addEventListener("click", () => handleTabClick(tab))
   );
 
@@ -860,8 +839,8 @@
       btn.classList.add("active");
       const f = btn.dataset.filter;
       catContainers.forEach(c => {
-        c.style.display = (f === "all" || c.dataset.category === f) 
-                          ? "block" 
+        c.style.display = (f === "all" || c.dataset.category === f)
+                          ? "block"
                           : "none";
       });
     })
