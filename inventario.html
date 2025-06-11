@@ -387,18 +387,29 @@
         height: 340px;
       }
     }
+/* centraliza Loja em linha própria */
+.store-row {
+  display: flex;
+  justify-content: center;
+  margin-top: 12px;
+}
+
+/* garante que abas ocupem só uma linha */
+.tabs-container {
+  display: flex;
+  gap: 12px;
+  flex-wrap: nowrap;
+}
   </style>
 </head>
 <body>
   <div class="ui-root">
     <div <!-- Abas principais -->
-<div class="tabs-container">
+<div class="tabs-container scroll-x">
   <button class="tab active" data-tab="overview">Overview</button>
   <button class="tab"       data-tab="inventory">Inventário</button>
   <button class="tab"       data-tab="equipment">Equipamento</button>
 </div>
-
-<!-- Botão Loja abaixo, centralizado -->
 <div class="store-row">
   <button class="tab-store" onclick="location.href='store.html'">⛩ Loja</button>
 </div>
