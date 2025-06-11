@@ -441,6 +441,25 @@
 .backpack-grid .equip-slot {
   opacity: 0.6;
 }
+/* === Avatar + Armadura alinhadas só no Equipamentos === */
+.center-panel {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+.avatar-armor-container {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+}
+.armor-side {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+/* Avatar no centro */
+.armor-left { margin-right: 16px; }
+.armor-right { margin-left: 16px; }
   </style>
 </head>
 <body>
@@ -550,11 +569,29 @@
         </div>
       </div>
 
-      <!-- === INÍCIO DO NOVO center-panel === -->
+<!-- === INÍCIO center-panel para Equipamentos === -->
 <div class="center-panel">
-  <!-- Avatar: só aparece fora do inventory -->
-  <div class="avatar-panel">
-    <div class="avatar-placeholder">Avatar</div>
+  <div class="avatar-armor-container">
+    <!-- Armadura Esquerda (oculto por padrão) -->
+    <div class="armor-side armor-left" style="display:none;">
+      <div class="equip-slot"></div>
+      <div class="equip-slot"></div>
+      <div class="equip-slot"></div>
+      <div class="equip-slot"></div>
+    </div>
+
+    <!-- Avatar -->
+    <div class="avatar-panel">
+      <div class="avatar-placeholder">Avatar</div>
+    </div>
+
+    <!-- Armadura Direita (oculto por padrão) -->
+    <div class="armor-side armor-right" style="display:none;">
+      <div class="equip-slot"></div>
+      <div class="equip-slot"></div>
+      <div class="equip-slot"></div>
+      <div class="equip-slot"></div>
+    </div>
   </div>
 
   <!-- Filtro: aparece somente quando passo para “Inventário” -->
@@ -719,139 +756,126 @@
 </div>
 
   <script>
-    // Tab switching
-    const tabs = document.querySelectorAll(".tab");
-    const leftPanes = {
-      overview: document.querySelector(".pane-overview"),
-      inventory: document.querySelector(".pane-inventory"),
-      equipment: document.querySelector(".pane-equipment"),
-    };
-    const rightPanes = {
-      overview: document.querySelector(".pane-overview-right"),
-      inventory: document.querySelector(".pane-inventory-right"),
-      equipment: document.querySelector(".pane-equipment-right"),
-    };
+  // Seletores principais
+  const tabs             = document.querySelectorAll(".tab");
+  const leftPanes        = { overview:    document.querySelector(".pane-overview"),
+                             inventory:   document.querySelector(".pane-inventory"),
+                             equipment:   document.querySelector(".pane-equipment") };
+  const rightPanes       = { overview:    document.querySelector(".pane-overview-right"),
+                             inventory:   document.querySelector(".pane-inventory-right"),
+                             equipment:   document.querySelector(".pane-equipment-right") };
+  const centerPanel      = document.querySelector(".center-panel");
+  const contentContainer = document.querySelector(".content-container");
+  const invFilter        = document.querySelector(".inventory-filter");
+  const avatarPanel      = document.querySelector(".avatar-panel");
+  const armorSides       = document.querySelectorAll(".armor-side");
+  const filterBtns       = document.querySelectorAll(".filter-btn");
+  const catContainers    = document.querySelectorAll(".category-container");
 
-    tabs.forEach((t) => {
-      t.addEventListener("click", () => {
-        tabs.forEach((x) => x.classList.remove("active"));
-        t.classList.add("active");
+  // Função de clique em abas
+  function handleTabClick(tab) {
+    const key = tab.dataset.tab;
+    const isInv = key === "inventory";
+    const isEq  = key === "equipment";
 
-// ─── Mostrar filtro e ocultar avatar ───
-const filterBtns = document.querySelectorAll('.filter-btn');
-const avatarPanel = document.querySelector('.avatar-panel');
-const invFilter = document.querySelector('.inventory-filter');
-const catContainers = document.querySelectorAll('.pane-inventory-right .category-container');
+    // 1) ativa aba
+    tabs.forEach(t => t.classList.toggle("active", t === tab));
 
-tabs.forEach(tab => {
-  tab.addEventListener('click', () => {
-    const isInv = tab.dataset.tab === 'inventory';
-    invFilter.style.display = isInv ? 'flex' : 'none';
-    avatarPanel.style.display = isInv ? 'none' : 'flex';
+    // 2) mostra leftPane
+    Object.entries(leftPanes).forEach(([k,p]) => 
+      p.classList.toggle("active", k === key)
+    );
 
-    // quando entrar em inventory, reset filtro para “Tudo”
+    // 3) mostra rightPane
+    Object.entries(rightPanes).forEach(([k,p]) => 
+      p.style.display = (k === key ? "flex" : "none")
+    );
+
+    // 4) mostra/oculta center-panel
+    centerPanel.style.display = (isInv ? "none" : "flex");
+    contentContainer.classList.toggle("inventory-active", isInv);
+
+    // 5) filtro vs avatar
+    invFilter.style.display   = (isInv ? "flex" : "none");
+    avatarPanel.style.display = (isInv ? "none" : "flex");
+
+    // 6) armadura apenas no equipamento
+    armorSides.forEach(el => 
+      el.style.display = (isEq ? "flex" : "none")
+    );
+
+    // 7) reset de filtro ao entrar no Inventário
     if (isInv) {
-      filterBtns.forEach(b => b.classList.remove('active'));
-      filterBtns[0].classList.add('active'); // “Tudo”
-      catContainers.forEach(c => c.style.display = 'block');
+      filterBtns.forEach(b => b.classList.remove("active"));
+      filterBtns[0].classList.add("active");
+      catContainers.forEach(c => c.style.display = "block");
     }
-  });
-});
+  }
 
-// ─── Lógica de filtragem ───
-filterBtns.forEach(btn => {
-  btn.addEventListener('click', () => {
-    filterBtns.forEach(b => b.classList.remove('active'));
-    btn.classList.add('active');
-    const f = btn.dataset.filter;
-    catContainers.forEach(c => {
-      c.style.display = (f === 'all' || c.dataset.category === f) ? 'block' : 'none';
-    });
-  });
-});
+  // Associa click às tabs
+  tabs.forEach(tab => 
+    tab.addEventListener("click", () => handleTabClick(tab))
+  );
 
-        Object.values(leftPanes).forEach((p) => p.classList.remove("active"));
-        leftPanes[t.dataset.tab].classList.add("active");
-
-        Object.values(rightPanes).forEach((p) => (p.style.display = "none"));
-        rightPanes[t.dataset.tab].style.display = "flex";
+  // Lógica de filtragem
+  filterBtns.forEach(btn =>
+    btn.addEventListener("click", () => {
+      filterBtns.forEach(b => b.classList.remove("active"));
+      btn.classList.add("active");
+      const f = btn.dataset.filter;
+      catContainers.forEach(c => {
+        c.style.display = (f === "all" || c.dataset.category === f) 
+                          ? "block" 
+                          : "none";
       });
-    });
+    })
+  );
 
-    const estado = {
-      nivel: 3,
-      xp: 6700,
-      xpMax: 10000,
-      pontosDisponiveis: 4,
-      atributos: {
-        forca: 1,
-        destreza: 1,
-        constituicao: 1,
-        inteligencia: 1,
-        espirito: 1,
-        carisma: 1,
-      },
-    };
-
-    function atualizarInterface() {
-      document.getElementById("nivel").textContent = estado.nivel;
-      document.getElementById(
-        "xp-bar"
-      ).style.width = (estado.xp / estado.xpMax) * 100 + "%";
-      document.getElementById(
-        "pontos-disponiveis"
-      ).textContent = estado.pontosDisponiveis;
-
-      for (let key in estado.atributos) {
-        const container = document.getElementById("valor-" + key);
-        if (container) {
-          container.childNodes[0].nodeValue = estado.atributos[key] + " ";
-          const barra = document.getElementById("barra-" + key);
-          if (barra) {
-            barra.style.width =
-              Math.min((estado.atributos[key] / 20) * 100, 100) + "%";
-          }
-        }
-      }
+  // Código de atributos permanece intacto
+  const estado = {
+    nivel: 3, xp: 6700, xpMax: 10000, pontosDisponiveis: 4,
+    atributos: { forca:1, destreza:1, constituicao:1, inteligencia:1, espirito:1, carisma:1 }
+  };
+  function atualizarInterface() {
+    document.getElementById("nivel").textContent = estado.nivel;
+    document.getElementById("xp-bar").style.width = (estado.xp/estado.xpMax)*100 + "%";
+    document.getElementById("pontos-disponiveis").textContent = estado.pontosDisponiveis;
+    for (let k in estado.atributos) {
+      const span = document.getElementById("valor-"+k);
+      if (!span) continue;
+      span.childNodes[0].nodeValue = estado.atributos[k] + " ";
+      document.getElementById("barra-"+k).style.width =
+        Math.min((estado.atributos[k]/20)*100,100) + "%";
     }
-
-    function adicionarPonto(atributo) {
-      if (estado.pontosDisponiveis <= 0) return;
-      estado.atributos[atributo]++;
-      estado.pontosDisponiveis--;
-      atualizarInterface();
+  }
+  function adicionarPonto(at) {
+    if (estado.pontosDisponiveis<=0) return;
+    estado.atributos[at]++; estado.pontosDisponiveis--; atualizarInterface();
+  }
+  function editarNome() {
+    const span = document.getElementById("nome-personagem");
+    const atual = span.textContent.replace("✎","").trim();
+    const novo  = prompt("Digite um novo nome:", atual);
+    if (novo && novo.length>1) {
+      span.innerHTML = novo + ' <button class="edit-button" onclick="editarNome()">✎</button>';
     }
-
-    function ganharXp(qtd) {
-      estado.xp += qtd;
-      while (estado.xp >= estado.xpMax) {
-        estado.xp -= estado.xpMax;
-        estado.nivel++;
-        estado.pontosDisponiveis += 2;
-      }
-      atualizarInterface();
+  }
+  function ganharXp(q) { estado.xp+=q;
+    while (estado.xp>=estado.xpMax) {
+      estado.xp-=estado.xpMax; estado.nivel++; estado.pontosDisponiveis+=2;
     }
+    atualizarInterface();
+  }
 
-    function editarNome() {
-      const span = document.getElementById("nome-personagem");
-      const nomeAtual = span.textContent.trim().replace("✎", "");
-      const novo = prompt("Digite um novo nome para o personagem:", nomeAtual);
-      if (novo && novo.length > 1) {
-        span.innerHTML =
-          novo + ' <button class="edit-button" onclick="editarNome()">✎</button>';
-      }
-    }
-
-    document.addEventListener("DOMContentLoaded", () => {
-      document.querySelectorAll("[data-add]").forEach((btn) => {
-        btn.addEventListener("click", () =>
-          adicionarPonto(btn.getAttribute("data-add"))
-        );
-      });
-      atualizarInterface();
-      const initial = document.querySelector(".tab.active");
-      if (initial) initial.click();
-    });
-  </script>
+  // Inicialização
+  document.addEventListener("DOMContentLoaded", () => {
+    document.querySelectorAll("[data-add]").forEach(btn =>
+      btn.addEventListener("click", ()=> adicionarPonto(btn.dataset.add))
+    );
+    atualizarInterface();
+    const init = document.querySelector(".tab.active");
+    if (init) handleTabClick(init);
+  });
+</script>
 </body>
 </html>
