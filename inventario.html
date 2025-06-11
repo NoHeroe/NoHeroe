@@ -831,6 +831,9 @@ function editarNome() {
     document.getElementById("nome-personagem").innerHTML = novoNome + ' <button class="edit-button" onclick="editarNome()">✎</button>';
   }
 }
+// Ao carregar, simula clique na aba marcada como .active no HTML
+const initial = document.querySelector('.tab.active');
+if (initial) initial.click();
 </script>
 </body>
 </html>
