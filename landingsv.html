@@ -1,0 +1,510 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>NoHeroes | Sistema Vivo</title>
+    <link href="https://fonts.googleapis.com/css2?family=Cinzel+Decorative:wght@400;700&family=Roboto:wght@300;400;700&display=swap" rel="stylesheet">
+    <style>
+        /* Variáveis de Tema */
+        :root {
+            --color-dark-bg: #100a16;
+            --color-deep-purple: #2a143b;
+            --color-accent-purple: #a855f7;
+            --color-accent-blue: #60a5fa;
+            --color-text-light: #e0e0e0;
+            --color-text-gray: #b0a0c0;
+            --color-border-dark: #3a2253;
+            --color-glow: rgba(168, 85, 247, 0.6);
+            --color-button-bg: linear-gradient(90deg, #6d28d9, #a855f7);
+            --color-button-hover: linear-gradient(90deg, #a855f7, #6d28d9);
+        }
+
+        /* Reset Básico */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        html {
+            scroll-behavior: smooth;
+        }
+
+        body {
+            font-family: 'Roboto', sans-serif;
+            background-color: var(--color-dark-bg);
+            color: var(--color-text-light);
+            line-height: 1.6;
+            overflow-x: hidden;
+        }
+
+        /* Utilitários */
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+
+        .text-center {
+            text-align: center;
+        }
+
+        /* Estilo dos Títulos */
+        h1, h2, h3 {
+            font-family: 'Cinzel Decorative', serif;
+            color: var(--color-accent-purple);
+            text-shadow: 0 0 15px var(--color-glow);
+            margin-bottom: 20px;
+        }
+
+        h1 {
+            font-size: 3.5em;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            margin-bottom: 10px;
+        }
+
+        h2 {
+            font-size: 2.5em;
+            border-bottom: 2px solid var(--color-border-dark);
+            padding-bottom: 10px;
+            margin-top: 60px;
+        }
+
+        h3 {
+            font-size: 1.8em;
+            margin-top: 30px;
+        }
+
+        /* Botões */
+        .btn-primary {
+            display: inline-block;
+            background: var(--color-button-bg);
+            color: var(--color-text-light);
+            padding: 15px 30px;
+            border: none;
+            border-radius: 8px;
+            font-size: 1.2em;
+            font-weight: 700;
+            text-transform: uppercase;
+            text-decoration: none;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 0 20px var(--color-glow);
+            letter-spacing: 1px;
+        }
+
+        .btn-primary:hover {
+            background: var(--color-button-hover);
+            transform: translateY(-3px);
+            box-shadow: 0 0 30px var(--color-accent-blue);
+        }
+
+        /* Header / Hero Section */
+        .hero-section {
+            background: url('https://via.placeholder.com/1920x800/100a16/8844ee?text=Dark+Fantasy+Background') no-repeat center center/cover;
+            min-height: 800px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+            text-align: center;
+            padding: 40px 0;
+        }
+
+        .hero-content {
+            background: rgba(0, 0, 0, 0.6);
+            padding: 40px 60px;
+            border-radius: 15px;
+            backdrop-filter: blur(5px);
+            border: 2px solid var(--color-border-dark);
+            box-shadow: 0 0 40px rgba(168, 85, 247, 0.4);
+            max-width: 900px;
+        }
+
+        .hero-content p {
+            font-size: 1.5em;
+            color: var(--color-text-gray);
+            margin-bottom: 40px;
+            font-style: italic;
+            text-shadow: 0 0 10px rgba(0,0,0,0.7);
+        }
+
+        /* Seções de Conteúdo */
+        section {
+            padding: 80px 0;
+            position: relative;
+            overflow: hidden;
+            border-top: 1px solid var(--color-border-dark);
+        }
+
+        section:nth-child(even) {
+            background-color: var(--color-deep-purple);
+        }
+
+        .section-title {
+            text-align: center;
+            margin-bottom: 60px;
+        }
+
+        .section-quote {
+            font-family: 'Cinzel Decorative', serif;
+            font-size: 1.8em;
+            color: var(--color-accent-blue);
+            text-align: center;
+            margin: 40px 0;
+            line-height: 1.4;
+            text-shadow: 0 0 10px rgba(96, 165, 250, 0.5);
+        }
+
+        /* Diagnóstico */
+        .diagnosis-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 30px;
+            margin-top: 40px;
+        }
+
+        .diagnosis-item {
+            background-color: var(--color-dark-bg);
+            padding: 30px;
+            border-radius: 10px;
+            border: 1px solid var(--color-border-dark);
+            box-shadow: 0 0 20px rgba(0, 0, 0, 0.5);
+            text-align: center;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        .diagnosis-item:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 0 30px var(--color-glow);
+        }
+
+        .diagnosis-item h3 {
+            margin-top: 0;
+            font-size: 1.6em;
+            color: var(--color-accent-purple);
+            text-transform: uppercase;
+        }
+
+        .diagnosis-item p {
+            color: var(--color-text-gray);
+            font-size: 1em;
+            margin-top: 15px;
+        }
+
+        /* O Caminho */
+        .path-grid {
+            display: grid;
+            grid-template-columns: 1fr; /* Default to single column */
+            gap: 40px;
+            margin-top: 40px;
+        }
+
+        .path-item {
+            background-color: var(--color-dark-bg);
+            padding: 30px;
+            border-radius: 10px;
+            border: 1px solid var(--color-border-dark);
+            box-shadow: 0 0 20px rgba(0, 0, 0, 0.5);
+            transition: background-color 0.3s ease;
+        }
+        .path-item:nth-child(odd) {
+            background-color: var(--color-deep-purple);
+        }
+
+        .path-item h3 {
+            margin-top: 0;
+            font-size: 1.6em;
+            color: var(--color-accent-blue);
+            text-transform: uppercase;
+        }
+
+        .path-item p {
+            color: var(--color-text-gray);
+            margin-top: 15px;
+        }
+
+        /* O Poder da Obra */
+        .power-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 30px;
+            margin-top: 40px;
+        }
+
+        .power-item {
+            background-color: var(--color-dark-bg);
+            padding: 30px;
+            border-radius: 10px;
+            border: 1px solid var(--color-border-dark);
+            box-shadow: 0 0 20px rgba(0, 0, 0, 0.5);
+            text-align: center;
+            transition: transform 0.3s ease;
+        }
+
+        .power-item:hover {
+            transform: translateY(-10px);
+        }
+
+        .power-item h3 {
+            margin-top: 0;
+            font-size: 1.6em;
+            color: var(--color-accent-purple);
+            text-transform: uppercase;
+        }
+
+        .power-item p {
+            color: var(--color-text-gray);
+            margin-top: 15px;
+        }
+
+        /* Chamado Final */
+        .final-cta-section {
+            background: url('https://via.placeholder.com/1920x600/1e0a2d/6d28d9?text=Dark+Fantasy+CTA+Background') no-repeat center center/cover;
+            padding: 100px 0;
+            text-align: center;
+            border-top: 1px solid var(--color-border-dark);
+        }
+
+        .final-cta-section h2 {
+            color: var(--color-text-light);
+            font-size: 2.8em;
+            margin-bottom: 40px;
+            text-shadow: 0 0 20px rgba(255,255,255,0.3);
+            border-bottom: none; /* Override default h2 border */
+        }
+
+        /* Frases Impactantes */
+        .impact-phrases {
+            background-color: var(--color-dark-bg);
+            padding: 50px 0;
+        }
+
+        .impact-phrases h2 {
+            margin-bottom: 40px;
+        }
+
+        .phrase-list {
+            list-style: none;
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 20px;
+        }
+
+        .phrase-list li {
+            background-color: var(--color-deep-purple);
+            padding: 15px 25px;
+            border-radius: 8px;
+            border: 1px solid var(--color-border-dark);
+            font-family: 'Cinzel Decorative', serif;
+            font-size: 1.1em;
+            color: var(--color-accent-blue);
+            text-shadow: 0 0 8px rgba(96, 165, 250, 0.3);
+            max-width: 350px;
+            text-align: center;
+        }
+
+        /* Footer */
+        .footer {
+            background-color: #0d0613;
+            color: var(--color-text-gray);
+            text-align: center;
+            padding: 30px 0;
+            font-size: 0.9em;
+            border-top: 1px solid var(--color-border-dark);
+        }
+
+        /* Responsividade */
+        @media (min-width: 768px) {
+            .path-grid {
+                grid-template-columns: repeat(2, 1fr); /* Two columns on larger screens */
+            }
+        }
+
+        @media (max-width: 768px) {
+            h1 { font-size: 2.5em; }
+            h2 { font-size: 2em; }
+            .hero-content { padding: 30px; }
+            .hero-content p { font-size: 1.2em; }
+            .btn-primary { padding: 12px 25px; font-size: 1em; }
+            .diagnosis-grid, .power-grid {
+                grid-template-columns: 1fr;
+            }
+            .section-quote { font-size: 1.4em; }
+            .final-cta-section h2 { font-size: 2em; }
+            section { padding: 50px 0; }
+        }
+
+        @media (max-width: 480px) {
+            h1 { font-size: 2em; }
+            h2 { font-size: 1.8em; }
+            .hero-content { padding: 20px; }
+            .hero-content p { font-size: 1em; }
+            .phrase-list li { font-size: 0.9em; padding: 10px 15px; }
+        }
+    </style>
+</head>
+<body>
+    <header class="hero-section">
+        <div class="hero-content">
+            <h1>SISTEMA VIVO</h1>
+            <p>“O problema não é só o que está doendo. É o que deixou de se mover.”</p>
+            <a href="#premium-ebook" class="btn-primary">Desperte Seu Sistema Agora</a>
+        </div>
+    </header>
+
+    <section id="abertura-marcante">
+        <div class="container text-center">
+            <h2>Abertura Marcante</h2>
+            <p class="section-quote">
+                "Seu corpo sabe. Quando algo não vai bem, ele avisa. Dor, febre, cansaço. Mas você escuta?
+                A vida também avisa. E a maioria continua calada, dormindo, sobrevivendo. Chegou a hora de acordar."
+            </p>
+            <p class="section-quote">
+                “O problema não é só o que está doendo. É o que deixou de se mover.”
+            </p>
+            <p>
+                Amplie a metáfora com mais profundidade filosófica. Use trechos curtos, quase como mantras visuais.
+            </p>
+        </div>
+    </section>
+
+    <section id="diagnostico">
+        <div class="container">
+            <h2 class="section-title">Diagnóstico: Onde o sistema trava?</h2>
+            <p class="section-quote">
+                "Se uma parte trava, todo o resto sofre. E você sente isso na pele."
+            </p>
+            <div class="diagnosis-grid">
+                <div class="diagnosis-item">
+                    <h3>Mental</h3>
+                    <p>Confusão, ansiedade, falta de direção.</p>
+                </div>
+                <div class="diagnosis-item">
+                    <h3>Físico</h3>
+                    <p>Cansaço crônico, má alimentação, sedentarismo.</p>
+                </div>
+                <div class="diagnosis-item">
+                    <h3>Emocional</h3>
+                    <p>Culpa, estagnação, frustrações mal resolvidas.</p>
+                </div>
+                <div class="diagnosis-item">
+                    <h3>Criativo</h3>
+                    <p>Bloqueios, medo do julgamento, vazio.</p>
+                </div>
+                <div class="diagnosis-item">
+                    <h3>Profissional</h3>
+                    <p>Desmotivação, projetos que não saem do lugar.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section id="o-caminho">
+        <div class="container">
+            <h2 class="section-title">O Caminho: Como despertar o sistema?</h2>
+            <p>Aqui você entrega valor real. Mostra que o caminho é integrado:</p>
+            <div class="path-grid">
+                <div class="path-item">
+                    <h3>Pequenos Hábitos + Visão de Longo Prazo</h3>
+                    <p>A força está na consistência e na direção clara.</p>
+                </div>
+                <div class="path-item">
+                    <h3>Criatividade com Disciplina</h3>
+                    <p>Desbloqueie seu potencial criativo através da organização e foco.</p>
+                </div>
+                <div class="path-item">
+                    <h3>Propósito Acima de Vaidade</h3>
+                    <p>Encontre a verdadeira motivação alinhando suas ações ao seu eu mais profundo.</p>
+                </div>
+                <div class="path-item">
+                    <h3>Autoconsciência Acima de Produtividade Cega</h3>
+                    <p>Entenda seus limites e ritmos para uma vida mais plena e eficaz.</p>
+                </div>
+            </div>
+            <h3>Exercícios Reflexivos:</h3>
+            <ul>
+                <li>“Se sua vida fosse um corpo, qual parte está atrofiada?”</li>
+                <li>“Liste 3 áreas que estão crescendo. E 3 que estão minguando.”</li>
+                <li>“Qual parte do seu sistema você negligenciou nos últimos 6 meses?”</li>
+            </ul>
+        </div>
+    </section>
+
+    <section id="o-poder-da-obra">
+        <div class="container">
+            <h2 class="section-title">O Poder da Obra: Como NoHeroes encaixa nisso tudo?</h2>
+            <p class="section-quote">
+                "NoHeroes é mais do que uma história. É um espelho. Um portal.
+                Um gatilho de reflexão e mudança. Cada cena, cada personagem, cada som...
+                foi criado pra tocar sistemas adormecidos."
+            </p>
+            <div class="power-grid">
+                <div class="power-item">
+                    <h3>Animes</h3>
+                    <p>Ferramenta emocional e filosófica para tocar sistemas adormecidos.</p>
+                </div>
+                <div class="power-item">
+                    <h3>Cursos</h3>
+                    <p>Ponte prática para despertar criativo e alinhamento.</p>
+                </div>
+                <div class="power-item">
+                    <h3>Mentorias & Comunidade</h3>
+                    <p>Suporte contínuo e ambiente para crescimento coletivo.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="impact-phrases">
+        <div class="container text-center">
+            <h2>Insights do Sistema Vivo</h2>
+            <ul class="phrase-list">
+                <li>“Crescimento que ignora o sistema é ilusão.”</li>
+                <li>“Nada floresce sozinho.”</li>
+                <li>“A doença não é o começo. É o grito final.”</li>
+                <li>“Criatividade é uma função vital do espírito.”</li>
+                <li>“NoHeroes não é um projeto. É um ritual.”</li>
+                <li>“Você não precisa de motivação. Precisa de sistema.”</li>
+                <li>“Seu corpo sente o que sua mente ignora.”</li>
+                <li>“Toda obra de arte é um reflexo do criador. E todo criador é reflexo do seu sistema.”</li>
+            </ul>
+        </div>
+    </section>
+
+    <section id="premium-ebook" class="final-cta-section">
+        <div class="container">
+            <h2>"Se você chegou até aqui, é porque alguma parte do seu sistema começou a despertar. A pergunta agora é: vai ignorar esse chamado ou vai dar o próximo passo?"</h2>
+            <a href="#" class="btn-primary">Acesse o Sistema Vivo Premium</a>
+        </div>
+    </section>
+
+    <footer class="footer">
+        <div class="container">
+            <p>&copy; 2025 NoHeroes. Todos os direitos reservados.</p>
+        </div>
+    </footer>
+
+    <script>
+        // Smooth scrolling para âncoras internas
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                document.querySelector(this.getAttribute('href')).scrollIntoView({
+                    behavior: 'smooth'
+                });
+            });
+        });
+
+        // Efeito de rolagem para o cabeçalho (opcional, para um visual mais dinâmico)
+        window.addEventListener('scroll', function() {
+            const header = document.querySelector('.hero-section');
+            let scrollPosition = window.scrollY;
+            header.style.backgroundPositionY = -scrollPosition * 0.3 + 'px'; // Parallax effect
+        });
+    </script>
+</body>
+</html>
