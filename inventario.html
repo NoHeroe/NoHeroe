@@ -400,6 +400,32 @@
   gap: 12px;
   flex-wrap: nowrap;
 }
+/* ============================= */
+/* Inventário: filtro e painel   */
+/* ============================= */
+.inventory-filter {
+  display: none;
+  flex-wrap: wrap;
+  gap: 8px;
+  justify-content: center;
+  padding: 12px 0;
+  background: var(--panel-bg);
+  border-bottom: 2px solid rgba(168,85,247,0.33);
+}
+.filter-btn {
+  background: var(--panel-bg);
+  border: 2px solid var(--accent-purple);
+  color: var(--text-light);
+  padding: 6px 12px;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: background .2s, box-shadow .2s;
+}
+.filter-btn.active {
+  background: var(--accent-purple);
+  color: #fff;
+  box-shadow: 0 0 8px rgba(168,85,247,0.6);
+}
   </style>
 </head>
 <body>
@@ -508,60 +534,80 @@
         </div>
       </div>
 
-      <div class="center-panel">
-        <div class="avatar-placeholder">Avatar</div>
+      <!-- === INÍCIO DO NOVO center-panel === -->
+<div class="center-panel">
+  <!-- Avatar: só aparece fora do inventory -->
+  <div class="avatar-panel">
+    <div class="avatar-placeholder">Avatar</div>
+  </div>
+
+  <!-- Filtro: aparece somente quando passo para “Inventário” -->
+  <div class="inventory-filter" style="display:none;">
+    <button class="filter-btn active" data-filter="all">Tudo</button>
+    <button class="filter-btn" data-filter="anime">Animes</button>
+    <button class="filter-btn" data-filter="manga">Mangás</button>
+    <button class="filter-btn" data-filter="ebook">eBooks</button>
+    <button class="filter-btn" data-filter="mentor">Mentorias</button>
+    <button class="filter-btn" data-filter="extras">Extras</button>
+  </div>
+</div>
+<!-- === FIM DO NOVO center-panel === --> class="avatar-placeholder">Avatar</div>
       </div>
 
       <div class="right-panel">
         <div class="pane-overview-right"></div>
 
-        <div class="pane-inventory-right" style="display:none;flex-direction:column;gap:12px;">
-          <!-- CAT 1: Animes -->
-          <div>
-            <div class="equip-title" style="font-size:1.05rem;margin-bottom:8px;">Animes</div>
-            <div class="inv-grid">
-              <div class="inv-slot"></div><div class="inv-slot"></div>
-              <div class="inv-slot"></div><div class="inv-slot"></div>
-            </div>
-            <div class="inv-empty-label">Sem Animes comprados.</div>
-          </div>
-          <!-- CAT 2: Mangás -->
-          <div>
-            <div class="equip-title" style="font-size:1.05rem;margin-bottom:8px;">Mangás</div>
-            <div class="inv-grid">
-              <div class="inv-slot"></div><div class="inv-slot"></div>
-              <div class="inv-slot"></div><div class="inv-slot"></div>
-            </div>
-            <div class="inv-empty-label">Sem Mangás comprados.</div>
-          </div>
-          <!-- CAT 3: eBooks -->
-          <div>
-            <div class="equip-title" style="font-size:1.05rem;margin-bottom:8px;">eBooks</div>
-            <div class="inv-grid">
-              <div class="inv-slot"></div><div class="inv-slot"></div>
-              <div class="inv-slot"></div><div class="inv-slot"></div>
-            </div>
-            <div class="inv-empty-label">Sem eBooks comprados.</div>
-          </div>
-          <!-- CAT 4: Mentorias -->
-          <div>
-            <div class="equip-title" style="font-size:1.05rem;margin-bottom:8px;">Mentorias</div>
-            <div class="inv-grid">
-              <div class="inv-slot"></div><div class="inv-slot"></div>
-              <div class="inv-slot"></div><div class="inv-slot"></div>
-            </div>
-            <div class="inv-empty-label">Sem Mentorias compradas.</div>
-          </div>
-          <!-- CAT 5: Extras -->
-          <div>
-            <div class="equip-title" style="font-size:1.05rem;margin-bottom:8px;">Extras</div>
-            <div class="inv-grid">
-              <div class="inv-slot"></div><div class="inv-slot"></div>
-              <div class="inv-slot"></div><div class="inv-slot"></div>
-            </div>
-            <div class="inv-empty-label">Sem Extras disponíveis.</div>
-          </div>
-        </div>
+       <div class="pane-inventory-right" style="display:none;flex-direction:column;gap:12px;">
+  <!-- CAT 1: Animes -->
+  <div class="category-container" data-category="anime">
+    <div class="equip-title" style="font-size:1.05rem;margin-bottom:8px;">Animes</div>
+    <div class="inv-grid">
+      <div class="inv-slot"></div><div class="inv-slot"></div>
+      <div class="inv-slot"></div><div class="inv-slot"></div>
+    </div>
+    <div class="inv-empty-label">Sem Animes comprados.</div>
+  </div>
+
+  <!-- CAT 2: Mangás -->
+  <div class="category-container" data-category="manga">
+    <div class="equip-title" style="font-size:1.05rem;margin-bottom:8px;">Mangás</div>
+    <div class="inv-grid">
+      <div class="inv-slot"></div><div class="inv-slot"></div>
+      <div class="inv-slot"></div><div class="inv-slot"></div>
+    </div>
+    <div class="inv-empty-label">Sem Mangás comprados.</div>
+  </div>
+
+  <!-- CAT 3: eBooks -->
+  <div class="category-container" data-category="ebook">
+    <div class="equip-title" style="font-size:1.05rem;margin-bottom:8px;">eBooks</div>
+    <div class="inv-grid">
+      <div class="inv-slot"></div><div class="inv-slot"></div>
+      <div class="inv-slot"></div><div class="inv-slot"></div>
+    </div>
+    <div class="inv-empty-label">Sem eBooks comprados.</div>
+  </div>
+
+  <!-- CAT 4: Mentorias -->
+  <div class="category-container" data-category="mentor">
+    <div class="equip-title" style="font-size:1.05rem;margin-bottom:8px;">Mentorias</div>
+    <div class="inv-grid">
+      <div class="inv-slot"></div><div class="inv-slot"></div>
+      <div class="inv-slot"></div><div class="inv-slot"></div>
+    </div>
+    <div class="inv-empty-label">Sem Mentorias compradas.</div>
+  </div>
+
+  <!-- CAT 5: Extras -->
+  <div class="category-container" data-category="extras">
+    <div class="equip-title" style="font-size:1.05rem;margin-bottom:8px;">Extras</div>
+    <div class="inv-grid">
+      <div class="inv-slot"></div><div class="inv-slot"></div>
+      <div class="inv-slot"></div><div class="inv-slot"></div>
+    </div>
+    <div class="inv-empty-label">Sem Extras disponíveis.</div>
+  </div>
+</div>
 
         <div class="pane-equipment-right" style="display:none;flex-direction:column;gap:16px;">
           <div class="equip-section">
@@ -611,6 +657,39 @@
       t.addEventListener("click", () => {
         tabs.forEach((x) => x.classList.remove("active"));
         t.classList.add("active");
+
+// ─── Mostrar filtro e ocultar avatar ───
+const filterBtns = document.querySelectorAll('.filter-btn');
+const avatarPanel = document.querySelector('.avatar-panel');
+const invFilter = document.querySelector('.inventory-filter');
+const catContainers = document.querySelectorAll('.pane-inventory-right .category-container');
+
+tabs.forEach(tab => {
+  tab.addEventListener('click', () => {
+    const isInv = tab.dataset.tab === 'inventory';
+    invFilter.style.display = isInv ? 'flex' : 'none';
+    avatarPanel.style.display = isInv ? 'none' : 'flex';
+
+    // quando entrar em inventory, reset filtro para “Tudo”
+    if (isInv) {
+      filterBtns.forEach(b => b.classList.remove('active'));
+      filterBtns[0].classList.add('active'); // “Tudo”
+      catContainers.forEach(c => c.style.display = 'block');
+    }
+  });
+});
+
+// ─── Lógica de filtragem ───
+filterBtns.forEach(btn => {
+  btn.addEventListener('click', () => {
+    filterBtns.forEach(b => b.classList.remove('active'));
+    btn.classList.add('active');
+    const f = btn.dataset.filter;
+    catContainers.forEach(c => {
+      c.style.display = (f === 'all' || c.dataset.category === f) ? 'block' : 'none';
+    });
+  });
+});
 
         Object.values(leftPanes).forEach((p) => p.classList.remove("active"));
         leftPanes[t.dataset.tab].classList.add("active");
