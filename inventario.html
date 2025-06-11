@@ -793,10 +793,10 @@ function atualizarInterface() {
   document.getElementById("pontos-disponiveis").textContent = estado.pontosDisponiveis;
 
   // Atributos
-  for (let key in estado.atributos) {
-    document.getElementById("valor-" + key).textContent = estado.atributos[key];
-    document.getElementById("barra-" + key).style.width = (estado.atributos[key] / 20 * 100) + "%";
-  }
+for (let key in estado.atributos) {
+  const container = document.getElementById("valor-" + key);
+  container.childNodes[0].nodeValue = estado.atributos[key] + " ";
+  document.getElementById("barra-" + key).style.width = (estado.atributos[key] / 20 * 100) + "%";
 }
 
 function adicionarPonto(atributo) {
