@@ -426,11 +426,16 @@
   color: #fff;
   box-shadow: 0 0 8px rgba(168,85,247,0.6);
 }
+/* Quando em Inventário, zera a altura mínima para não deixar gap */
+.content-container.inventory-active {
+  min-height: 0 !important;
+}
   </style>
 </head>
 <body>
   <div class="ui-root">
-    <div <!-- Abas principais -->
+    <div
+ <!-- Abas principais -->
 <div class="tabs-container scroll-x">
   <button class="tab active" data-tab="overview">Overview</button>
   <button class="tab"       data-tab="inventory">Inventário</button>
@@ -551,9 +556,7 @@
     <button class="filter-btn" data-filter="extras">Extras</button>
   </div>
 </div>
-<!-- === FIM DO NOVO center-panel === --> class="avatar-placeholder">Avatar</div>
-      </div>
-
+ 
       <div class="right-panel">
         <div class="pane-overview-right"></div>
 
