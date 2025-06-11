@@ -495,7 +495,7 @@
     <button class="tab" data-tab="inventory">Inventário</button>
     <button class="tab" data-tab="equipment">Equipamento</button>
   <div class="tab-store-wrapper">
-    <button class="tab tab-store" data-tab="store">⛩ Loja</button>
+    <button class="tab tab-store" onclick="window.location.href='store.html'">⛩ Loja</button>
   </div>
 </div>
 
@@ -743,17 +743,6 @@
             </div>
           </div>
         </div>
-
-        <!-- LOJA do lado direito -->
-        <div class="pane-store-right" style="display: none; flex:1 1 auto;">
-          <div class="equip-title">Loja</div>
-          <div style="margin-top:12px; color: var(--text-light); opacity:0.9; font-size:1rem;">
-            Conteúdo da loja (placeholder).
-          </div>
-        </div>
-      </div>
-    </div>
-
   <script>
     // ===== Seleção de abas (Top Tabs) =====
     const tabs = document.querySelectorAll(".tab");
@@ -761,13 +750,11 @@
       overview: document.querySelector(".pane-overview"),
       inventory: document.querySelector(".pane-inventory"),
       equipment: document.querySelector(".pane-equipment"),
-      store: document.querySelector(".pane-store"),
     };
     const rightPanes = {
       overview: document.querySelector(".pane-overview-right"),
       inventory: document.querySelector(".pane-inventory-right"),
       equipment: document.querySelector(".pane-equipment-right"),
-      store: document.querySelector(".pane-store-right"),
     };
     const centerAvatar = document.querySelector(".avatar-placeholder");
 
