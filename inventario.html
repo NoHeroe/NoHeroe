@@ -1,90 +1,62 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>NoHeroes | Inventário (RPG UI Skeleton)</title>
-  <link
-    href="https://fonts.googleapis.com/css2?family=Unbounded:wght@400;700&display=swap"
-    rel="stylesheet"
-  />
+  <link href="https://fonts.googleapis.com/css2?family=Unbounded:wght@400;700&display=swap" rel="stylesheet">
   <style>
-    /*— Variáveis de cor —*/
+    /* — Variáveis de cor — */
     :root {
       --dark-bg: #181022;
-      --panel-bg: rgba(36, 20, 52, 0.83);
+      --panel-bg: rgba(36,20,52,0.83);
       --panel-border: #a855f7bb;
       --accent-purple: #a855f7;
       --accent-purple-dark: #6d28d9;
       --text-light: #f4f4f4;
       --text-gray: #c4b5fd;
-      --slot-bg: rgba(50, 30, 60, 0.35);
+      --slot-bg: rgba(50,30,60,0.35);
       --slot-border: #a855f799;
       --bar-bg: #2a213c;
       --bar-fill: #a855f7cc;
     }
-
-    /*— Reset básico e body —*/
-    * {
-      margin: 0;
-      padding: 0;
-      box-sizing: border-box;
-    }
-
-    html,
-    body {
+    /* — Reset básico — */
+    *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+    html, body {
       height: 100%;
       background: linear-gradient(120deg, var(--dark-bg) 60%, #2a213c 100%);
       color: var(--text-light);
-      font-family: "Unbounded", sans-serif;
+      font-family: 'Unbounded', sans-serif;
       overflow-x: hidden;
       overflow-y: auto;
     }
+    .hidden { display: none !important; }
 
-    /*— Container raiz —*/
+    /* — Container raiz — */
     .ui-root {
       max-width: 1240px;
       margin: 24px auto;
       border-radius: 16px;
       background: var(--panel-bg);
       border: 2px solid var(--panel-border);
-      box-shadow: 0 0 48px rgba(168, 85, 247, 0.3), 0 2px 12px #000;
+      box-shadow: 0 0 48px rgba(168,85,247,0.3), 0 2px 12px #000;
+      display: flex;
+      flex-direction: column;
       overflow: hidden;
-      display: flex;
-      flex-direction: column;
     }
 
-    /*— Abas do topo wrapper —*/
-    .tabs-container-wrapper {
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      gap: 8px;
-      padding: 12px 0;
-    }
-
-    /*— Abas do topo —*/
+    /* — Abas do topo — */
     .tabs-container {
       display: flex;
-      background: none;
-      border-bottom: 2px solid rgba(168, 85, 247, 0.33);
+      gap: 16px;
       padding: 12px 20px;
-      gap: 24px;
-      font-size: 1.1rem;
-      font-weight: 700;
+      border-bottom: 2px solid rgba(168,85,247,0.33);
       overflow-x: auto;
       scroll-snap-type: x proximity;
     }
-    .tabs-container::-webkit-scrollbar {
-      display: none;
-    }
-    .tabs-container {
-      scrollbar-width: none;
-    }
-
-    /*— Aba padrão —*/
+    .tabs-container::-webkit-scrollbar { display: none; }
+    .tabs-container { scrollbar-width: none; }
     .tab {
-      flex: 0 0 auto;
       background: var(--panel-bg);
       border: 2px solid var(--accent-purple);
       color: var(--text-light);
@@ -93,106 +65,49 @@
       font-size: 0.95rem;
       font-weight: 600;
       cursor: pointer;
-      transition: background 0.2s, box-shadow 0.2s;
       white-space: nowrap;
+      transition: background 0.2s, box-shadow 0.2s;
     }
-
     .tab.active {
-      background: linear-gradient(
-        90deg,
-        var(--accent-purple-dark) 60%,
-        var(--accent-purple) 100%
-      );
-      box-shadow: 0 2px 18px rgba(168, 85, 247, 0.5);
+      background: linear-gradient(90deg, var(--accent-purple-dark) 60%, var(--accent-purple) 100%);
+      box-shadow: 0 2px 18px rgba(168,85,247,0.5);
       color: #fff;
     }
+    .store-row {
+      display: flex;
+      justify-content: center;
+      padding: 8px 0 16px;
+    }
+    .tab-store {
+      background: linear-gradient(120deg,#1e121f 60%,#3d214d 100%);
+      border: 2px dashed var(--accent-purple);
+      color: var(--accent-purple);
+      font-weight: 700;
+      padding: 10px 24px;
+      border-radius: 16px;
+      box-shadow: 0 0 18px rgba(168,85,247,0.3);
+      cursor: pointer;
+      transition: transform 0.2s;
+    }
+    .tab-store:hover { transform: scale(1.05); }
 
-    /* remova .tab-store-wrapper e regras associadas */
-
-.tabs-container {
-  display: flex;
-  gap: 16px;
-  padding: 12px 20px;
-  border-bottom: 2px solid rgba(168,85,247,0.33);
-}
-
-.store-row {
-  display: flex;
-  justify-content: center;
-  padding: 8px 0 16px;
-}
-
-/* mantém o estilo original do botão Loja */
-.tab-store {
-  background: linear-gradient(120deg,#1e121f 60%,#3d214d 100%);
-  border: 2px dashed var(--accent-purple);
-  color: var(--accent-purple);
-  font-weight:700;
-  padding:10px 24px;
-  border-radius:16px;
-  box-shadow:0 0 18px rgba(168,85,247,0.3);
-  cursor:pointer;
-  transition:transform .2s;
-}
-
-.tab-store:hover { transform: scale(1.05); }
-
-    /*— Conteúdo principal (Left - Center - Right) —*/
+    /* — Conteúdo principal — */
     .content-container {
       display: flex;
       width: 100%;
       min-height: 580px;
     }
 
-    /*  – Left Panel */ 
+    /* — Left Panel — */
     .left-panel {
       flex: 0 0 260px;
       background: var(--panel-bg);
-      border-right: 2px solid rgba(168, 85, 247, 0.33);
+      border-right: 2px solid rgba(168,85,247,0.33);
       display: flex;
       flex-direction: column;
-      padding: 28px 20px 20px 20px;
+      padding: 28px 20px;
       gap: 24px;
     }
-
-    /*  – Center Panel */ 
-    .center-panel {
-      flex: 1 1 auto;
-      background: var(--dark-bg);
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      position: relative;
-    }
-
-    .avatar-placeholder {
-      width: 380px;
-      height: 520px;
-      border-radius: 12px;
-      background: linear-gradient(120deg, #1e121f 65%, #3d214d 100%);
-      border: 3px dashed var(--slot-border);
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      color: var(--accent-purple);
-      font-size: 2.2rem;
-      font-weight: 700;
-      text-shadow: 0 0 24px rgba(168, 85, 247, 0.6);
-    }
-
-    /*  – Right Panel */ 
-    .right-panel {
-      flex: 0 0 320px;
-      background: var(--panel-bg);
-      border-left: 2px solid rgba(168, 85, 247, 0.33);
-      display: flex;
-      flex-direction: column;
-      padding: 24px 16px 16px 16px;
-      gap: 20px;
-      position: relative;
-    }
-
-    /*— Left Panes —*/
     .pane-overview,
     .pane-inventory,
     .pane-equipment {
@@ -205,20 +120,12 @@
     .pane-equipment.active {
       display: flex;
     }
-
-    /*— Quick Info & Bars —*/
     .left-title {
       font-size: 1.4rem;
       font-weight: 700;
       color: var(--accent-purple);
-      text-shadow: 0 0 8px rgba(168, 85, 247, 0.7);
+      text-shadow: 0 0 8px rgba(168,85,247,0.7);
       margin-bottom: 12px;
-    }
-    .left-text {
-      font-size: 1rem;
-      line-height: 1.4;
-      color: var(--text-light);
-      opacity: 0.95;
     }
     .info-row {
       display: flex;
@@ -228,13 +135,15 @@
       color: var(--text-gray);
       margin-bottom: 6px;
     }
-    .info-label {
-      color: var(--text-light);
-    }
+    .info-label { color: var(--text-light); }
+    .left-text { font-size: 1rem; line-height: 1.4; opacity: 0.95; }
+
+    /* — Barras de progresso — */
     .bar-container {
       width: 100%;
-      height: 10px;
+      height: 12px;
       background: var(--bar-bg);
+      border: 2px solid #333;
       border-radius: 6px;
       overflow: hidden;
       margin-top: 4px;
@@ -243,741 +152,381 @@
       height: 100%;
       background: var(--bar-fill);
       border-radius: 6px 0 0 6px;
-      width: 0%;
+      box-shadow: inset 0 0 6px #000;
       transition: width 0.4s;
+      width: 0%;
     }
 
-    /*— Inventory Tabs & Grid —*/
-    .inv-categories {
-      display: flex;
-      gap: 12px;
-      overflow-x: auto;
-      padding-bottom: 8px;
+    /* — Filtro de Inventário — */
+    .inventory-filter {
+      display: none;
+      flex-wrap: wrap;
+      gap: 8px;
+      justify-content: center;
+      padding: 12px 0;
+      background: var(--panel-bg);
+      border-bottom: 2px solid rgba(168,85,247,0.33);
     }
-    .inv-cat-tab {
-      flex: 0 0 auto;
+    .filter-btn {
       background: var(--panel-bg);
       border: 2px solid var(--accent-purple);
       color: var(--text-light);
       padding: 6px 12px;
-      border-radius: 12px;
-      font-size: 0.95rem;
-      font-weight: 600;
+      border-radius: 8px;
       cursor: pointer;
       transition: background 0.2s, box-shadow 0.2s;
-      white-space: nowrap;
     }
-    .inv-cat-tab.active {
+    .filter-btn.active {
       background: var(--accent-purple);
-      box-shadow: 0 0 12px rgba(168, 85, 247, 0.6);
       color: #fff;
+      box-shadow: 0 0 8px rgba(168,85,247,0.6);
+    }
+
+    /* — Center Panel — */
+    .center-panel {
+      flex: 1;
+      background: var(--dark-bg);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      position: relative;
+    }
+    .avatar-armor-container { display: flex; align-items: center; gap: 16px; }
+    .armor-side { display: none; flex-direction: column; gap: 8px; }
+    .avatar-placeholder {
+      width: 380px; height: 520px;
+      border-radius: 12px;
+      background: linear-gradient(120deg,#1e121f 65%,#3d214d 100%);
+      border: 3px dashed var(--slot-border);
+      display: flex; align-items: center; justify-content: center;
+      font-size: 2.2rem; font-weight: 700; color: var(--accent-purple);
+      text-shadow: 0 0 24px rgba(168,85,247,0.6);
+    }
+
+    /* — Right Panel — */
+    .right-panel {
+      flex: 0 0 320px;
+      background: var(--panel-bg);
+      border-left: 2px solid rgba(168,85,247,0.33);
+      display: flex;
+      flex-direction: column;
+      padding: 24px 16px;
+      gap: 20px;
+    }
+    .pane-overview-right,
+    .pane-inventory-right,
+    .pane-equipment-right {
+      display: none;
+      flex-direction: column;
+      gap: 12px;
+    }
+    .pane-overview-right.active,
+    .pane-inventory-right.active,
+    .pane-equipment-right.active {
+      display: flex;
     }
     .inv-grid {
       display: grid;
-      grid-template-columns: repeat(2, 1fr);
+      grid-template-columns: repeat(2,1fr);
       gap: 12px;
-      padding-right: 4px;
       max-height: 360px;
       overflow-y: auto;
     }
-    .inv-slot {
-      width: 100%;
-      aspect-ratio: 1 / 1;
+    .inv-slot, .equip-slot {
       background: var(--slot-bg);
       border: 2px dashed var(--slot-border);
       border-radius: 8px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      color: var(--accent-purple);
-      font-size: 1.1rem;
-      opacity: 0.4;
-      cursor: default;
+      display: flex; align-items: center; justify-content: center;
+      color: var(--accent-purple); cursor: default;
     }
-    .inv-empty-label {
-      font-size: 0.95rem;
-      color: var(--text-gray);
-      text-align: center;
-      margin-top: 12px;
-      opacity: 0.8;
+    .inv-slot { width:100%; aspect-ratio:1; font-size:1.1rem; opacity:0.4; }
+    .equip-slot { width:64px; height:64px; font-size:1.2rem; opacity:0.5; }
+
+    .equip-slots { display:flex; gap:12px; flex-wrap:wrap; }
+    .backpack-grid { display:grid; grid-template-columns:repeat(6,1fr); gap:8px; }
+
+    /* — Scrollbar estilizada — */
+    ::-webkit-scrollbar { width:6px; height:6px; }
+    ::-webkit-scrollbar-track { background:rgba(50,30,60,0.3); border-radius:3px; }
+    ::-webkit-scrollbar-thumb { background:var(--accent-purple); border-radius:3px; }
+
+    /* — Responsividade — */
+    @media(max-width:1024px){
+      .left-panel{flex:0 0 240px; padding:20px 16px}
+      .avatar-placeholder{width:300px;height:420px}
+      .right-panel{flex:0 0 280px; padding:20px 12px}
+    }
+    @media(max-width:720px){
+      .tabs-container{flex-wrap:wrap; gap:12px}
+      .content-container{flex-direction:column}
+      .left-panel,.right-panel{border:none; border-bottom:2px solid rgba(168,85,247,0.33)}
+      .avatar-placeholder{width:240px;height:340px}
+      .backpack-grid{grid-template-columns:repeat(3,1fr); gap:4px}
+      .equip-slot{width:32px;height:32px}
+      .armor-side{gap:4px}
     }
 
-    /*— Equipment Slots —*/
-    .equip-section {
-      display: flex;
-      flex-direction: column;
-      gap: 8px;
+    /* — Partículas de fundo — */
+    .particle-bg-canvas {
+      position: fixed; top:0; left:0;
+      width:100vw; height:100vh;
+      z-index:-1; pointer-events:none; opacity:0.6;
     }
-    .equip-title {
-      font-size: 1.1rem;
-      font-weight: 700;
-      color: var(--accent-purple);
-    }
-    .equip-slots {
-      display: flex;
-      gap: 12px;
-      flex-wrap: wrap;
-    }
-    .equip-slot {
-      width: 64px;
-      height: 64px;
-      background: var(--slot-bg);
-      border: 2px dashed var(--slot-border);
-      border-radius: 8px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      color: var(--accent-purple);
-      font-size: 1.2rem;
-      opacity: 0.5;
-      cursor: default;
-    }
-
-    /*— Scrollbar customizada —*/
-    ::-webkit-scrollbar {
-      width: 6px;
-      height: 6px;
-    }
-    ::-webkit-scrollbar-track {
-      background: rgba(50, 30, 60, 0.3);
-      border-radius: 3px;
-    }
-    ::-webkit-scrollbar-thumb {
-      background: var(--accent-purple);
-      border-radius: 3px;
-    }
-
-    /*— Responsividade —*/
-    @media (max-width: 1024px) {
-      .left-panel {
-        flex: 0 0 240px;
-        padding: 20px 16px 16px 16px;
-      }
-      .avatar-placeholder {
-        width: 300px;
-        height: 420px;
-      }
-      .right-panel {
-        flex: 0 0 280px;
-        padding: 20px 12px 12px 12px;
-      }
-    }
-    @media (max-width: 720px) {
-      .tabs-container {
-        flex-wrap: wrap;
-        gap: 12px;
-      }
-      .content-container {
-        flex-direction: column;
-      }
-      .left-panel,
-      .right-panel {
-        flex: 0 0 auto;
-        border: none;
-        border-bottom: 2px solid rgba(168, 85, 247, 0.33);
-      }
-      .left-panel {
-        padding: 16px 12px 12px 12px;
-      }
-      .right-panel {
-        padding: 16px 12px 12px 12px;
-      }
-      .avatar-placeholder {
-        width: 240px;
-        height: 340px;
-      }
-    }
-/* centraliza Loja em linha própria */
-.store-row {
-  display: flex;
-  justify-content: center;
-  margin-top: 12px;
-}
-
-/* garante que abas ocupem só uma linha */
-.tabs-container {
-  display: flex;
-  gap: 12px;
-  flex-wrap: nowrap;
-}
-/* ============================= */
-/* Inventário: filtro e painel   */
-/* ============================= */
-.inventory-filter {
-  display: none;
-  flex-wrap: wrap;
-  gap: 8px;
-  justify-content: center;
-  padding: 12px 0;
-  background: var(--panel-bg);
-  border-bottom: 2px solid rgba(168,85,247,0.33);
-}
-.filter-btn {
-  background: var(--panel-bg);
-  border: 2px solid var(--accent-purple);
-  color: var(--text-light);
-  padding: 6px 12px;
-  border-radius: 8px;
-  cursor: pointer;
-  transition: background .2s, box-shadow .2s;
-}
-.filter-btn.active {
-  background: var(--accent-purple);
-  color: #fff;
-  box-shadow: 0 0 8px rgba(168,85,247,0.6);
-}
-/* Quando em Inventário, zera a altura mínima para não deixar gap */
-.content-container.inventory-active {
-  min-height: 0 !important;
-}
-/* Mochila em grid 6x3 */
-.backpack-grid {
-  display: grid;
-  grid-template-columns: repeat(6, 1fr);
-  gap: 8px;
-}
-
-/* Ajuste visual se quiser diferenciar slots da mochila */
-.backpack-grid .equip-slot {
-  opacity: 0.6;
-}
-/* === Avatar + Armadura alinhadas só no Equipamentos === */
-.center-panel {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-}
-.avatar-armor-container {
-  display: flex;
-  align-items: center;
-  gap: 16px;
-}
-.armor-side {
-  display: flex;
-  flex-direction: column;
-  gap: 8px;
-}
-/* Avatar no centro */
-.armor-left { margin-right: 16px; }
-.armor-right { margin-left: 16px; }
-
-@media (max-width: 720px) {
-  /* 1) Avatar + Armadura lado a lado, sem wrap */
-  .avatar-armor-container {
-    display: flex !important;
-    flex-wrap: nowrap !important;
-    gap: 4px !important;
-    justify-content: center !important;
-  }
-  .armor-side {
-    display: flex !important;
-    flex-direction: column !important;
-    gap: 4px !important;
-  }
-  .armor-side .equip-slot {
-    width: 28px !important;
-    height: 28px !important;
-  }
-
-  /* 2) Avatar menor para caber */
-  .avatar-placeholder {
-    width: 120px !important;
-    height: 160px !important;
-  }
-
-  /* 3) Mochila: 18 slots em 3 colunas, sem multiplicar */
-  .backpack-grid {
-    display: grid !important;
-    grid-template-columns: repeat(3, 1fr) !important;
-    gap: 4px !important;
-  }
-  .backpack-grid .equip-slot {
-    width: 32px !important;
-    height: 32px !important;
-  }
-}
-.particle-bg-canvas {
-  position: fixed;
-  top: 0;
-  left: 0;
-  z-index: -1; /* sempre atrás de todo conteúdo */
-  width: 100vw;
-  height: 100vh;
-  pointer-events: none;
-  opacity: 0.6; /* ajuste de intensidade */
-}
   </style>
 </head>
 <body>
-<canvas id="particle-bg" class="particle-bg-canvas"></canvas>
+  <canvas id="particle-bg" class="particle-bg-canvas"></canvas>
   <div class="ui-root">
-  <div class="tabs-container-wrapper">
-    <!-- Abas principais -->
-    <div class="tabs-container scroll-x">
-      <button class="tab active" data-tab="overview">Overview</button>
-      <button class="tab" data-tab="inventory">Inventário</button>
-      <button class="tab" data-tab="equipment">Equipamento</button>
-    </div>
-    <div class="store-row">
-      <button class="tab-store" onclick="location.href='store.html'">⛩ Loja</button>
-    </div>
-  </div>
+    <div class="tabs-container-wrapper">
+      <div class="tabs-container">
+        <button class="tab active" data-tab="overview">Overview</button>
+        <button class="tab" data-tab="inventory">Inventário</button>
+        <button class="tab" data-tab="equipment">Equipamento</button>
+      </div>
+      <div class="store-row">
+        <button class="tab-store" onclick="location.href='store.html'">⛩ Loja</button>
       </div>
     </div>
-
     <div class="content-container">
+      <!-- Left Panel -->
       <div class="left-panel">
         <div class="pane-overview active">
           <div class="left-title">Overview</div>
           <div class="info-row">
             <span class="info-label">Nome:</span>
-            <span id="nome-personagem">Ghoul Pionkim <button class="edit-button" onclick="editarNome()">✎</button></span>
+            <span id="nome-label">Ghoul Pionkim</span>
+            <button id="editar-nome">✎</button>
           </div>
-          <div class="info-row">
-            <span class="info-label">Classe:</span><span>Portador das Sombras</span>
-          </div>
-          <div class="info-row">
-            <span class="info-label">Facção:</span><span>Noctis Ordinem</span>
-          </div>
-          <div class="info-row" style="margin-top:16px;">
-            <span class="info-label">Despertar Vitalista</span>
+          <div class="info-row"><span class="info-label">Classe:</span><span>Portador das Sombras</span></div>
+          <div class="info-row"><span class="info-label">Facção:</span><span>Noctis Ordinem</span></div>
+          <div class="info-row" style="margin-top:16px">
+            <span class="info-label">Despertar Vitalista:</span>
             <span id="valor-despertar">128.000 / 1.000.000</span>
           </div>
-          <div class="bar-container" style="height:12px;border:2px solid #333;background:#000;">
-            <div class="bar-fill" id="barra-despertar"
-                 style="background:linear-gradient(90deg,red,orange,yellow,green,cyan,blue,violet);width:12.8%;box-shadow:inset 0 0 6px #000;">
-            </div>
+          <div class="bar-container">
+            <div class="bar-fill" id="barra-despertar" style="width:12.8%; background:linear-gradient(90deg,red,orange,yellow,green,cyan,blue,violet)"></div>
           </div>
-
-          <div class="quick-info-title">Atributos</div>
-          <div class="info-row"><span class="info-label">Nível</span><span id="nivel">3</span></div>
-          <div class="bar-container" style="height:12px;border:2px solid #333;background:#000;">
-            <div class="bar-fill" id="xp-bar" style="background:#4CAF50;width:67%;box-shadow:inset 0 0 6px #000;"></div>
-          </div>
-          <div class="info-row" style="margin-top:12px;">
-            <span class="info-label">Pontos Disponíveis</span><span id="pontos-disponiveis">4</span>
-          </div>
-
-          <!-- Força -->
-          <div class="info-row">
-            <span class="info-label">Força</span>
-            <span id="valor-forca">1 <button class="add-point" data-add="forca">+</button></span>
-          </div>
-          <div class="bar-container"><div class="bar-fill" id="barra-forca" style="width:60%;"></div></div>
-
-          <!-- Destreza -->
-          <div class="info-row">
-            <span class="info-label">Destreza</span>
-            <span id="valor-destreza">1 <button class="add-point" data-add="destreza">+</button></span>
-          </div>
-          <div class="bar-container"><div class="bar-fill" id="barra-destreza" style="width:50%;"></div></div>
-
-          <!-- Constituição -->
-          <div class="info-row">
-            <span class="info-label">Constituição</span>
-            <span id="valor-constituicao">1 <button class="add-point" data-add="constituicao">+</button></span>
-          </div>
-          <div class="bar-container"><div class="bar-fill" id="barra-constituicao" style="width:65%;"></div></div>
-
-          <!-- Inteligência -->
-          <div class="info-row">
-            <span class="info-label">Inteligência</span>
-            <span id="valor-inteligencia">1 <button class="add-point" data-add="inteligencia">+</button></span>
-          </div>
-          <div class="bar-container"><div class="bar-fill" id="barra-inteligencia" style="width:45%;"></div></div>
-
-          <!-- Espírito -->
-          <div class="info-row">
-            <span class="info-label">Espírito</span>
-            <span id="valor-espirito">1 <button class="add-point" data-add="espirito">+</button></span>
-          </div>
-          <div class="bar-container"><div class="bar-fill" id="barra-espirito" style="width:40%;"></div></div>
-
-          <!-- Carisma -->
-          <div class="info-row">
-            <span class="info-label">Carisma</span>
-            <span id="valor-carisma">1 <button class="add-point" data-add="carisma">+</button></span>
-          </div>
-          <div class="bar-container"><div class="bar-fill" id="barra-carisma" style="width:30%;"></div></div>
+          <div class="left-title">Atributos</div>
+          <div class="info-row"><span class="info-label">Nível:</span><span id="nivel">3</span></div>
+          <div class="bar-container"><div class="bar-fill" id="xp-bar" style="width:67%; background:#4CAF50"></div></div>
+          <div class="info-row"><span class="info-label">Pontos Disponíveis:</span><span id="pontos-disponiveis">4</span></div>
+          <!-- Atributos individuais -->
+          <div class="info-row"><span class="info-label">Força:</span><span id="valor-forca">1 <button data-add="forca">+</button></span></div>
+          <div class="bar-container"><div class="bar-fill" id="barra-forca" style="width:60%"></div></div>
+          <div class="info-row"><span class="info-label">Destreza:</span><span id="valor-destreza">1 <button data-add="destreza">+</button></span></div>
+          <div class="bar-container"><div class="bar-fill" id="barra-destreza" style="width:50%"></div></div>
+          <div class="info-row"><span class="info-label">Constituição:</span><span id="valor-constituicao">1 <button data-add="constituicao">+</button></span></div>
+          <div class="bar-container"><div class="bar-fill" id="barra-constituicao" style="width:65%"></div></div>
+          <div class="info-row"><span class="info-label">Inteligência:</span><span id="valor-inteligencia">1 <button data-add="inteligencia">+</button></span></div>
+          <div class="bar-container"><div class="bar-fill" id="barra-inteligencia" style="width:45%"></div></div>
+          <div class="info-row"><span class="info-label">Espírito:</span><span id="valor-espirito">1 <button data-add="espirito">+</button></span></div>
+          <div class="bar-container"><div class="bar-fill" id="barra-espirito" style="width:40%"></div></div>
+          <div class="info-row"><span class="info-label">Carisma:</span><span id="valor-carisma">1 <button data-add="carisma">+</button></span></div>
+          <div class="bar-container"><div class="bar-fill" id="barra-carisma" style="width:30%"></div></div>
         </div>
-
         <div class="pane-inventory">
           <div class="left-title">Inventário</div>
-          <div class="left-text">
-            Aqui você vê tudo o que já comprou.<br />
-            Clique em cada categoria para ver os slots.
-          </div>
+          <div class="left-text">Aqui você vê tudo o que já comprou.<br>Clique em cada categoria para ver os slots.</div>
         </div>
-<!-- Dentro da .left-panel, depois da .pane-inventory -->
-<div class="inventory-filter" style="display:none;">
-  <button class="filter-btn active" data-filter="all">Tudo</button>
-  <button class="filter-btn" data-filter="anime">Animes</button>
-  <button class="filter-btn" data-filter="manga">Mangás</button>
-  <button class="filter-btn" data-filter="ebook">eBooks</button>
-  <button class="filter-btn" data-filter="mentor">Mentorias</button>
-  <button class="filter-btn" data-filter="extras">Extras</button>
-</div>
-
+        <div class="inventory-filter hidden">
+          <button class="filter-btn active" data-filter="all">Tudo</button>
+          <button class="filter-btn" data-filter="anime">Animes</button>
+          <button class="filter-btn" data-filter="manga">Mangás</button>
+          <button class="filter-btn" data-filter="ebook">eBooks</button>
+          <button class="filter-btn" data-filter="mentor">Mentorias</button>
+          <button class="filter-btn" data-filter="extras">Extras</button>
+        </div>
         <div class="pane-equipment">
           <div class="left-title">Equipamento</div>
-          <div class="left-text">
-            Seus slots de equipamento aparecem aqui.
+          <div class="left-text">Seus slots de equipamento aparecem aqui.</div>
+        </div>
+      </div>
+
+      <!-- Center Panel -->
+      <div class="center-panel hidden">
+        <div class="avatar-armor-container">
+          <div class="armor-side armor-left">
+            <div class="equip-slot"></div><div class="equip-slot"></div><div class="equip-slot"></div><div class="equip-slot"></div>
+          </div>
+          <div class="avatar-panel">
+            <div class="avatar-placeholder">Avatar</div>
+          </div>
+          <div class="armor-side armor-right">
+            <div class="equip-slot"></div><div class="equip-slot"></div><div class="equip-slot"></div><div class="equip-slot"></div>
           </div>
         </div>
       </div>
 
-<!-- === INÍCIO center-panel para Equipamentos === -->
-<div class="center-panel">
-  <div class="avatar-armor-container">
-    <!-- Armadura Esquerda (oculto por padrão) -->
-    <div class="armor-side armor-left" style="display:none;">
-      <div class="equip-slot"></div>
-      <div class="equip-slot"></div>
-      <div class="equip-slot"></div>
-      <div class="equip-slot"></div>
-    </div>
-
-    <!-- Avatar -->
-    <div class="avatar-panel">
-      <div class="avatar-placeholder">Avatar</div>
-    </div>
-
-    <!-- Armadura Direita (oculto por padrão) -->
-    <div class="armor-side armor-right" style="display:none;">
-      <div class="equip-slot"></div>
-      <div class="equip-slot"></div>
-      <div class="equip-slot"></div>
-      <div class="equip-slot"></div>
-    </div>
-  </div>
-
-  <!-- Filtro: aparece somente quando passo para “Inventário” -->
-  <div class="inventory-filter" style="display:none;">
-    <button class="filter-btn active" data-filter="all">Tudo</button>
-    <button class="filter-btn" data-filter="anime">Animes</button>
-    <button class="filter-btn" data-filter="manga">Mangás</button>
-    <button class="filter-btn" data-filter="ebook">eBooks</button>
-    <button class="filter-btn" data-filter="mentor">Mentorias</button>
-    <button class="filter-btn" data-filter="extras">Extras</button>
-  </div>
-</div>
- 
+      <!-- Right Panel -->
       <div class="right-panel">
-        <div class="pane-overview-right"></div>
-
-       <div class="pane-inventory-right" style="display:none;flex-direction:column;gap:12px;">
-  <!-- CAT 1: Animes -->
-  <div class="category-container" data-category="anime">
-    <div class="equip-title" style="font-size:1.05rem;margin-bottom:8px;">Animes</div>
-    <div class="inv-grid">
-      <div class="inv-slot"></div><div class="inv-slot"></div>
-      <div class="inv-slot"></div><div class="inv-slot"></div>
-    </div>
-    <div class="inv-empty-label">Sem Animes comprados.</div>
-  </div>
-
-  <!-- CAT 2: Mangás -->
-  <div class="category-container" data-category="manga">
-    <div class="equip-title" style="font-size:1.05rem;margin-bottom:8px;">Mangás</div>
-    <div class="inv-grid">
-      <div class="inv-slot"></div><div class="inv-slot"></div>
-      <div class="inv-slot"></div><div class="inv-slot"></div>
-    </div>
-    <div class="inv-empty-label">Sem Mangás comprados.</div>
-  </div>
-
-  <!-- CAT 3: eBooks -->
-  <div class="category-container" data-category="ebook">
-    <div class="equip-title" style="font-size:1.05rem;margin-bottom:8px;">eBooks</div>
-    <div class="inv-grid">
-      <div class="inv-slot"></div><div class="inv-slot"></div>
-      <div class="inv-slot"></div><div class="inv-slot"></div>
-    </div>
-    <div class="inv-empty-label">Sem eBooks comprados.</div>
-  </div>
-
-  <!-- CAT 4: Mentorias -->
-  <div class="category-container" data-category="mentor">
-    <div class="equip-title" style="font-size:1.05rem;margin-bottom:8px;">Mentorias</div>
-    <div class="inv-grid">
-      <div class="inv-slot"></div><div class="inv-slot"></div>
-      <div class="inv-slot"></div><div class="inv-slot"></div>
-    </div>
-    <div class="inv-empty-label">Sem Mentorias compradas.</div>
-  </div>
-
-  
-  
-  <!-- CAT 5: Extras -->
-  <div class="category-container" data-category="extras">
-    <div class="equip-title" style="font-size:1.05rem;margin-bottom:8px;">Extras</div>
-    <div class="inv-grid">
-      <div class="inv-slot"></div><div class="inv-slot"></div>
-      <div class="inv-slot"></div><div class="inv-slot"></div>
-    </div>
-    <div class="inv-empty-label">Sem Extras disponíveis.</div>
-  </div>
-</div>
-
-        <div class="pane-equipment-right" style="display:none;flex-direction:column;gap:16px;">
-
-  <!-- Primary + Secondary + Tools -->
-  <div class="equip-section">
-    <div class="equip-title">Primary Slot</div>
-    <div class="equip-slots">
-      <div class="equip-slot"></div>
-    </div>
-  </div>
-  <div class="equip-section">
-    <div class="equip-title">Secondary Slot</div>
-    <div class="equip-slots">
-      <div class="equip-slot"></div>
-    </div>
-  </div>
-  <div class="equip-section">
-    <div class="equip-title">Tools</div>
-    <div class="equip-slots">
-      <div class="equip-slot"></div>
-      <div class="equip-slot"></div>
-      <div class="equip-slot"></div>
+        <div class="pane-overview-right active"></div>
+        <div class="pane-inventory-right">
+          <!-- Categorias de inventário -->
+          <div class="category-container" data-category="anime">
+            <div class="left-title">Animes</div>
+            <div class="inv-grid"><div class="inv-slot"></div><div class="inv-slot"></div><div class="inv-slot"></div><div class="inv-slot"></div></div>
+            <div class="inv-empty-label">Sem Animes comprados.</div>
+          </div>
+          <div class="category-container" data-category="manga">
+            <div class="left-title">Mangás</div>
+            <div class="inv-grid"><div class="inv-slot"></div><div class="inv-slot"></div><div class="inv-slot"></div><div class="inv-slot"></div></div>
+            <div class="inv-empty-label">Sem Mangás comprados.</div>
+          </div>
+          <div class="category-container" data-category="ebook">
+            <div class="left-title">eBooks</div>
+            <div class="inv-grid"><div class="inv-slot"></div><div class="inv-slot"></div><div class="inv-slot"></div><div class="inv-slot"></div></div>
+            <div class="inv-empty-label">Sem eBooks comprados.</div>
+          </div>
+          <div class="category-container" data-category="mentor">
+            <div class="left-title">Mentorias</div>
+            <div class="inv-grid"><div class="inv-slot"></div><div class="inv-slot"></div><div class="inv-slot"></div><div class="inv-slot"></div></div>
+            <div class="inv-empty-label">Sem Mentorias compradas.</div>
+          </div>
+          <div class="category-container" data-category="extras">
+            <div class="left-title">Extras</div>
+            <div class="inv-grid"><div class="inv-slot"></div><div class="inv-slot"></div><div class="inv-slot"></div><div class="inv-slot"></div></div>
+            <div class="inv-empty-label">Sem Extras disponíveis.</div>
+          </div>
+        </div>
+        <div class="pane-equipment-right">
+          <!-- Seções de equipamento -->
+          <div class="equip-section"><div class="left-title">Primary Slot</div><div class="equip-slots"><div class="equip-slot"></div></div></div>
+          <div class="equip-section"><div class="left-title">Secondary Slot</div><div class="equip-slots"><div class="equip-slot"></div></div></div>
+          <div class="equip-section"><div class="left-title">Tools</div><div class="equip-slots"><div class="equip-slot"></div><div class="equip-slot"></div><div class="equip-slot"></div></div></div>
+          <div class="equip-section"><div class="left-title">Skill</div><div class="equip-slots"><div class="equip-slot"></div><div class="equip-slot"></div><div class="equip-slot"></div><div class="equip-slot"></div></div></div>
+          <div class="equip-section"><div class="left-title">Armadura Esquerda</div><div class="equip-slots"><div class="equip-slot"></div><div class="equip-slot"></div><div class="equip-slot"></div><div class="equip-slot"></div></div></div>
+          <div class="equip-section"><div class="left-title">Armadura Direita</div><div class="equip-slots"><div class="equip-slot"></div><div class="equip-slot"></div><div class="equip-slot"></div><div class="equip-slot"></div></div></div>
+          <div class="equip-section"><div class="left-title">Acessórios</div><div class="equip-slots"><div class="equip-slot"></div><div class="equip-slot"></div><div class="equip-slot"></div></div></div>
+          <div class="equip-section"><div class="left-title">Troféus</div><div class="equip-slots"><div class="equip-slot"></div><div class="equip-slot"></div><div class="equip-slot"></div></div></div>
+          <div class="equip-section"><div class="left-title">Insígnias</div><div class="equip-slots"><div class="equip-slot"></div></div></div>
+          <div class="equip-section"><div class="left-title">Mochila</div><div class="backpack-grid">
+            <!-- 18 slots -->
+            <div class="equip-slot"></div><div class="equip-slot"></div><div class="equip-slot"></div><div class="equip-slot"></div><div class="equip-slot"></div><div class="equip-slot"></div>
+            <div class="equip-slot"></div><div class="equip-slot"></div><div class="equip-slot"></div><div class="equip-slot"></div><div class="equip-slot"></div><div class="equip-slot"></div>
+            <div class="equip-slot"></div><div class="equip-slot"></div><div class="equip-slot"></div><div class="equip-slot"></div><div class="equip-slot"></div><div class="equip-slot"></div>
+          </div></div>
+        </div>
+      </div>
     </div>
   </div>
 
-  <!-- Skill (agora 4 slots) -->
-  <div class="equip-section">
-    <div class="equip-title">Skill</div>
-    <div class="equip-slots">
-      <div class="equip-slot"></div>
-      <div class="equip-slot"></div>
-      <div class="equip-slot"></div>
-      <div class="equip-slot"></div>
-    </div>
-  </div>
-
-  <!-- Armadura: 4 slots à esquerda e 4 à direita -->
-  <div class="equip-section">
-    <div class="equip-title">Armadura Esquerda</div>
-    <div class="equip-slots">
-      <div class="equip-slot"></div>
-      <div class="equip-slot"></div>
-      <div class="equip-slot"></div>
-      <div class="equip-slot"></div>
-    </div>
-  </div>
-  <div class="equip-section">
-    <div class="equip-title">Armadura Direita</div>
-    <div class="equip-slots">
-      <div class="equip-slot"></div>
-      <div class="equip-slot"></div>
-      <div class="equip-slot"></div>
-      <div class="equip-slot"></div>
-    </div>
-  </div>
-
-  <!-- Seções adicionais -->
-  <div class="equip-section">
-    <div class="equip-title">Acessórios</div>
-    <div class="equip-slots">
-      <div class="equip-slot"></div>
-      <div class="equip-slot"></div>
-      <div class="equip-slot"></div>
-    </div>
-  </div>
-  <div class="equip-section">
-    <div class="equip-title">Troféus</div>
-    <div class="equip-slots">
-      <div class="equip-slot"></div>
-      <div class="equip-slot"></div>
-      <div class="equip-slot"></div>
-    </div>
-  </div>
-  <div class="equip-section">
-    <div class="equip-title">Insígnias</div>
-    <div class="equip-slots">
-      <div class="equip-slot"></div>
-    </div>
-  </div>
-
-  <!-- Mochila: 18 slots em grid estilo inventory -->
-  <div class="equip-section">
-    <div class="equip-title">Mochila</div>
-    <div class="backpack-grid">
-      <!-- 18 slots -->
-      <div class="equip-slot"></div><div class="equip-slot"></div><div class="equip-slot"></div>
-      <div class="equip-slot"></div><div class="equip-slot"></div><div class="equip-slot"></div>
-      <div class="equip-slot"></div><div class="equip-slot"></div><div class="equip-slot"></div>
-      <div class="equip-slot"></div><div class="equip-slot"></div><div class="equip-slot"></div>
-      <div class="equip-slot"></div><div class="equip-slot"></div><div class="equip-slot"></div>
-      <div class="equip-slot"></div><div class="equip-slot"></div><div class="equip-slot"></div>
-    </div>
-  </div>
-
-</div>
-
+  <!-- — JavaScript — -->
   <script>
-  // Seletores principais
-  const tabs             = document.querySelectorAll(".tab");
-  const leftPanes        = { overview:    document.querySelector(".pane-overview"),
-                             inventory:   document.querySelector(".pane-inventory"),
-                             equipment:   document.querySelector(".pane-equipment") };
-  const rightPanes       = { overview:    document.querySelector(".pane-overview-right"),
-                             inventory:   document.querySelector(".pane-inventory-right"),
-                             equipment:   document.querySelector(".pane-equipment-right") };
-  const centerPanel      = document.querySelector(".center-panel");
-  const contentContainer = document.querySelector(".content-container");
-  const invFilter        = document.querySelector(".inventory-filter");
-  const avatarPanel      = document.querySelector(".avatar-panel");
-  const armorSides       = document.querySelectorAll(".armor-side");
-  const filterBtns       = document.querySelectorAll(".filter-btn");
-  const catContainers    = document.querySelectorAll(".category-container");
+    // Seletores
+    const tabs = document.querySelectorAll('.tabs-container .tab');
+    const leftPanes = {
+      overview: document.querySelector('.pane-overview'),
+      inventory: document.querySelector('.pane-inventory'),
+      equipment: document.querySelector('.pane-equipment')
+    };
+    const rightPanes = {
+      overview: document.querySelector('.pane-overview-right'),
+      inventory: document.querySelector('.pane-inventory-right'),
+      equipment: document.querySelector('.pane-equipment-right')
+    };
+    const contentContainer = document.querySelector('.content-container');
+    const invFilter = document.querySelector('.inventory-filter');
+    const avatarPanel = document.querySelector('.avatar-panel');
+    const armorSides = document.querySelectorAll('.armor-side');
+    const filterBtns = document.querySelectorAll('.filter-btn');
+    const catContainers = document.querySelectorAll('.category-container');
 
-  // Função de clique em abas
-  function handleTabClick(tab) {
-    const key = tab.dataset.tab;
-    const isInv = key === "inventory";
-    const isEq  = key === "equipment";
+    // Função de troca de aba
+    function handleTabClick(tab) {
+      const key = tab.dataset.tab;
+      const isInv = key === 'inventory';
+      const isEq  = key === 'equipment';
 
-    // 1) ativa aba
-    tabs.forEach(t => t.classList.toggle("active", t === tab));
+      tabs.forEach(t => t.classList.toggle('active', t===tab));
+      Object.entries(leftPanes).forEach(([k,p]) => p.classList.toggle('active', k===key));
+      Object.entries(rightPanes).forEach(([k,p]) => p.classList.toggle('active', k===key));
 
-    // 2) mostra leftPane
-    Object.entries(leftPanes).forEach(([k,p]) => 
-      p.classList.toggle("active", k === key)
-    );
+      // mostra/oculta centro e filtro
+      document.querySelector('.center-panel').classList.toggle('hidden', isInv);
+      invFilter.classList.toggle('hidden', !isInv);
+      contentContainer.classList.toggle('inventory-active', isInv);
+      avatarPanel?.classList.toggle('hidden', isInv);
 
-    // 3) mostra rightPane
-    Object.entries(rightPanes).forEach(([k,p]) => 
-      p.style.display = (k === key ? "flex" : "none")
-    );
+      // armadura só em Equipamento
+      armorSides.forEach(el => el.style.display = isEq?'flex':'none');
 
-    // 4) mostra/oculta center-panel
-    centerPanel.style.display = (isInv ? "none" : "flex");
-    contentContainer.classList.toggle("inventory-active", isInv);
-
-    // 5) filtro vs avatar
-    invFilter.style.display   = (isInv ? "flex" : "none");
-    avatarPanel.style.display = (isInv ? "none" : "flex");
-
-    // 6) armadura apenas no equipamento
-    armorSides.forEach(el => 
-      el.style.display = (isEq ? "flex" : "none")
-    );
-
-    // 7) reset de filtro ao entrar no Inventário
-    if (isInv) {
-      filterBtns.forEach(b => b.classList.remove("active"));
-      filterBtns[0].classList.add("active");
-      catContainers.forEach(c => c.style.display = "block");
+      if(isInv){
+        filterBtns.forEach(b=>b.classList.remove('active'));
+        filterBtns[0].classList.add('active');
+        catContainers.forEach(c=>c.style.display='block');
+      }
     }
-  }
+    tabs.forEach(tab => tab.addEventListener('click',()=>handleTabClick(tab)));
 
-  // Associa click às tabs
-  tabs.forEach(tab => 
-    tab.addEventListener("click", () => handleTabClick(tab))
-  );
-
-  // Lógica de filtragem
-  filterBtns.forEach(btn =>
-    btn.addEventListener("click", () => {
-      filterBtns.forEach(b => b.classList.remove("active"));
-      btn.classList.add("active");
+    // Filtro
+    filterBtns.forEach(btn => btn.addEventListener('click', () => {
+      filterBtns.forEach(b=>b.classList.remove('active'));
+      btn.classList.add('active');
       const f = btn.dataset.filter;
-      catContainers.forEach(c => {
-        c.style.display = (f === "all" || c.dataset.category === f) 
-                          ? "block" 
-                          : "none";
-      });
-    })
-  );
-
-  // Código de atributos permanece intacto
-  const estado = {
-    nivel: 3, xp: 6700, xpMax: 10000, pontosDisponiveis: 4,
-    atributos: { forca:1, destreza:1, constituicao:1, inteligencia:1, espirito:1, carisma:1 }
-  };
-  function atualizarInterface() {
-    document.getElementById("nivel").textContent = estado.nivel;
-    document.getElementById("xp-bar").style.width = (estado.xp/estado.xpMax)*100 + "%";
-    document.getElementById("pontos-disponiveis").textContent = estado.pontosDisponiveis;
-    for (let k in estado.atributos) {
-      const span = document.getElementById("valor-"+k);
-      if (!span) continue;
-      span.childNodes[0].nodeValue = estado.atributos[k] + " ";
-      document.getElementById("barra-"+k).style.width =
-        Math.min((estado.atributos[k]/20)*100,100) + "%";
-    }
-  }
-  function adicionarPonto(at) {
-    if (estado.pontosDisponiveis<=0) return;
-    estado.atributos[at]++; estado.pontosDisponiveis--; atualizarInterface();
-  }
-  function editarNome() {
-    const span = document.getElementById("nome-personagem");
-    const atual = span.textContent.replace("✎","").trim();
-    const novo  = prompt("Digite um novo nome:", atual);
-    if (novo && novo.length>1) {
-      span.innerHTML = novo + ' <button class="edit-button" onclick="editarNome()">✎</button>';
-    }
-  }
-  function ganharXp(q) { estado.xp+=q;
-    while (estado.xp>=estado.xpMax) {
-      estado.xp-=estado.xpMax; estado.nivel++; estado.pontosDisponiveis+=2;
-    }
-    atualizarInterface();
-  }
-
-  // Inicialização
-  document.addEventListener("DOMContentLoaded", () => {
-    document.querySelectorAll("[data-add]").forEach(btn =>
-      btn.addEventListener("click", ()=> adicionarPonto(btn.dataset.add))
-    );
-    atualizarInterface();
-    const init = document.querySelector(".tab.active");
-    if (init) handleTabClick(init);
-  });
-  const canvas = document.getElementById("particle-bg");
-  const ctx = canvas.getContext("2d");
-
-  let particles = [];
-
-  function resizeCanvas() {
-    canvas.width = window.innerWidth;
-    canvas.height = window.innerHeight;
-  }
-  window.addEventListener("resize", resizeCanvas);
-  resizeCanvas();
-
-  function createParticles() {
-    const total = 60;
-    particles = Array.from({ length: total }, () => ({
-      x: Math.random() * canvas.width,
-      y: Math.random() * canvas.height,
-      r: Math.random() * 1.5 + 0.5,
-      dx: (Math.random() - 0.5) * 0.3,
-      dy: (Math.random() - 0.5) * 0.3,
-      alpha: Math.random() * 0.5 + 0.3
+      catContainers.forEach(c=>c.style.display = (f==='all'||c.dataset.category===f)?'block':'none');
     }));
-  }
 
-  function animateParticles() {
-    ctx.clearRect(0, 0, canvas.width, canvas.height);
-    for (let p of particles) {
-      p.x += p.dx;
-      p.y += p.dy;
+    // Editar nome
+    const nomeLabel = document.getElementById('nome-label');
+    document.getElementById('editar-nome').addEventListener('click', () => {
+      const novo = prompt('Digite um novo nome:', nomeLabel.textContent);
+      if(novo?.trim()) nomeLabel.textContent = novo.trim();
+    });
 
-      if (p.x < 0 || p.x > canvas.width) p.dx *= -1;
-      if (p.y < 0 || p.y > canvas.height) p.dy *= -1;
-
-      ctx.beginPath();
-      ctx.arc(p.x, p.y, p.r, 0, 2 * Math.PI);
-      ctx.fillStyle = `rgba(168, 85, 247, ${p.alpha})`;
-      ctx.fill();
+    // Atributos
+    const estado = { nivel:3, xp:6700, xpMax:10000, pontosDisponiveis:4,
+      atributos:{ forca:1, destreza:1, constituicao:1, inteligencia:1, espirito:1, carisma:1 }
+    };
+    function atualizarInterface(){
+      document.getElementById('nivel').textContent = estado.nivel;
+      document.getElementById('xp-bar').style.width = (estado.xp/estado.xpMax)*100+'%';
+      document.getElementById('pontos-disponiveis').textContent = estado.pontosDisponiveis;
+      for(let k in estado.atributos){
+        const span = document.getElementById('valor-'+k);
+        span.firstChild.nodeValue = estado.atributos[k]+' ';
+        document.getElementById('barra-'+k).style.width = Math.min((estado.atributos[k]/20)*100,100)+'%';
+      }
     }
-    requestAnimationFrame(animateParticles);
-  }
+    document.querySelectorAll('[data-add]').forEach(btn => btn.addEventListener('click', () => {
+      if(estado.pontosDisponiveis>0){
+        estado.atributos[btn.dataset.add]++; estado.pontosDisponiveis--; atualizarInterface();
+      }
+    }));
+    document.addEventListener('DOMContentLoaded', ()=>{
+      atualizarInterface();
+      handleTabClick(document.querySelector('.tab.active'));
+    });
 
-  createParticles();
-  animateParticles();
-</script>
+    // Partículas de fundo
+    const canvas = document.getElementById('particle-bg'), ctx = canvas.getContext('2d');
+    let particles = [], animId;
+    function resizeCanvas(){
+      cancelAnimationFrame(animId);
+      canvas.width = innerWidth; canvas.height = innerHeight;
+      createParticles(); animateParticles();
+    }
+    window.addEventListener('resize', resizeCanvas);
+    function createParticles(){
+      particles = Array.from({length:60},()=>{
+        return { x:Math.random()*canvas.width, y:Math.random()*canvas.height,
+                 r:Math.random()*1.5+0.5, dx:(Math.random()-0.5)*0.3,
+                 dy:(Math.random()-0.5)*0.3, alpha:Math.random()*0.5+0.3 };
+      });
+    }
+    function animateParticles(){
+      ctx.clearRect(0,0,canvas.width,canvas.height);
+      particles.forEach(p=>{
+        p.x+=p.dx; p.y+=p.dy;
+        if(p.x<0||p.x>canvas.width) p.dx*=-1;
+        if(p.y<0||p.y>canvas.height) p.dy*=-1;
+        ctx.beginPath();
+        ctx.arc(p.x,p.y,p.r,0,2*Math.PI);
+        ctx.fillStyle = `rgba(168,85,247,${p.alpha})`;
+        ctx.fill();
+      });
+      animId = requestAnimationFrame(animateParticles);
+    }
+    resizeCanvas();
+  </script>
 </body>
 </html>
