@@ -1,113 +1,264 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>NoHeroes | Inventário (RPG UI Skeleton)</title>
-  <link href="https://fonts.googleapis.com/css2?family=Unbounded:wght@400;700&display=swap" rel="stylesheet">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>NoHeroes | Inventário (RPG UI Enhanced)</title>
+  <link
+    href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700&family=Share+Tech+Mono&display=swap"
+    rel="stylesheet"
+  />
   <style>
-    /* — Variáveis de cor — */
+    /*— Variáveis de cor —*/
     :root {
-      --dark-bg: #181022;
-      --panel-bg: rgba(36,20,52,0.83);
-      --panel-border: #a855f7bb;
-      --accent-purple: #a855f7;
-      --accent-purple-dark: #6d28d9;
-      --text-light: #f4f4f4;
-      --text-gray: #c4b5fd;
-      --slot-bg: rgba(50,30,60,0.35);
-      --slot-border: #a855f799;
-      --bar-bg: #2a213c;
-      --bar-fill: #a855f7cc;
+      --dark-bg: #0d0a13;
+      --panel-bg: rgba(20, 10, 30, 0.7); /* Mais escuro, levemente transparente */
+      --panel-border: #8a2be2; /* Azul violeta mais vívido */
+      --accent-purple: #9333ea; /* Roxo vibrante */
+      --accent-purple-dark: #6b21a8; /* Roxo mais escuro */
+      --text-light: #e0e7ff; /* Azul claro para texto principal */
+      --text-gray: #a78bfa; /* Roxo claro para texto secundário */
+      --slot-bg: rgba(30, 15, 45, 0.5); /* Fundo de slot mais transparente */
+      --slot-border: #a78bfa; /* Borda de slot */
+      --bar-bg: #1e1231; /* Fundo da barra */
+      --bar-fill: #9333ea; /* Preenchimento da barra */
+
+      /* Novas variáveis para o efeito de vidro/neomorfismo */
+      --glass-blur: 10px;
+      --glass-border: rgba(167, 139, 250, 0.3); /* Borda mais suave para vidro */
+      --glass-shadow-light: rgba(167, 139, 250, 0.15);
+      --glass-shadow-dark: rgba(0, 0, 0, 0.3);
     }
-    /* — Reset básico — */
-    *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
-    html, body {
+
+    /*— Reset básico e body —*/
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    html,
+    body {
       height: 100%;
-      background: linear-gradient(120deg, var(--dark-bg) 60%, #2a213c 100%);
+      background: var(--dark-bg);
       color: var(--text-light);
-      font-family: 'Unbounded', sans-serif;
+      font-family: "Share Tech Mono", monospace; /* Fonte tech para corpo */
       overflow-x: hidden;
       overflow-y: auto;
+      display: flex; /* Para centralizar o ui-root */
+      justify-content: center;
+      align-items: center;
+      min-height: 100vh; /* Garante que o corpo ocupe a altura total */
     }
-    .hidden { display: none !important; }
 
-    /* — Container raiz — */
+    /*— Container raiz (HUD Principal) —*/
     .ui-root {
-      max-width: 1240px;
+      max-width: 1400px; /* Maior para mais espaço */
+      width: 95%; /* Responsivo */
       margin: 24px auto;
-      border-radius: 16px;
+      border-radius: 20px; /* Bordas mais arredondadas */
       background: var(--panel-bg);
       border: 2px solid var(--panel-border);
-      box-shadow: 0 0 48px rgba(168,85,247,0.3), 0 2px 12px #000;
+      box-shadow: 0 0 60px var(--accent-purple), 0 0 20px rgba(0, 0, 0, 0.5);
+      overflow: hidden;
       display: flex;
       flex-direction: column;
-      overflow: hidden;
+      backdrop-filter: blur(var(--glass-blur)); /* Efeito de vidro */
+      -webkit-backdrop-filter: blur(var(--glass-blur));
+      border: 1px solid var(--glass-border);
     }
 
-    /* — Abas do topo — */
+    /*— Abas do topo wrapper —*/
+    .tabs-container-wrapper {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 12px; /* Aumenta o espaçamento */
+      padding: 16px 0; /* Aumenta o padding */
+      border-bottom: 1px solid var(--glass-border); /* Borda sutil */
+    }
+
+    /*— Abas do topo —*/
     .tabs-container {
       display: flex;
-      gap: 16px;
-      padding: 12px 20px;
-      border-bottom: 2px solid rgba(168,85,247,0.33);
+      background: none;
+      padding: 0 24px; /* Mais espaço nas laterais */
+      gap: 30px; /* Aumenta o espaçamento entre as abas */
+      font-size: 1.2rem; /* Maior fonte */
+      font-weight: 700;
       overflow-x: auto;
       scroll-snap-type: x proximity;
+      color: var(--text-gray); /* Cor padrão das abas */
     }
-    .tabs-container::-webkit-scrollbar { display: none; }
-    .tabs-container { scrollbar-width: none; }
+    .tabs-container::-webkit-scrollbar {
+      display: none;
+    }
+    .tabs-container {
+      scrollbar-width: none;
+    }
+
+    /*— Aba padrão —*/
     .tab {
-      background: var(--panel-bg);
-      border: 2px solid var(--accent-purple);
-      color: var(--text-light);
-      padding: 6px 16px;
-      border-radius: 12px;
-      font-size: 0.95rem;
+      flex: 0 0 auto;
+      background: transparent;
+      border: none; /* Remove borda para o efeito de vidro */
+      color: var(--text-gray);
+      padding: 8px 20px; /* Mais padding */
+      border-radius: 16px; /* Mais arredondado */
+      font-size: 1rem;
       font-weight: 600;
       cursor: pointer;
+      transition: all 0.3s ease; /* Transição mais suave */
       white-space: nowrap;
-      transition: background 0.2s, box-shadow 0.2s;
+      position: relative;
+      overflow: hidden;
+      text-transform: uppercase; /* Mais RPG */
     }
+
+    .tab::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: linear-gradient(45deg, rgba(147, 51, 234, 0.2), rgba(167, 139, 250, 0.2));
+      transform: translateX(-100%);
+      transition: transform 0.3s ease;
+      z-index: -1;
+      border-radius: 16px;
+      border: 1px solid rgba(167, 139, 250, 0.2);
+    }
+
+    .tab.active::before {
+      transform: translateX(0);
+    }
+
     .tab.active {
-      background: linear-gradient(90deg, var(--accent-purple-dark) 60%, var(--accent-purple) 100%);
-      box-shadow: 0 2px 18px rgba(168,85,247,0.5);
-      color: #fff;
+      color: var(--text-light);
+      text-shadow: 0 0 8px var(--accent-purple);
+      box-shadow: 0 0 25px var(--accent-purple);
     }
+
+    .tab:hover:not(.active) {
+      color: var(--accent-purple);
+      text-shadow: 0 0 5px var(--accent-purple);
+      transform: translateY(-2px);
+    }
+
     .store-row {
       display: flex;
       justify-content: center;
       padding: 8px 0 16px;
     }
+
+    /* mantém o estilo original do botão Loja */
     .tab-store {
-      background: linear-gradient(120deg,#1e121f 60%,#3d214d 100%);
+      background: linear-gradient(120deg, #1e121f 60%, #3d214d 100%);
       border: 2px dashed var(--accent-purple);
       color: var(--accent-purple);
       font-weight: 700;
-      padding: 10px 24px;
-      border-radius: 16px;
-      box-shadow: 0 0 18px rgba(168,85,247,0.3);
+      padding: 12px 28px; /* Mais padding */
+      border-radius: 18px; /* Mais arredondado */
+      box-shadow: 0 0 25px rgba(168, 85, 247, 0.4); /* Sombra mais forte */
       cursor: pointer;
-      transition: transform 0.2s;
+      transition: transform 0.2s, box-shadow 0.2s;
+      text-transform: uppercase;
+      letter-spacing: 1px;
     }
-    .tab-store:hover { transform: scale(1.05); }
 
-    /* — Conteúdo principal — */
+    .tab-store:hover {
+      transform: scale(1.05);
+      box-shadow: 0 0 35px var(--accent-purple), 0 0 15px var(--panel-border);
+    }
+
+    /*— Conteúdo principal (Left - Center - Right) —*/
     .content-container {
       display: flex;
       width: 100%;
-      min-height: 580px;
+      min-height: 650px; /* Aumenta a altura mínima */
+      position: relative; /* Para posicionar o avatar de forma absoluta */
     }
 
-    /* — Left Panel — */
+    /* Painel Base para Left, Center, Right */
+    .panel-base {
+      background: rgba(36, 20, 52, 0.4); /* Base mais transparente */
+      backdrop-filter: blur(var(--glass-blur));
+      -webkit-backdrop-filter: blur(var(--glass-blur));
+      border: 1px solid var(--glass-border);
+      border-radius: 12px;
+      box-shadow: inset 0 0 10px rgba(167, 139, 250, 0.1), 0 0 15px var(--glass-shadow-dark);
+      padding: 20px; /* Padding padrão */
+      margin: 15px; /* Espaçamento entre os painéis */
+    }
+
+    /*  – Left Panel */
     .left-panel {
-      flex: 0 0 260px;
-      background: var(--panel-bg);
-      border-right: 2px solid rgba(168,85,247,0.33);
+      flex: 0 0 320px; /* Largura fixa maior */
       display: flex;
       flex-direction: column;
-      padding: 28px 20px;
-      gap: 24px;
+      gap: 28px; /* Mais espaço entre seções */
+      padding: 30px 25px 25px 25px; /* Mais padding */
+      background: transparent; /* Será sobreposto pelo painel base */
+      border-right: none;
     }
+    .left-panel > div {
+      @extend .panel-base; /* Aplica estilos base aos painéis internos */
+      padding: 20px;
+      border-radius: 12px;
+    }
+
+    /*  – Center Panel */
+    .center-panel {
+      flex: 1 1 auto;
+      background: transparent; /* Transparente para o fundo animado */
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      position: relative;
+      overflow: hidden;
+      margin: 0; /* Remove margem extra */
+    }
+
+    .avatar-placeholder {
+      width: 420px; /* Avatar maior */
+      height: 580px;
+      border-radius: 16px; /* Mais arredondado */
+      background: linear-gradient(120deg, #1a0e26 65%, #381a4d 100%);
+      border: 3px dashed var(--accent-purple);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: var(--accent-purple);
+      font-family: "Orbitron", sans-serif; /* Fonte RPG */
+      font-size: 2.8rem; /* Maior fonte */
+      font-weight: 700;
+      text-shadow: 0 0 30px rgba(147, 51, 234, 0.8); /* Sombra mais intensa */
+      box-shadow: 0 0 40px rgba(147, 51, 234, 0.4), inset 0 0 20px rgba(167, 139, 250, 0.1);
+      transition: all 0.5s ease;
+    }
+    .avatar-placeholder:hover {
+      transform: scale(1.02);
+      box-shadow: 0 0 50px var(--accent-purple), inset 0 0 30px rgba(167, 139, 250, 0.2);
+    }
+
+    /*  – Right Panel */
+    .right-panel {
+      flex: 0 0 360px; /* Largura fixa maior */
+      display: flex;
+      flex-direction: column;
+      gap: 24px; /* Mais espaço entre seções */
+      padding: 30px 25px 25px 25px; /* Mais padding */
+      background: transparent; /* Será sobreposto pelo painel base */
+      border-left: none;
+    }
+    .right-panel > div {
+      @extend .panel-base; /* Aplica estilos base aos painéis internos */
+      padding: 20px;
+      border-radius: 12px;
+    }
+
+    /*— Left Panes —*/
     .pane-overview,
     .pane-inventory,
     .pane-equipment {
@@ -120,166 +271,500 @@
     .pane-equipment.active {
       display: flex;
     }
+
+    /*— Quick Info & Bars —*/
     .left-title {
-      font-size: 1.4rem;
+      font-family: "Orbitron", sans-serif; /* Fonte RPG */
+      font-size: 1.6rem; /* Maior */
       font-weight: 700;
       color: var(--accent-purple);
-      text-shadow: 0 0 8px rgba(168,85,247,0.7);
-      margin-bottom: 12px;
+      text-shadow: 0 0 10px rgba(147, 51, 234, 0.8); /* Sombra mais intensa */
+      margin-bottom: 15px;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+    }
+    .left-text {
+      font-size: 1rem;
+      line-height: 1.5;
+      color: var(--text-light);
+      opacity: 0.9;
+      margin-bottom: 10px;
     }
     .info-row {
       display: flex;
       justify-content: space-between;
+      align-items: center;
       font-size: 1rem;
       font-weight: 600;
       color: var(--text-gray);
-      margin-bottom: 6px;
+      margin-bottom: 8px;
+      padding: 4px 0;
+      border-bottom: 1px dashed rgba(167, 139, 250, 0.2); /* Linha divisória */
     }
-    .info-label { color: var(--text-light); }
-    .left-text { font-size: 1rem; line-height: 1.4; opacity: 0.95; }
+    .info-row:last-child {
+      border-bottom: none;
+    }
+    .info-label {
+      color: var(--text-light);
+      text-transform: uppercase;
+    }
+    .edit-button, .add-point {
+      background: transparent;
+      border: 1px solid var(--accent-purple);
+      color: var(--accent-purple);
+      border-radius: 5px;
+      padding: 2px 6px;
+      margin-left: 8px;
+      cursor: pointer;
+      font-size: 0.85rem;
+      transition: all 0.2s ease;
+      font-family: "Share Tech Mono", monospace;
+    }
+    .edit-button:hover, .add-point:hover {
+      background: var(--accent-purple);
+      color: #fff;
+      box-shadow: 0 0 10px var(--accent-purple);
+    }
 
-    /* — Barras de progresso — */
     .bar-container {
       width: 100%;
-      height: 12px;
+      height: 14px; /* Mais alto */
       background: var(--bar-bg);
-      border: 2px solid #333;
-      border-radius: 6px;
+      border-radius: 8px; /* Mais arredondado */
       overflow: hidden;
-      margin-top: 4px;
+      margin-top: 6px;
+      border: 1px solid rgba(167, 139, 250, 0.3);
+      box-shadow: inset 0 0 5px rgba(0, 0, 0, 0.5);
     }
     .bar-fill {
       height: 100%;
       background: var(--bar-fill);
-      border-radius: 6px 0 0 6px;
-      box-shadow: inset 0 0 6px #000;
-      transition: width 0.4s;
+      border-radius: 8px 0 0 8px;
       width: 0%;
+      transition: width 0.4s ease-out; /* Transição mais suave */
+      box-shadow: 0 0 10px var(--accent-purple); /* Sombra no preenchimento */
     }
 
-    /* — Filtro de Inventário — */
+    .quick-info-title {
+      font-family: "Orbitron", sans-serif;
+      font-size: 1.2rem;
+      font-weight: 700;
+      color: var(--text-light);
+      text-transform: uppercase;
+      margin-top: 25px;
+      padding-bottom: 8px;
+      border-bottom: 2px solid rgba(147, 51, 234, 0.4);
+    }
+
+    /*— Inventory Tabs & Grid —*/
+    .inv-categories {
+      display: flex;
+      gap: 12px;
+      overflow-x: auto;
+      padding-bottom: 8px;
+      margin-bottom: 15px;
+      border-bottom: 1px dashed rgba(167, 139, 250, 0.2);
+    }
+    .inv-cat-tab {
+      flex: 0 0 auto;
+      background: rgba(30, 15, 45, 0.6);
+      border: 1px solid var(--accent-purple);
+      color: var(--text-light);
+      padding: 8px 16px;
+      border-radius: 12px;
+      font-size: 0.9rem;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.2s ease;
+      white-space: nowrap;
+      text-transform: uppercase;
+    }
+    .inv-cat-tab.active {
+      background: var(--accent-purple);
+      box-shadow: 0 0 15px rgba(147, 51, 234, 0.7);
+      color: #fff;
+      transform: translateY(-2px);
+    }
+    .inv-cat-tab:hover:not(.active) {
+      background: rgba(147, 51, 234, 0.3);
+      border-color: var(--text-gray);
+    }
+    .inv-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr); /* 3 colunas para inventário */
+      gap: 15px; /* Aumenta o espaçamento */
+      padding-right: 8px;
+      max-height: 400px; /* Altura máxima para scroll */
+      overflow-y: auto;
+      margin-top: 10px;
+    }
+    .inv-slot {
+      width: 100%;
+      aspect-ratio: 1 / 1;
+      background: var(--slot-bg);
+      border: 2px dashed var(--slot-border);
+      border-radius: 10px; /* Mais arredondado */
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: var(--accent-purple);
+      font-size: 1.3rem; /* Maior */
+      opacity: 0.5;
+      cursor: default;
+      transition: all 0.2s ease;
+      box-shadow: inset 0 0 8px rgba(0, 0, 0, 0.4);
+    }
+    .inv-slot:hover {
+      opacity: 1;
+      border-style: solid;
+      box-shadow: 0 0 15px var(--accent-purple), inset 0 0 10px rgba(167, 139, 250, 0.2);
+    }
+    .inv-empty-label {
+      font-size: 0.9rem;
+      color: var(--text-gray);
+      text-align: center;
+      margin-top: 20px;
+      opacity: 0.7;
+      font-style: italic;
+    }
+
+    /*— Equipment Slots —*/
+    .equip-section {
+      display: flex;
+      flex-direction: column;
+      gap: 10px; /* Espaçamento */
+    }
+    .equip-title {
+      font-family: "Orbitron", sans-serif;
+      font-size: 1.2rem;
+      font-weight: 700;
+      color: var(--accent-purple);
+      text-shadow: 0 0 8px rgba(147, 51, 234, 0.5);
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      margin-bottom: 5px;
+    }
+    .equip-slots {
+      display: flex;
+      gap: 12px;
+      flex-wrap: wrap;
+    }
+    .equip-slot {
+      width: 70px; /* Slots maiores */
+      height: 70px;
+      background: var(--slot-bg);
+      border: 2px dashed var(--slot-border);
+      border-radius: 10px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: var(--accent-purple);
+      font-size: 1.3rem;
+      opacity: 0.6;
+      cursor: default;
+      transition: all 0.2s ease;
+      box-shadow: inset 0 0 8px rgba(0, 0, 0, 0.4);
+    }
+    .equip-slot:hover {
+      opacity: 1;
+      border-style: solid;
+      box-shadow: 0 0 15px var(--accent-purple), inset 0 0 10px rgba(167, 139, 250, 0.2);
+    }
+
+    /*— Scrollbar customizada —*/
+    ::-webkit-scrollbar {
+      width: 8px; /* Mais largo */
+      height: 8px;
+    }
+    ::-webkit-scrollbar-track {
+      background: rgba(30, 15, 45, 0.5);
+      border-radius: 4px;
+    }
+    ::-webkit-scrollbar-thumb {
+      background: var(--accent-purple);
+      border-radius: 4px;
+      transition: background 0.2s;
+    }
+    ::-webkit-scrollbar-thumb:hover {
+      background: var(--panel-border);
+    }
+
+    /* centraliza Loja em linha própria */
+    .store-row {
+      display: flex;
+      justify-content: center;
+      margin-top: 15px; /* Mais margem */
+    }
+
+    /* garante que abas ocupem só uma linha */
+    .tabs-container {
+      display: flex;
+      gap: 15px;
+      flex-wrap: nowrap;
+    }
+    /* ============================= */
+    /* Inventário: filtro e painel   */
+    /* ============================= */
     .inventory-filter {
       display: none;
       flex-wrap: wrap;
-      gap: 8px;
+      gap: 10px; /* Mais espaço */
       justify-content: center;
-      padding: 12px 0;
-      background: var(--panel-bg);
-      border-bottom: 2px solid rgba(168,85,247,0.33);
+      padding: 15px 0;
+      background: transparent; /* Integrado com o UI */
+      border-bottom: 1px solid var(--glass-border);
     }
     .filter-btn {
-      background: var(--panel-bg);
-      border: 2px solid var(--accent-purple);
-      color: var(--text-light);
-      padding: 6px 12px;
-      border-radius: 8px;
+      background: var(--slot-bg);
+      border: 1px solid var(--accent-purple);
+      color: var(--text-gray);
+      padding: 8px 18px; /* Mais padding */
+      border-radius: 10px;
       cursor: pointer;
-      transition: background 0.2s, box-shadow 0.2s;
+      transition: all 0.2s, box-shadow 0.2s;
+      text-transform: uppercase;
+      font-size: 0.95rem;
     }
     .filter-btn.active {
       background: var(--accent-purple);
       color: #fff;
-      box-shadow: 0 0 8px rgba(168,85,247,0.6);
+      box-shadow: 0 0 12px rgba(147, 51, 234, 0.7);
+      transform: translateY(-2px);
+    }
+    .filter-btn:hover:not(.active) {
+      background: rgba(147, 51, 234, 0.2);
+      border-color: var(--text-light);
+    }
+    /* Quando em Inventário, zera a altura mínima para não deixar gap */
+    .content-container.inventory-active {
+      min-height: 0 !important;
+      align-items: flex-start; /* Alinha no topo quando em inventário */
+      flex-direction: column; /* Reverte para coluna no inventário */
     }
 
-    /* — Center Panel — */
+    /* Mochila em grid 6x3 */
+    .backpack-grid {
+      display: grid;
+      grid-template-columns: repeat(6, 1fr);
+      gap: 10px; /* Aumenta o espaçamento */
+    }
+
+    /* Ajuste visual se quiser diferenciar slots da mochila */
+    .backpack-grid .equip-slot {
+      opacity: 0.7;
+    }
+    .backpack-grid .equip-slot:hover {
+      opacity: 1;
+    }
+
+    /* === Avatar + Armadura alinhadas só no Equipamentos === */
     .center-panel {
-      flex: 1;
-      background: var(--dark-bg);
       display: flex;
+      flex-direction: column;
       align-items: center;
       justify-content: center;
-      position: relative;
+      flex: 1; /* Ocupa espaço disponível */
     }
-    .avatar-armor-container { display: flex; align-items: center; gap: 16px; }
-    .armor-side { display: none; flex-direction: column; gap: 8px; }
-    .avatar-placeholder {
-      width: 380px; height: 520px;
-      border-radius: 12px;
-      background: linear-gradient(120deg,#1e121f 65%,#3d214d 100%);
-      border: 3px dashed var(--slot-border);
-      display: flex; align-items: center; justify-content: center;
-      font-size: 2.2rem; font-weight: 700; color: var(--accent-purple);
-      text-shadow: 0 0 24px rgba(168,85,247,0.6);
+    .avatar-armor-container {
+      display: flex;
+      align-items: center;
+      gap: 20px; /* Aumenta o espaçamento */
+      transition: all 0.5s ease;
     }
-
-    /* — Right Panel — */
-    .right-panel {
-      flex: 0 0 320px;
-      background: var(--panel-bg);
-      border-left: 2px solid rgba(168,85,247,0.33);
+    .armor-side {
       display: flex;
       flex-direction: column;
-      padding: 24px 16px;
-      gap: 20px;
+      gap: 10px; /* Espaçamento entre slots de armadura */
     }
-    .pane-overview-right,
-    .pane-inventory-right,
-    .pane-equipment-right {
-      display: none;
-      flex-direction: column;
-      gap: 12px;
-    }
-    .pane-overview-right.active,
-    .pane-inventory-right.active,
-    .pane-equipment-right.active {
-      display: flex;
-    }
-    .inv-grid {
-      display: grid;
-      grid-template-columns: repeat(2,1fr);
-      gap: 12px;
-      max-height: 360px;
-      overflow-y: auto;
-    }
-    .inv-slot, .equip-slot {
-      background: var(--slot-bg);
-      border: 2px dashed var(--slot-border);
-      border-radius: 8px;
-      display: flex; align-items: center; justify-content: center;
-      color: var(--accent-purple); cursor: default;
-    }
-    .inv-slot { width:100%; aspect-ratio:1; font-size:1.1rem; opacity:0.4; }
-    .equip-slot { width:64px; height:64px; font-size:1.2rem; opacity:0.5; }
+    /* Avatar no centro */
+    .armor-left { margin-right: 20px; }
+    .armor-right { margin-left: 20px; }
 
-    .equip-slots { display:flex; gap:12px; flex-wrap:wrap; }
-    .backpack-grid { display:grid; grid-template-columns:repeat(6,1fr); gap:8px; }
-
-    /* — Scrollbar estilizada — */
-    ::-webkit-scrollbar { width:6px; height:6px; }
-    ::-webkit-scrollbar-track { background:rgba(50,30,60,0.3); border-radius:3px; }
-    ::-webkit-scrollbar-thumb { background:var(--accent-purple); border-radius:3px; }
-
-    /* — Responsividade — */
-    @media(max-width:1024px){
-      .left-panel{flex:0 0 240px; padding:20px 16px}
-      .avatar-placeholder{width:300px;height:420px}
-      .right-panel{flex:0 0 280px; padding:20px 12px}
-    }
-    @media(max-width:720px){
-      .tabs-container{flex-wrap:wrap; gap:12px}
-      .content-container{flex-direction:column}
-      .left-panel,.right-panel{border:none; border-bottom:2px solid rgba(168,85,247,0.33)}
-      .avatar-placeholder{width:240px;height:340px}
-      .backpack-grid{grid-template-columns:repeat(3,1fr); gap:4px}
-      .equip-slot{width:32px;height:32px}
-      .armor-side{gap:4px}
-    }
-
-    /* — Partículas de fundo — */
     .particle-bg-canvas {
-      position: fixed; top:0; left:0;
-      width:100vw; height:100vh;
-      z-index:-1; pointer-events:none; opacity:0.6;
+      position: fixed;
+      top: 0;
+      left: 0;
+      z-index: -1; /* sempre atrás de todo conteúdo */
+      width: 100vw;
+      height: 100vh;
+      pointer-events: none;
+      opacity: 0.4; /* ajuste de intensidade */
     }
+
+    /*— Responsividade —*/
+    @media (max-width: 1200px) {
+      .ui-root {
+        width: 98%;
+        margin: 15px auto;
+      }
+      .left-panel {
+        flex: 0 0 280px;
+        padding: 25px 20px;
+      }
+      .avatar-placeholder {
+        width: 360px;
+        height: 500px;
+        font-size: 2.5rem;
+      }
+      .right-panel {
+        flex: 0 0 320px;
+        padding: 25px 20px;
+      }
+    }
+
+    @media (max-width: 992px) {
+      .content-container {
+        flex-direction: column;
+        min-height: auto;
+      }
+      .left-panel,
+      .right-panel {
+        flex: 0 0 auto;
+        border: none;
+        padding: 20px 15px;
+      }
+      .left-panel > div, .right-panel > div {
+        margin: 10px;
+      }
+      .center-panel {
+        min-height: 400px; /* Garante altura para o avatar */
+      }
+      .avatar-placeholder {
+        width: 300px;
+        height: 420px;
+        font-size: 2rem;
+      }
+      .tabs-container {
+        flex-wrap: wrap;
+        justify-content: center;
+        gap: 15px;
+        padding: 0 15px;
+      }
+      .inv-grid {
+        grid-template-columns: repeat(2, 1fr); /* 2 colunas em telas menores */
+      }
+      .backpack-grid {
+        grid-template-columns: repeat(4, 1fr); /* 4 colunas em telas menores */
+      }
+      .equip-slot {
+        width: 60px;
+        height: 60px;
+      }
+    }
+
+    @media (max-width: 768px) {
+      .ui-root {
+        border-radius: 10px;
+        margin: 10px auto;
+      }
+      .tabs-container-wrapper {
+        padding: 10px 0;
+      }
+      .tabs-container {
+        gap: 10px;
+        font-size: 1.1rem;
+      }
+      .tab {
+        padding: 6px 15px;
+        font-size: 0.9rem;
+        border-radius: 10px;
+      }
+      .tab-store {
+        padding: 10px 20px;
+        font-size: 0.95rem;
+        border-radius: 14px;
+      }
+      .left-title {
+        font-size: 1.4rem;
+      }
+      .left-text {
+        font-size: 0.9rem;
+      }
+      .info-row {
+        font-size: 0.95rem;
+      }
+      .bar-container {
+        height: 10px;
+      }
+      .inv-cat-tab, .filter-btn {
+        padding: 6px 12px;
+        font-size: 0.85rem;
+        border-radius: 8px;
+      }
+      .inv-grid {
+        gap: 10px;
+      }
+      .inv-slot {
+        width: 100%;
+        height: auto;
+        font-size: 1rem;
+      }
+      .equip-slot {
+        width: 50px;
+        height: 50px;
+        font-size: 1.1rem;
+      }
+      .equip-title {
+        font-size: 1rem;
+      }
+      .backpack-grid {
+        grid-template-columns: repeat(3, 1fr);
+      }
+    }
+
+    @media (max-width: 480px) {
+      .left-panel > div, .right-panel > div {
+        margin: 5px;
+        padding: 15px;
+      }
+      .tabs-container {
+        gap: 8px;
+        font-size: 1rem;
+      }
+      .tab {
+        padding: 5px 10px;
+        font-size: 0.8rem;
+      }
+      .tab-store {
+        padding: 8px 15px;
+        font-size: 0.85rem;
+      }
+      .left-title {
+        font-size: 1.2rem;
+        margin-bottom: 10px;
+      }
+      .avatar-placeholder {
+        width: 220px;
+        height: 300px;
+        font-size: 1.5rem;
+      }
+      .avatar-armor-container {
+        flex-direction: column; /* Pilha em telas pequenas */
+        gap: 10px;
+      }
+      .armor-left, .armor-right {
+        margin: 0;
+        flex-direction: row; /* Slots em linha */
+        flex-wrap: wrap;
+        justify-content: center;
+      }
+      .armor-side .equip-slot {
+        width: 40px;
+        height: 40px;
+      }
+      .backpack-grid {
+        grid-template-columns: repeat(2, 1fr); /* 2 colunas em telas muito pequenas */
+      }
+    }
+
   </style>
 </head>
 <body>
-  <canvas id="particle-bg" class="particle-bg-canvas"></canvas>
+<canvas id="particle-bg" class="particle-bg-canvas"></canvas>
   <div class="ui-root">
     <div class="tabs-container-wrapper">
       <div class="tabs-container">
-        <button class="tab active" data-tab="overview">Overview</button>
+        <button class="tab active" data-tab="overview">Visão Geral</button>
         <button class="tab" data-tab="inventory">Inventário</button>
         <button class="tab" data-tab="equipment">Equipamento</button>
       </div>
@@ -287,246 +772,500 @@
         <button class="tab-store" onclick="location.href='store.html'">⛩ Loja</button>
       </div>
     </div>
+
     <div class="content-container">
-      <!-- Left Panel -->
       <div class="left-panel">
         <div class="pane-overview active">
-          <div class="left-title">Overview</div>
+          <div class="left-title">Visão Geral</div>
           <div class="info-row">
             <span class="info-label">Nome:</span>
-            <span id="nome-label">Ghoul Pionkim</span>
-            <button id="editar-nome">✎</button>
+            <span id="nome-personagem">Ghoul Pionkim <button class="edit-button" onclick="editarNome()">✎</button></span>
           </div>
-          <div class="info-row"><span class="info-label">Classe:</span><span>Portador das Sombras</span></div>
-          <div class="info-row"><span class="info-label">Facção:</span><span>Noctis Ordinem</span></div>
-          <div class="info-row" style="margin-top:16px">
-            <span class="info-label">Despertar Vitalista:</span>
+          <div class="info-row">
+            <span class="info-label">Classe:</span><span>Portador das Sombras</span>
+          </div>
+          <div class="info-row">
+            <span class="info-label">Facção:</span><span>Noctis Ordinem</span>
+          </div>
+          <div class="info-row" style="margin-top:16px;">
+            <span class="info-label">Despertar Vitalista</span>
             <span id="valor-despertar">128.000 / 1.000.000</span>
           </div>
-          <div class="bar-container">
-            <div class="bar-fill" id="barra-despertar" style="width:12.8%; background:linear-gradient(90deg,red,orange,yellow,green,cyan,blue,violet)"></div>
+          <div class="bar-container" style="height:12px;border:2px solid #333;background:#000;">
+            <div class="bar-fill" id="barra-despertar"
+                 style="background:linear-gradient(90deg,red,orange,yellow,green,cyan,blue,violet);width:12.8%;box-shadow:inset 0 0 6px #000;">
+            </div>
           </div>
-          <div class="left-title">Atributos</div>
-          <div class="info-row"><span class="info-label">Nível:</span><span id="nivel">3</span></div>
-          <div class="bar-container"><div class="bar-fill" id="xp-bar" style="width:67%; background:#4CAF50"></div></div>
-          <div class="info-row"><span class="info-label">Pontos Disponíveis:</span><span id="pontos-disponiveis">4</span></div>
-          <!-- Atributos individuais -->
-          <div class="info-row"><span class="info-label">Força:</span><span id="valor-forca">1 <button data-add="forca">+</button></span></div>
-          <div class="bar-container"><div class="bar-fill" id="barra-forca" style="width:60%"></div></div>
-          <div class="info-row"><span class="info-label">Destreza:</span><span id="valor-destreza">1 <button data-add="destreza">+</button></span></div>
-          <div class="bar-container"><div class="bar-fill" id="barra-destreza" style="width:50%"></div></div>
-          <div class="info-row"><span class="info-label">Constituição:</span><span id="valor-constituicao">1 <button data-add="constituicao">+</button></span></div>
-          <div class="bar-container"><div class="bar-fill" id="barra-constituicao" style="width:65%"></div></div>
-          <div class="info-row"><span class="info-label">Inteligência:</span><span id="valor-inteligencia">1 <button data-add="inteligencia">+</button></span></div>
-          <div class="bar-container"><div class="bar-fill" id="barra-inteligencia" style="width:45%"></div></div>
-          <div class="info-row"><span class="info-label">Espírito:</span><span id="valor-espirito">1 <button data-add="espirito">+</button></span></div>
-          <div class="bar-container"><div class="bar-fill" id="barra-espirito" style="width:40%"></div></div>
-          <div class="info-row"><span class="info-label">Carisma:</span><span id="valor-carisma">1 <button data-add="carisma">+</button></span></div>
-          <div class="bar-container"><div class="bar-fill" id="barra-carisma" style="width:30%"></div></div>
+
+          <div class="quick-info-title">Atributos</div>
+          <div class="info-row"><span class="info-label">Nível</span><span id="nivel">3</span></div>
+          <div class="bar-container" style="height:12px;border:2px solid #333;background:#000;">
+            <div class="bar-fill" id="xp-bar" style="background:#4CAF50;width:67%;box-shadow:inset 0 0 6px #000;"></div>
+          </div>
+          <div class="info-row" style="margin-top:12px;">
+            <span class="info-label">Pontos Disponíveis</span><span id="pontos-disponiveis">4</span>
+          </div>
+
+          <div class="info-row">
+            <span class="info-label">Força</span>
+            <span id="valor-forca">1 <button class="add-point" data-add="forca">+</button></span>
+          </div>
+          <div class="bar-container"><div class="bar-fill" id="barra-forca" style="width:60%;"></div></div>
+
+          <div class="info-row">
+            <span class="info-label">Destreza</span>
+            <span id="valor-destreza">1 <button class="add-point" data-add="destreza">+</button></span>
+          </div>
+          <div class="bar-container"><div class="bar-fill" id="barra-destreza" style="width:50%;"></div></div>
+
+          <div class="info-row">
+            <span class="info-label">Constituição</span>
+            <span id="valor-constituicao">1 <button class="add-point" data-add="constituicao">+</button></span>
+          </div>
+          <div class="bar-container"><div class="bar-fill" id="barra-constituicao" style="width:65%;"></div></div>
+
+          <div class="info-row">
+            <span class="info-label">Inteligência</span>
+            <span id="valor-inteligencia">1 <button class="add-point" data-add="inteligencia">+</button></span>
+          </div>
+          <div class="bar-container"><div class="bar-fill" id="barra-inteligencia" style="width:45%;"></div></div>
+
+          <div class="info-row">
+            <span class="info-label">Espírito</span>
+            <span id="valor-espirito">1 <button class="add-point" data-add="espirito">+</button></span>
+          </div>
+          <div class="bar-container"><div class="bar-fill" id="barra-espirito" style="width:40%;"></div></div>
+
+          <div class="info-row">
+            <span class="info-label">Carisma</span>
+            <span id="valor-carisma">1 <button class="add-point" data-add="carisma">+</button></span>
+          </div>
+          <div class="bar-container"><div class="bar-fill" id="barra-carisma" style="width:30%;"></div></div>
         </div>
+
         <div class="pane-inventory">
           <div class="left-title">Inventário</div>
-          <div class="left-text">Aqui você vê tudo o que já comprou.<br>Clique em cada categoria para ver os slots.</div>
+          <div class="left-text">
+            Aqui você vê tudo o que já comprou.<br />
+            Clique em cada categoria para ver os slots.
+          </div>
         </div>
-        <div class="inventory-filter hidden">
-          <button class="filter-btn active" data-filter="all">Tudo</button>
-          <button class="filter-btn" data-filter="anime">Animes</button>
-          <button class="filter-btn" data-filter="manga">Mangás</button>
-          <button class="filter-btn" data-filter="ebook">eBooks</button>
-          <button class="filter-btn" data-filter="mentor">Mentorias</button>
-          <button class="filter-btn" data-filter="extras">Extras</button>
-        </div>
+
         <div class="pane-equipment">
           <div class="left-title">Equipamento</div>
-          <div class="left-text">Seus slots de equipamento aparecem aqui.</div>
-        </div>
-      </div>
-
-      <!-- Center Panel -->
-      <div class="center-panel hidden">
-        <div class="avatar-armor-container">
-          <div class="armor-side armor-left">
-            <div class="equip-slot"></div><div class="equip-slot"></div><div class="equip-slot"></div><div class="equip-slot"></div>
-          </div>
-          <div class="avatar-panel">
-            <div class="avatar-placeholder">Avatar</div>
-          </div>
-          <div class="armor-side armor-right">
-            <div class="equip-slot"></div><div class="equip-slot"></div><div class="equip-slot"></div><div class="equip-slot"></div>
+          <div class="left-text">
+            Seus slots de equipamento aparecem aqui.
           </div>
         </div>
       </div>
 
-      <!-- Right Panel -->
+<div class="center-panel">
+  <div class="avatar-armor-container">
+    <div class="armor-side armor-left" style="display:none;">
+      <div class="equip-slot"></div>
+      <div class="equip-slot"></div>
+      <div class="equip-slot"></div>
+      <div class="equip-slot"></div>
+    </div>
+
+    <div class="avatar-panel">
+      <div class="avatar-placeholder">Avatar</div>
+    </div>
+
+    <div class="armor-side armor-right" style="display:none;">
+      <div class="equip-slot"></div>
+      <div class="equip-slot"></div>
+      <div class="equip-slot"></div>
+      <div class="equip-slot"></div>
+    </div>
+  </div>
+
+  <div class="inventory-filter" style="display:none;">
+    <button class="filter-btn active" data-filter="all">Tudo</button>
+    <button class="filter-btn" data-filter="anime">Animes</button>
+    <button class="filter-btn" data-filter="manga">Mangás</button>
+    <button class="filter-btn" data-filter="ebook">eBooks</button>
+    <button class="filter-btn" data-filter="mentor">Mentorias</button>
+    <button class="filter-btn" data-filter="extras">Extras</button>
+  </div>
+</div>
+
       <div class="right-panel">
-        <div class="pane-overview-right active"></div>
-        <div class="pane-inventory-right">
-          <!-- Categorias de inventário -->
-          <div class="category-container" data-category="anime">
-            <div class="left-title">Animes</div>
-            <div class="inv-grid"><div class="inv-slot"></div><div class="inv-slot"></div><div class="inv-slot"></div><div class="inv-slot"></div></div>
-            <div class="inv-empty-label">Sem Animes comprados.</div>
+        <div class="pane-overview-right">
+          <div class="left-title">Informações Adicionais</div>
+          <div class="info-row">
+            <span class="info-label">HP:</span><span>100/100</span>
           </div>
-          <div class="category-container" data-category="manga">
-            <div class="left-title">Mangás</div>
-            <div class="inv-grid"><div class="inv-slot"></div><div class="inv-slot"></div><div class="inv-slot"></div><div class="inv-slot"></div></div>
-            <div class="inv-empty-label">Sem Mangás comprados.</div>
+          <div class="info-row">
+            <span class="info-label">MP:</span><span>50/50</span>
           </div>
-          <div class="category-container" data-category="ebook">
-            <div class="left-title">eBooks</div>
-            <div class="inv-grid"><div class="inv-slot"></div><div class="inv-slot"></div><div class="inv-slot"></div><div class="inv-slot"></div></div>
-            <div class="inv-empty-label">Sem eBooks comprados.</div>
+          <div class="info-row">
+            <span class="info-label">Ouro:</span><span>1.250g</span>
           </div>
-          <div class="category-container" data-category="mentor">
-            <div class="left-title">Mentorias</div>
-            <div class="inv-grid"><div class="inv-slot"></div><div class="inv-slot"></div><div class="inv-slot"></div><div class="inv-slot"></div></div>
-            <div class="inv-empty-label">Sem Mentorias compradas.</div>
+          <div class="info-row">
+            <span class="info-label">Cristais:</span><span>25</span>
           </div>
-          <div class="category-container" data-category="extras">
-            <div class="left-title">Extras</div>
-            <div class="inv-grid"><div class="inv-slot"></div><div class="inv-slot"></div><div class="inv-slot"></div><div class="inv-slot"></div></div>
-            <div class="inv-empty-label">Sem Extras disponíveis.</div>
+          <div class="quick-info-title" style="margin-top:20px;">Habilidades Ativas</div>
+          <div class="equip-slots">
+            <div class="equip-slot">S1</div>
+            <div class="equip-slot">S2</div>
+            <div class="equip-slot">S3</div>
+            <div class="equip-slot">S4</div>
           </div>
+           <div class="quick-info-title" style="margin-top:20px;">Bônus Atuais</div>
+           <div class="left-text" style="font-size:0.9rem;margin-top:0;">
+             +10% Dano de Sombra<br>
+             +5 Regeneração de MP<br>
+             Armadura Arcana (50% Resistência Mágica)
+           </div>
         </div>
-        <div class="pane-equipment-right">
-          <!-- Seções de equipamento -->
-          <div class="equip-section"><div class="left-title">Primary Slot</div><div class="equip-slots"><div class="equip-slot"></div></div></div>
-          <div class="equip-section"><div class="left-title">Secondary Slot</div><div class="equip-slots"><div class="equip-slot"></div></div></div>
-          <div class="equip-section"><div class="left-title">Tools</div><div class="equip-slots"><div class="equip-slot"></div><div class="equip-slot"></div><div class="equip-slot"></div></div></div>
-          <div class="equip-section"><div class="left-title">Skill</div><div class="equip-slots"><div class="equip-slot"></div><div class="equip-slot"></div><div class="equip-slot"></div><div class="equip-slot"></div></div></div>
-          <div class="equip-section"><div class="left-title">Armadura Esquerda</div><div class="equip-slots"><div class="equip-slot"></div><div class="equip-slot"></div><div class="equip-slot"></div><div class="equip-slot"></div></div></div>
-          <div class="equip-section"><div class="left-title">Armadura Direita</div><div class="equip-slots"><div class="equip-slot"></div><div class="equip-slot"></div><div class="equip-slot"></div><div class="equip-slot"></div></div></div>
-          <div class="equip-section"><div class="left-title">Acessórios</div><div class="equip-slots"><div class="equip-slot"></div><div class="equip-slot"></div><div class="equip-slot"></div></div></div>
-          <div class="equip-section"><div class="left-title">Troféus</div><div class="equip-slots"><div class="equip-slot"></div><div class="equip-slot"></div><div class="equip-slot"></div></div></div>
-          <div class="equip-section"><div class="left-title">Insígnias</div><div class="equip-slots"><div class="equip-slot"></div></div></div>
-          <div class="equip-section"><div class="left-title">Mochila</div><div class="backpack-grid">
-            <!-- 18 slots -->
-            <div class="equip-slot"></div><div class="equip-slot"></div><div class="equip-slot"></div><div class="equip-slot"></div><div class="equip-slot"></div><div class="equip-slot"></div>
-            <div class="equip-slot"></div><div class="equip-slot"></div><div class="equip-slot"></div><div class="equip-slot"></div><div class="equip-slot"></div><div class="equip-slot"></div>
-            <div class="equip-slot"></div><div class="equip-slot"></div><div class="equip-slot"></div><div class="equip-slot"></div><div class="equip-slot"></div><div class="equip-slot"></div>
-          </div></div>
+
+       <div class="pane-inventory-right" style="display:none;flex-direction:column;gap:12px;">
+         <div class="category-container" data-category="anime">
+           <div class="equip-title" style="font-size:1.05rem;margin-bottom:8px;">Animes</div>
+           <div class="inv-grid">
+             <div class="inv-slot"></div><div class="inv-slot"></div>
+             <div class="inv-slot"></div><div class="inv-slot"></div>
+           </div>
+           <div class="inv-empty-label">Sem Animes comprados.</div>
+         </div>
+
+         <div class="category-container" data-category="manga">
+           <div class="equip-title" style="font-size:1.05rem;margin-bottom:8px;">Mangás</div>
+           <div class="inv-grid">
+             <div class="inv-slot"></div><div class="inv-slot"></div>
+             <div class="inv-slot"></div><div class="inv-slot"></div>
+           </div>
+           <div class="inv-empty-label">Sem Mangás comprados.</div>
+         </div>
+
+         <div class="category-container" data-category="ebook">
+           <div class="equip-title" style="font-size:1.05rem;margin-bottom:8px;">eBooks</div>
+           <div class="inv-grid">
+             <div class="inv-slot"></div><div class="inv-slot"></div>
+             <div class="inv-slot"></div><div class="inv-slot"></div>
+           </div>
+           <div class="inv-empty-label">Sem eBooks comprados.</div>
+         </div>
+
+         <div class="category-container" data-category="mentor">
+           <div class="equip-title" style="font-size:1.05rem;margin-bottom:8px;">Mentorias</div>
+           <div class="inv-grid">
+             <div class="inv-slot"></div><div class="inv-slot"></div>
+             <div class="inv-slot"></div><div class="inv-slot"></div>
+           </div>
+           <div class="inv-empty-label">Sem Mentorias compradas.</div>
+         </div>
+
+         <div class="category-container" data-category="extras">
+           <div class="equip-title" style="font-size:1.05rem;margin-bottom:8px;">Extras</div>
+           <div class="inv-grid">
+             <div class="inv-slot"></div><div class="inv-slot"></div>
+             <div class="inv-slot"></div><div class="inv-slot"></div>
+           </div>
+           <div class="inv-empty-label">Sem Extras disponíveis.</div>
+         </div>
+       </div>
+
+        <div class="pane-equipment-right" style="display:none;flex-direction:column;gap:16px;">
+
+          <div class="equip-section">
+            <div class="equip-title">Slot Primário</div>
+            <div class="equip-slots">
+              <div class="equip-slot"></div>
+            </div>
+          </div>
+          <div class="equip-section">
+            <div class="equip-title">Slot Secundário</div>
+            <div class="equip-slots">
+              <div class="equip-slot"></div>
+            </div>
+          </div>
+          <div class="equip-section">
+            <div class="equip-title">Ferramentas</div>
+            <div class="equip-slots">
+              <div class="equip-slot"></div>
+              <div class="equip-slot"></div>
+              <div class="equip-slot"></div>
+            </div>
+          </div>
+
+          <div class="equip-section">
+            <div class="equip-title">Habilidades</div>
+            <div class="equip-slots">
+              <div class="equip-slot"></div>
+              <div class="equip-slot"></div>
+              <div class="equip-slot"></div>
+              <div class="equip-slot"></div>
+            </div>
+          </div>
+
+          <div class="equip-section">
+            <div class="equip-title">Armadura Esquerda</div>
+            <div class="equip-slots">
+              <div class="equip-slot"></div>
+              <div class="equip-slot"></div>
+              <div class="equip-slot"></div>
+              <div class="equip-slot"></div>
+            </div>
+          </div>
+          <div class="equip-section">
+            <div class="equip-title">Armadura Direita</div>
+            <div class="equip-slots">
+              <div class="equip-slot"></div>
+              <div class="equip-slot"></div>
+              <div class="equip-slot"></div>
+              <div class="equip-slot"></div>
+            </div>
+          </div>
+
+          <div class="equip-section">
+            <div class="equip-title">Acessórios</div>
+            <div class="equip-slots">
+              <div class="equip-slot"></div>
+              <div class="equip-slot"></div>
+              <div class="equip-slot"></div>
+            </div>
+          </div>
+          <div class="equip-section">
+            <div class="equip-title">Troféus</div>
+            <div class="equip-slots">
+              <div class="equip-slot"></div>
+              <div class="equip-slot"></div>
+              <div class="equip-slot"></div>
+            </div>
+          </div>
+          <div class="equip-section">
+            <div class="equip-title">Insígnias</div>
+            <div class="equip-slots">
+              <div class="equip-slot"></div>
+            </div>
+          </div>
+
+          <div class="equip-section">
+            <div class="equip-title">Mochila</div>
+            <div class="backpack-grid">
+              <div class="equip-slot"></div><div class="equip-slot"></div><div class="equip-slot"></div>
+              <div class="equip-slot"></div><div class="equip-slot"></div><div class="equip-slot"></div>
+              <div class="equip-slot"></div><div class="equip-slot"></div><div class="equip-slot"></div>
+              <div class="equip-slot"></div><div class="equip-slot"></div><div class="equip-slot"></div>
+              <div class="equip-slot"></div><div class="equip-slot"></div><div class="equip-slot"></div>
+              <div class="equip-slot"></div><div class="equip-slot"></div><div class="equip-slot"></div>
+            </div>
+          </div>
         </div>
       </div>
     </div>
   </div>
 
-  <!-- — JavaScript — -->
   <script>
-    // Seletores
-    const tabs = document.querySelectorAll('.tabs-container .tab');
-    const leftPanes = {
-      overview: document.querySelector('.pane-overview'),
-      inventory: document.querySelector('.pane-inventory'),
-      equipment: document.querySelector('.pane-equipment')
-    };
-    const rightPanes = {
-      overview: document.querySelector('.pane-overview-right'),
-      inventory: document.querySelector('.pane-inventory-right'),
-      equipment: document.querySelector('.pane-equipment-right')
-    };
-    const contentContainer = document.querySelector('.content-container');
-    const invFilter = document.querySelector('.inventory-filter');
-    const avatarPanel = document.querySelector('.avatar-panel');
-    const armorSides = document.querySelectorAll('.armor-side');
-    const filterBtns = document.querySelectorAll('.filter-btn');
-    const catContainers = document.querySelectorAll('.category-container');
+    // Seletores principais
+    const tabs             = document.querySelectorAll(".tab");
+    const leftPanes        = { overview:    document.querySelector(".pane-overview"),
+                               inventory:   document.querySelector(".pane-inventory"),
+                               equipment:   document.querySelector(".pane-equipment") };
+    const rightPanes       = { overview:    document.querySelector(".pane-overview-right"),
+                               inventory:   document.querySelector(".pane-inventory-right"),
+                               equipment:   document.querySelector(".pane-equipment-right") };
+    const centerPanel      = document.querySelector(".center-panel");
+    const contentContainer = document.querySelector(".content-container");
+    const invFilter        = document.querySelector(".inventory-filter");
+    const avatarPanel      = document.querySelector(".avatar-panel");
+    const armorSides       = document.querySelectorAll(".armor-side");
+    const filterBtns       = document.querySelectorAll(".filter-btn");
+    const catContainers    = document.querySelectorAll(".category-container");
 
-    // Função de troca de aba
+    // Função de clique em abas
     function handleTabClick(tab) {
       const key = tab.dataset.tab;
-      const isInv = key === 'inventory';
-      const isEq  = key === 'equipment';
+      const isInv = key === "inventory";
+      const isEq  = key === "equipment";
 
-      tabs.forEach(t => t.classList.toggle('active', t===tab));
-      Object.entries(leftPanes).forEach(([k,p]) => p.classList.toggle('active', k===key));
-      Object.entries(rightPanes).forEach(([k,p]) => p.classList.toggle('active', k===key));
+      // 1) Ativa a aba
+      tabs.forEach(t => t.classList.toggle("active", t === tab));
 
-      // mostra/oculta centro e filtro
-      document.querySelector('.center-panel').classList.toggle('hidden', isInv);
-      invFilter.classList.toggle('hidden', !isInv);
-      contentContainer.classList.toggle('inventory-active', isInv);
-      avatarPanel?.classList.toggle('hidden', isInv);
+      // 2) Mostra o painel esquerdo correspondente
+      Object.entries(leftPanes).forEach(([k,p]) =>
+        p.classList.toggle("active", k === key)
+      );
 
-      // armadura só em Equipamento
-      armorSides.forEach(el => el.style.display = isEq?'flex':'none');
+      // 3) Mostra o painel direito correspondente
+      Object.entries(rightPanes).forEach(([k,p]) =>
+        p.style.display = (k === key ? "flex" : "none")
+      );
 
-      if(isInv){
-        filterBtns.forEach(b=>b.classList.remove('active'));
-        filterBtns[0].classList.add('active');
-        catContainers.forEach(c=>c.style.display='block');
+      // 4) Ajusta a exibição do center-panel e content-container
+      if (isInv) {
+        centerPanel.style.display = "flex"; // Volta a ser flex para o filtro do inventário
+        centerPanel.style.flexDirection = "column"; // Coloca o filtro abaixo do avatar
+        avatarPanel.style.display = "none"; // Esconde o avatar no inventário
+        invFilter.style.display = "flex"; // Mostra o filtro de inventário
+        contentContainer.classList.add("inventory-active"); // Ajuste de altura e alinhamento
+        armorSides.forEach(el => el.style.display = "none"); // Garante que armadura esteja escondida
+      } else if (isEq) {
+        centerPanel.style.display = "flex";
+        centerPanel.style.flexDirection = "row"; // Volta para row para avatar + armadura
+        avatarPanel.style.display = "flex"; // Mostra o avatar
+        invFilter.style.display = "none"; // Esconde o filtro de inventário
+        armorSides.forEach(el => el.style.display = "flex"); // Mostra as armaduras
+        contentContainer.classList.remove("inventory-active");
+      } else { // overview
+        centerPanel.style.display = "flex";
+        centerPanel.style.flexDirection = "column"; // Para manter o avatar centralizado
+        avatarPanel.style.display = "flex"; // Mostra o avatar
+        invFilter.style.display = "none"; // Esconde o filtro
+        armorSides.forEach(el => el.style.display = "none"); // Garante que armadura esteja escondida
+        contentContainer.classList.remove("inventory-active");
+      }
+
+      // 5) Reset de filtro ao entrar no Inventário
+      if (isInv) {
+        filterBtns.forEach(b => b.classList.remove("active"));
+        filterBtns[0].classList.add("active"); // Ativa "Tudo" por padrão
+        catContainers.forEach(c => c.style.display = "block");
       }
     }
-    tabs.forEach(tab => tab.addEventListener('click',()=>handleTabClick(tab)));
 
-    // Filtro
-    filterBtns.forEach(btn => btn.addEventListener('click', () => {
-      filterBtns.forEach(b=>b.classList.remove('active'));
-      btn.classList.add('active');
-      const f = btn.dataset.filter;
-      catContainers.forEach(c=>c.style.display = (f==='all'||c.dataset.category===f)?'block':'none');
-    }));
+    // Associa click às tabs
+    tabs.forEach(tab =>
+      tab.addEventListener("click", () => handleTabClick(tab))
+    );
 
-    // Editar nome
-    const nomeLabel = document.getElementById('nome-label');
-    document.getElementById('editar-nome').addEventListener('click', () => {
-      const novo = prompt('Digite um novo nome:', nomeLabel.textContent);
-      if(novo?.trim()) nomeLabel.textContent = novo.trim();
-    });
+    // Lógica de filtragem
+    filterBtns.forEach(btn =>
+      btn.addEventListener("click", () => {
+        filterBtns.forEach(b => b.classList.remove("active"));
+        btn.classList.add("active");
+        const f = btn.dataset.filter;
+        catContainers.forEach(c => {
+          c.style.display = (f === "all" || c.dataset.category === f)
+                            ? "block"
+                            : "none";
+        });
+      })
+    );
 
-    // Atributos
-    const estado = { nivel:3, xp:6700, xpMax:10000, pontosDisponiveis:4,
-      atributos:{ forca:1, destreza:1, constituicao:1, inteligencia:1, espirito:1, carisma:1 }
+    // Código de atributos permanece intacto
+    const estado = {
+      nivel: 3, xp: 6700, xpMax: 10000, pontosDisponiveis: 4,
+      atributos: { forca:1, destreza:1, constituicao:1, inteligencia:1, espirito:1, carisma:1 }
     };
-    function atualizarInterface(){
-      document.getElementById('nivel').textContent = estado.nivel;
-      document.getElementById('xp-bar').style.width = (estado.xp/estado.xpMax)*100+'%';
-      document.getElementById('pontos-disponiveis').textContent = estado.pontosDisponiveis;
-      for(let k in estado.atributos){
-        const span = document.getElementById('valor-'+k);
-        span.firstChild.nodeValue = estado.atributos[k]+' ';
-        document.getElementById('barra-'+k).style.width = Math.min((estado.atributos[k]/20)*100,100)+'%';
+    function atualizarInterface() {
+      document.getElementById("nivel").textContent = estado.nivel;
+      document.getElementById("xp-bar").style.width = (estado.xp/estado.xpMax)*100 + "%";
+      document.getElementById("pontos-disponiveis").textContent = estado.pontosDisponiveis;
+      for (let k in estado.atributos) {
+        const span = document.getElementById("valor-"+k);
+        if (!span) continue;
+        span.childNodes[0].nodeValue = estado.atributos[k] + " ";
+        // A barra de atributos vai até 20 para ter uma progressão visível
+        document.getElementById("barra-"+k).style.width =
+          Math.min((estado.atributos[k]/20)*100,100) + "%";
       }
     }
-    document.querySelectorAll('[data-add]').forEach(btn => btn.addEventListener('click', () => {
-      if(estado.pontosDisponiveis>0){
-        estado.atributos[btn.dataset.add]++; estado.pontosDisponiveis--; atualizarInterface();
+    function adicionarPonto(at) {
+      if (estado.pontosDisponiveis<=0) return;
+      estado.atributos[at]++; estado.pontosDisponiveis--; atualizarInterface();
+    }
+    function editarNome() {
+      const span = document.getElementById("nome-personagem");
+      const currentText = span.textContent.replace("✎","").trim();
+      const novo  = prompt("Digite um novo nome:", currentText);
+      if (novo && novo.length > 1) {
+        span.innerHTML = novo + ' <button class="edit-button" onclick="editarNome()">✎</button>';
       }
-    }));
-    document.addEventListener('DOMContentLoaded', ()=>{
+    }
+    function ganharXp(q) { estado.xp+=q;
+      while (estado.xp>=estado.xpMax) {
+        estado.xp-=estado.xpMax; estado.nivel++; estado.pontosDisponiveis+=2;
+        estado.xpMax = Math.floor(estado.xpMax * 1.5); // Aumenta o XP necessário para o próximo nível
+      }
       atualizarInterface();
-      handleTabClick(document.querySelector('.tab.active'));
-    });
+    }
 
-    // Partículas de fundo
-    const canvas = document.getElementById('particle-bg'), ctx = canvas.getContext('2d');
-    let particles = [], animId;
-    function resizeCanvas(){
-      cancelAnimationFrame(animId);
-      canvas.width = innerWidth; canvas.height = innerHeight;
-      createParticles(); animateParticles();
+    // Gerador de partículas para o background
+    const canvas = document.getElementById('particle-bg');
+    const ctx = canvas.getContext('2d');
+    let particles = [];
+    const particleCount = 100;
+    const particleSize = 1.5;
+    const particleSpeed = 0.5;
+    const particleColor = 'rgba(147, 51, 234, 0.6)'; // Roxo com opacidade
+
+    function setCanvasSize() {
+      canvas.width = window.innerWidth;
+      canvas.height = window.innerHeight;
     }
-    window.addEventListener('resize', resizeCanvas);
-    function createParticles(){
-      particles = Array.from({length:60},()=>{
-        return { x:Math.random()*canvas.width, y:Math.random()*canvas.height,
-                 r:Math.random()*1.5+0.5, dx:(Math.random()-0.5)*0.3,
-                 dy:(Math.random()-0.5)*0.3, alpha:Math.random()*0.5+0.3 };
-      });
-    }
-    function animateParticles(){
-      ctx.clearRect(0,0,canvas.width,canvas.height);
-      particles.forEach(p=>{
-        p.x+=p.dx; p.y+=p.dy;
-        if(p.x<0||p.x>canvas.width) p.dx*=-1;
-        if(p.y<0||p.y>canvas.height) p.dy*=-1;
+
+    class Particle {
+      constructor() {
+        this.x = Math.random() * canvas.width;
+        this.y = Math.random() * canvas.height;
+        this.size = Math.random() * particleSize + 0.5;
+        this.speedX = (Math.random() * 1 - 0.5) * particleSpeed; // -0.5 to 0.5
+        this.speedY = (Math.random() * 1 - 0.5) * particleSpeed; // -0.5 to 0.5
+        this.color = particleColor;
+      }
+      update() {
+        this.x += this.speedX;
+        this.y += this.speedY;
+
+        if (this.size > 0.2) this.size -= 0.01;
+
+        if (this.x < 0 || this.x > canvas.width || this.y < 0 || this.y > canvas.height || this.size <= 0.2) {
+          this.reset();
+        }
+      }
+      reset() {
+        this.x = Math.random() * canvas.width;
+        this.y = Math.random() * canvas.height;
+        this.size = Math.random() * particleSize + 0.5;
+        this.speedX = (Math.random() * 1 - 0.5) * particleSpeed;
+        this.speedY = (Math.random() * 1 - 0.5) * particleSpeed;
+      }
+      draw() {
+        ctx.fillStyle = this.color;
         ctx.beginPath();
-        ctx.arc(p.x,p.y,p.r,0,2*Math.PI);
-        ctx.fillStyle = `rgba(168,85,247,${p.alpha})`;
+        ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
         ctx.fill();
-      });
-      animId = requestAnimationFrame(animateParticles);
+      }
     }
-    resizeCanvas();
+
+    function initParticles() {
+      particles = [];
+      for (let i = 0; i < particleCount; i++) {
+        particles.push(new Particle());
+      }
+    }
+
+    function animateParticles() {
+      ctx.clearRect(0, 0, canvas.width, canvas.height);
+      for (let i = 0; i < particles.length; i++) {
+        particles[i].update();
+        particles[i].draw();
+      }
+      requestAnimationFrame(animateParticles);
+    }
+
+    window.addEventListener('resize', setCanvasSize);
+
+    // Inicialização
+    document.addEventListener("DOMContentLoaded", () => {
+      document.querySelectorAll("[data-add]").forEach(btn =>
+        btn.addEventListener("click", ()=> adicionarPonto(btn.dataset.add))
+      );
+      atualizarInterface();
+      const init = document.querySelector(".tab.active");
+      if (init) handleTabClick(init);
+
+      // Inicializa o background de partículas
+      setCanvasSize();
+      initParticles();
+      animateParticles();
+
+      // Exemplo de como ganhar XP (pode ser ligado a ações do jogo)
+      // setInterval(() => ganharXp(100), 5000);
+    });
   </script>
 </body>
 </html>
