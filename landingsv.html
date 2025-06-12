@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>NoHeroes | Sistema Vivo - Desperte Seu Potencial Oculto</title>
+    <title>NoHeroes | Sistema Vivo - Desperte a Centelha Ancestral</title>
     <link href="https://fonts.googleapis.com/css2?family=Cinzel+Decorative:wght@400;700&family=Playfair+Display:wght@400;700&family=Roboto:wght@300;400;700&display=swap" rel="stylesheet">
     <style>
         /* Variáveis de Tema (Dark Fantasy & Soulslike) */
@@ -422,6 +422,55 @@
             margin-top: 20px;
         }
 
+        /* Sobre o Criador (Raul 'NoHeroe') */
+        .creator-section {
+            padding: 100px 0;
+            background-color: var(--color-deep-purple);
+            border-top: 1px solid var(--color-border-dark);
+            text-align: center;
+        }
+
+        .creator-content {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            max-width: 800px;
+            margin: 0 auto;
+        }
+
+        .creator-avatar {
+            width: 150px;
+            height: 150px;
+            border-radius: 50%;
+            background: url('https://via.placeholder.com/150x150/503070/E8E2F0?text=Raul+NoHeroe') no-repeat center center/cover;
+            border: 3px solid var(--color-accent-purple);
+            box-shadow: 0 0 25px var(--color-glow-purple);
+            margin-bottom: 30px;
+            transition: transform 0.3s ease;
+        }
+        .creator-avatar:hover {
+            transform: scale(1.05);
+        }
+
+        .creator-section h2 {
+            margin-bottom: 30px;
+            color: var(--color-text-light);
+            text-shadow: none; /* Override default h2 shadow for better contrast */
+        }
+        .creator-section p {
+            font-size: 1.1em;
+            color: var(--color-text-gray);
+            margin-bottom: 20px;
+        }
+        .creator-section .quote {
+            font-family: 'Playfair Display', serif;
+            font-size: 1.5em;
+            font-style: italic;
+            color: var(--color-accent-blue);
+            margin-top: 30px;
+            text-shadow: 0 0 10px var(--color-glow-blue);
+        }
+
         /* Chamado Final */
         .final-cta-section {
             background: url('https://via.placeholder.com/1920x800/1e0a2d/6d28d9?text=Dark+Fantasy+CTA+Background+2') no-repeat center center/cover;
@@ -458,7 +507,6 @@
         .final-cta-content h2::after { /* remove underline from h2 in CTA */
             content: none;
         }
-
 
         /* Frases Impactantes */
         .impact-phrases {
@@ -517,6 +565,7 @@
             .section-quote { font-size: 1.6em; }
             .path-grid { grid-template-columns: 1fr; } /* Stack columns on smaller screens */
             .final-cta-content h2 { font-size: 2.8em; }
+            .creator-content { max-width: 90%; }
         }
 
         @media (max-width: 768px) {
@@ -535,6 +584,8 @@
                 grid-template-columns: 1fr;
             }
             .final-cta-content h2 { font-size: 2.2em; margin-bottom: 30px; }
+            .creator-avatar { width: 120px; height: 120px; }
+            .creator-section .quote { font-size: 1.2em; }
         }
 
         @media (max-width: 480px) {
@@ -555,12 +606,17 @@
         <div class="hero-overlay"></div>
         <div class="hero-content fade-in">
             <h1>SISTEMA VIVO</h1>
-            <p>"Seu corpo sabe. Quando algo não vai bem, ele avisa. Dor, febre, cansaço. Mas você escuta? A vida também avisa. E a maioria continua calada, dormindo, sobrevivendo. **Chegou a hora de acordar.**"</p>
+            <p class="tagline">
+                **Desvende a Centelha Ancestral:** O Guia Oculto para Reequilibrar Sua Essência e Forjar um Destino Inabalável.
+            </p>
+            <p class="hero-intro">
+                Seu corpo sabe. Quando algo não vai bem, ele avisa. Dor, febre, cansaço. Mas você escuta? A vida também avisa. E a maioria continua calada, vivendo à sombra. **Chegou a hora de despertar a força que reside em você.**
+            </p>
             <p class="hero-price">
                 <span class="original">De R$ 120,00</span>
                 Por Apenas <span class="offer">R$ 29,97</span>
             </p>
-            <a href="#cta-final" class="btn-primary pulse-effect">DESPERTE SEU SISTEMA AGORA</a>
+            <a href="#cta-final" class="btn-primary pulse-effect">DESPERTE SUA ESSÊNCIA AGORA</a>
         </div>
     </header>
 
@@ -570,10 +626,10 @@
                 <h2 class="animate-h2">AQUI SEUS LIMITES CAEM</h2>
             </div>
             <p class="section-quote fade-in">
-                "O braço move a mão. A mão move os dedos. O coração bombeia o sangue. O cérebro comanda tudo. Mas nada disso funciona sozinho. **Um corpo só vive quando o sistema está em harmonia.**"
+                "Seu ser é um templo de poder, sua mente uma fonte inesgotável. Mas a discórdia roubou sua harmonia. Quando um fio essencial se rompe, o sistema inteiro desaba."
             </p>
             <p class="fade-in" style="font-size: 1.2em; color: var(--color-text-gray); max-width: 800px; margin: 30px auto;">
-                Quando você adoece, não é apenas porque um vírus entrou. É porque seu sistema estava vulnerável. **A doença foi só o sintoma final.** Sua vida, seus projetos, sua mente... tudo está conectado. Ignorar um elo é condenar o todo.
+                A exaustão que você sente, a ansiedade que o aprisiona, a criatividade que se esvai — **não são falhas, são o eco do seu próprio desequilíbrio, a sombra de um potencial adormecido.** Ignorar este chamado é condenar-se a viver à sombra do que você poderia ser.
             </p>
         </div>
     </section>
@@ -581,73 +637,74 @@
     <section id="diagnostico">
         <div class="container">
             <div class="section-title-wrapper">
-                <h2 class="animate-h2">Onde Seu Sistema Está Atrofiado?</h2>
+                <h2 class="animate-h2">Onde Sua Força Interior Está Bloqueada?</h2>
             </div>
             <p class="section-quote fade-in">
                 "O problema não é só o que está doendo. É o que deixou de se mover."
             </p>
             <p class="fade-in" style="font-size: 1.2em; color: var(--color-text-gray); text-align: center; margin-bottom: 60px;">
-                Identifique os focos de estagnação que sabotam sua vida. **Se uma parte trava, todo o resto sofre.** E você sente isso na pele, mesmo que sua mente ignore os sinais.
+                Identifique os focos de estagnação que sabotam sua vida. **Cada bloqueio é um selo**, mantendo sua verdadeira força cativa.
             </p>
             <div class="diagnosis-grid">
                 <div class="diagnosis-item slide-in-left">
                     <h3>Mental</h3>
-                    <p>Confusão, ansiedade paralizante, falta de direção clara, mente turbulenta.</p>
+                    <p>Sua mente é um campo de batalha, consumida pela névoa da confusão e ansiedade que sufoca sua clareza? A **conexão com seu próprio Oráculo Interno** está comprometida.</p>
                 </div>
                 <div class="diagnosis-item fade-in">
                     <h3>Físico</h3>
-                    <p>Cansaço crônico que drena sua energia, má alimentação, sedentarismo que te prende.</p>
+                    <p>O cansaço crônico é sua sombra, a vitalidade se esvai, e seu corpo se recusa a obedecer? Seu **templo físico** está desabitado, sem a força que pulsa.</p>
                 </div>
                 <div class="diagnosis-item slide-in-right">
                     <h3>Emocional</h3>
-                    <p>Culpa que te aprisiona, estagnação, frustrações mal resolvidas que pesam.</p>
+                    <p>O peso da culpa e frustrações antigas te acorrentam, impedindo qualquer avanço? As **correntes invisíveis da alma** te prendem ao passado.</p>
                 </div>
                 <div class="diagnosis-item slide-in-left">
                     <h3>Criativo</h3>
-                    <p>Bloqueios que sufocam sua originalidade, medo paralisante do julgamento, o vazio criativo.</p>
+                    <p>Sente um vazio, um bloqueio que impede sua faísca de acender? O **fluxo da sua inspiração primordial** foi interrompido, e o vazio ecoa.</p>
                 </div>
                 <div class="diagnosis-item fade-in">
                     <h3>Profissional</h3>
-                    <p>Desmotivação que te arrasta, projetos que não saem do lugar, o peso da rotina.</p>
+                    <p>Sua jornada profissional se tornou um purgatório, sem propósito, com projetos que definham no esquecimento? Sua **missão superior** está oculta nas sombras.</p>
                 </div>
             </div>
             <p class="section-quote fade-in" style="font-size: 1.6em; margin-top: 60px; color: var(--color-accent-purple);">
                 "Crescimento que ignora o sistema é ilusão."
             </p>
+            <a href="#cta-final" class="btn-primary fade-in" style="margin-top: 50px;">QUEBRE OS SELOS: ADQUIRA O SISTEMA VIVO</a>
         </div>
     </section>
 
     <section id="o-caminho">
         <div class="container">
             <div class="section-title-wrapper">
-                <h2 class="animate-h2">O Caminho: Liberte Seu Potencial</h2>
+                <h2 class="animate-h2">O Caminho: A Forja da Alma</h2>
             </div>
             <p class="fade-in" style="font-size: 1.2em; color: var(--color-text-gray); text-align: center; margin-bottom: 60px;">
-                O Sistema Vivo não é um atalho, mas um **mapa para o despertar integrado**. Entregamos valor real, mostrando que a verdadeira força não nasce do isolamento, mas da **conexão de todas as partes**.
+                O Sistema Vivo não é um atalho, mas um **mapa de iniciação para a forja da sua própria alma**. Revelamos os segredos para reequilibrar seu ser, para que a verdadeira força emerja e você forje um novo destino.
             </p>
             <div class="path-grid">
                 <div class="path-item slide-in-left">
-                    <h3>Pequenos Hábitos + Visão de Longo Prazo</h3>
-                    <p>A forja da maestria não é um evento, mas um ritual diário. Descubra como rituais simples se tornam pilares de um destino grandioso.</p>
+                    <h3>As Runas da Constância</h3>
+                    <p>Como rituais diários, por menores que sejam, forjam sua resiliência e te conectam a um propósito maior, transformando a rotina em um caminho de poder inabalável.</p>
                 </div>
                 <div class="path-item slide-in-right">
-                    <h3>Criatividade com Disciplina</h3>
-                    <p>Liberte o fluxo criativo que vive em você, sem perder o foco. Transforme ideias etéreas em obras tangíveis, com a precisão de um alquimista.</p>
+                    <h3>O Canto do Artífice</h3>
+                    <p>Liberte o fluxo da sua expressão primordial, sem perder o foco. Transforme ideias etéreas em obras tangíveis, com a precisão de um Mestre Forjador, revelando seu gênio interior.</p>
                 </div>
                 <div class="path-item slide-in-left">
-                    <h3>Propósito Acima de Vaidade</h3>
-                    <p>O que te move além do reconhecimento? Encontre seu núcleo de força, o propósito que te impulsiona mesmo nas sombras, livre das amarras do ego.</p>
+                    <h3>O Propósito Primordial</h3>
+                    <p>Descubra o que te move além do reconhecimento. Encontre seu núcleo de força, o propósito que te impulsiona mesmo nas sombras, livre das amarras do ego e da vaidade vazia.</p>
                 </div>
                 <div class="path-item slide-in-right">
-                    <h3>Autoconsciência Acima de Produtividade Cega</h3>
-                    <p>Não se trata de fazer mais, mas de fazer o que ressoa. Reconheça seus ciclos, seus limites e sua verdadeira energia. A eficiência nasce do autoconhecimento profundo.</p>
+                    <h3>O Oráculo Interior</h3>
+                    <p>Não se trata de fazer mais, mas de fazer o que ressoa. Reconheça seus ciclos, seus limites e sua verdadeira energia, ouvindo a sabedoria do seu oráculo interior para uma vida plena e eficaz.</p>
                 </div>
             </div>
-            <h3 class="fade-in" style="text-align: center; margin-top: 80px; color: var(--color-accent-purple);">Desvende os Códigos do Seu Sistema:</h3>
+            <h3 class="fade-in" style="text-align: center; margin-top: 80px; color: var(--color-accent-purple);">Desvende os Códigos de Seu Destino: Perguntas do Oráculo</h3>
             <ul class="fade-in" style="text-align: center; list-style: none; padding: 0; margin-top: 30px;">
-                <li style="margin-bottom: 15px; font-size: 1.1em; color: var(--color-text-light);">“Se sua vida fosse um corpo, qual parte está atrofiada? **Responda honestamente.**”</li>
-                <li style="margin-bottom: 15px; font-size: 1.1em; color: var(--color-text-light);">“Liste 3 áreas que estão crescendo. E 3 que estão minguando. **Encare a realidade.**”</li>
-                <li style="font-size: 1.1em; color: var(--color-text-light);">“Qual parte do seu sistema você negligenciou nos últimos 6 meses? **A hora da verdade.**”</li>
+                <li style="margin-bottom: 15px; font-size: 1.1em; color: var(--color-text-light);">“Se sua vida fosse um corpo, qual parte está atrofiada? **Responda honestamente, sem máscaras.**”</li>
+                <li style="margin-bottom: 15px; font-size: 1.1em; color: var(--color-text-light);">“Liste 3 áreas onde sua luz está crescendo. E 3 onde sua sombra está minguando. **Encare a realidade da sua força.**”</li>
+                <li style="font-size: 1.1em; color: var(--color-text-light);">“Qual parte do seu ser você negligenciou nos últimos 6 meses? **A hora da verdade para o seu renascimento.**”</li>
             </ul>
         </div>
     </section>
@@ -655,29 +712,46 @@
     <section id="o-poder-da-obra">
         <div class="container">
             <div class="section-title-wrapper">
-                <h2 class="animate-h2">NoHeroes: Mais Que Arte, Um Ritual de Despertar</h2>
+                <h2 class="animate-h2">NoHeroes: Sua Arena de Forjamento</h2>
             </div>
             <p class="section-quote fade-in">
-                "NoHeroes é mais do que uma história. É um espelho. Um portal.
-                Um gatilho de reflexão e mudança. Cada cena, cada personagem, cada som...
-                foi criado pra tocar sistemas adormecidos."
+                "NoHeroes não é apenas uma saga; é um **campo de prova** para a sua própria jornada interior. Cada conflito, cada sacrifício, cada renascimento ecoa a luta do despertar."
             </p>
             <p class="fade-in" style="font-size: 1.2em; color: var(--color-text-gray); text-align: center; margin-bottom: 60px;">
-                Este e-book é o seu primeiro passo para compreender como nossa obra transcende a ficção e se torna uma **ferramenta de alquimia pessoal**.
+                Nossas criações não são meros contos, são **espelhos forjados para revelar a sua própria força latente**, preparando você para empunhar sua própria verdade nesta jornada implacável.
             </p>
             <div class="power-grid">
                 <div class="power-item slide-in-left">
                     <h3>Animes</h3>
-                    <p>Não apenas entretenimento, mas espelhos emocionais e filosóficos para despertar camadas profundas do seu ser.</p>
+                    <p>Não apenas entretenimento, mas espelhos emocionais e filosóficos para despertar camadas profundas do seu ser, revelando a dualidade e a força interior.</p>
                 </div>
                 <div class="power-item fade-in">
                     <h3>Cursos</h3>
-                    <p>Pontes práticas que traduzem a filosofia de NoHeroes em ferramentas acionáveis para o seu despertar criativo e alinhamento vital.</p>
+                    <p>Pontes práticas que traduzem a filosofia de NoHeroes em ferramentas acionáveis para o seu despertar criativo e alinhamento vital, transformando conhecimento em poder.</p>
                 </div>
                 <div class="power-item slide-in-right">
                     <h3>Mentorias & Comunidade</h3>
-                    <p>O campo de batalha onde heróis reais são forjados. Suporte contínuo e a força de um coletivo para sua ascensão.</p>
+                    <p>O campo de batalha onde heróis reais são forjados. Suporte contínuo e a força de um coletivo para sua ascensão, sua guilda em Caelum.</p>
                 </div>
+            </div>
+            <a href="#cta-final" class="btn-primary fade-in" style="margin-top: 70px;">SUA ASCENSÃO COMEÇA AGORA</a>
+        </div>
+    </section>
+
+    <section class="creator-section">
+        <div class="container fade-in">
+            <div class="section-title-wrapper">
+                <h2 class="animate-h2">O Arquiteto Desta Realidade</h2>
+            </div>
+            <div class="creator-content">
+                <div class="creator-avatar"></div>
+                <h3>Raul "NoHeroe" Souza Silva</h3>
+                <p>
+                    Visionário por trás de NoHeroes, um universo onde o caos encontra a ordem e a fraqueza se forja em poder. Raul dedicou anos a desvendar os códigos da alma e do sistema, transpondo essa sabedoria para suas obras e, agora, para o Sistema Vivo. Ele é seu guia nesta jornada de descoberta e transformação.
+                </p>
+                <p class="quote">
+                    "Minha obra é um mapa. Sua vida, o território a ser conquistado."
+                </p>
             </div>
         </div>
     </section>
@@ -685,7 +759,7 @@
     <section class="impact-phrases">
         <div class="container text-center">
             <div class="section-title-wrapper">
-                <h2 class="animate-h2">Ecos da Verdade: Frases de Poder</h2>
+                <h2 class="animate-h2">Os Ecos da Grande Conexão: Mantras Ancestrais</h2>
             </div>
             <ul class="phrase-list">
                 <li class="fade-in">“Crescimento que ignora o sistema é ilusão.”</li>
@@ -703,12 +777,21 @@
     <section id="cta-final" class="final-cta-section">
         <div class="final-cta-overlay"></div>
         <div class="container final-cta-content fade-in">
-            <h2>"Se você chegou até aqui, é porque alguma parte do seu sistema começou a despertar. A pergunta agora é: vai ignorar esse chamado ou vai dar o próximo passo?"</h2>
+            <h2>"A encruzilhada se revela. Você sente o chamado de sua essência adormecida, o eco de um poder ancestral aguardando ser despertado. Vai se render à estagnação ou vai **forjar seu próprio legado?**"</h2>
             <p class="hero-price fade-in">
                 <span class="original">De R$ 120,00</span>
                 Por Apenas <span class="offer">R$ 29,97</span>
             </p>
+            <p style="color: var(--color-text-gray); font-size: 1.1em; margin-bottom: 20px;">
+                (Oferta por tempo limitado ou enquanto durarem os Códigos de Acesso)
+            </p>
             <a href="#" class="btn-primary pulse-effect">GARANTA SEU ACESSO AO SISTEMA VIVO AGORA</a>
+            <p style="color: var(--color-text-light); font-size: 0.9em; margin-top: 20px; text-shadow: 0 0 5px rgba(0,0,0,0.5);">
+                Sua jornada é segura. Compra Protegida.
+            </p>
+            <div style="margin-top: 30px;">
+                <img src="https://via.placeholder.com/100x50/3A1F5E/E8E2F0?text=Selo+Oraculo" alt="Selo de Conhecimento Ancestral" style="max-width: 150px; opacity: 0.8;">
+            </div>
         </div>
     </section>
 
@@ -746,6 +829,7 @@
                     entry.target.classList.add('active');
                     if (entry.target.tagName === 'H2' && entry.target.classList.contains('animate-h2')) {
                         // Força a re-execução da animação da linha de baixo se já foi vista
+                        // Isso é um truque para garantir que a animação da linha ocorra sempre
                         entry.target.classList.remove('active');
                         void entry.target.offsetWidth; // Trigger reflow
                         entry.target.classList.add('active');
@@ -769,9 +853,6 @@
                 heroSection.style.backgroundPositionY = -scrollPosition * 0.4 + 'px'; /* Ajuste o 0.4 para menos/mais intensidade */
             }
         });
-
-        // Efeito de pulso para botões CTA (apenas no hover)
-        // Isso já está implementado via CSS com :hover
     </script>
 </body>
 </html>
