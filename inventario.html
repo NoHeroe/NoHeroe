@@ -1,1283 +1,1083 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>NoHeroes | Inventário (RPG UI Enhanced)</title>
-  <link
-    href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700&family=Share+Tech+Mono&display=swap"
-    rel="stylesheet"
-  />
-  <style>
-    /*— Variáveis de cor —*/
-    :root {
-      --dark-bg: #0d0a13;
-      --panel-bg: rgba(20, 10, 30, 0.7); /* Mais escuro, levemente transparente */
-      --panel-border: #8a2be2; /* Azul violeta mais vívido */
-      --accent-purple: #9333ea; /* Roxo vibrante */
-      --accent-purple-dark: #6b21a8; /* Roxo mais escuro */
-      --text-light: #e0e7ff; /* Azul claro para texto principal */
-      --text-gray: #a78bfa; /* Roxo claro para texto secundário */
-      --slot-bg: rgba(30, 15, 45, 0.5); /* Fundo de slot mais transparente */
-      --slot-border: #a78bfa; /* Borda de slot */
-      --bar-bg: #1e1231; /* Fundo da barra */
-      --bar-fill: #9333ea; /* Preenchimento da barra */
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>NoHeroes | Inventário (Dark Fantasy RPG HUD)</title>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Cinzel+Decorative:wght@400;700&family=Share+Tech+Mono&display=swap"
+        rel="stylesheet"
+    />
+    <style>
+        /* --- Variáveis de Cor: Dark Fantasy / Medieval --- */
+        :root {
+            --dark-bg: #1a1a1a; /* Fundo mais escuro */
+            --main-panel-bg: rgba(25, 25, 25, 0.85); /* Cinza escuro, levemente transparente */
+            --panel-border: #4a4a4a; /* Borda cinza escuro */
+            --accent-gold: #c29546; /* Dourado/Bronze antigo */
+            --accent-red: #8b0000; /* Vermelho escuro, sangue */
+            --accent-green: #006400; /* Verde escuro, poção/magia */
+            --text-light: #e0e0e0; /* Texto claro */
+            --text-muted: #a0a0a0; /* Texto secundário, acinzentado */
+            --slot-bg: rgba(35, 35, 35, 0.6); /* Fundo de slot mais escuro */
+            --slot-border: #6b6b6b; /* Borda de slot acinzentada */
+            --bar-bg: #2a2a2a; /* Fundo da barra */
+            --bar-hp: #dc143c; /* Barra de HP (carmesim) */
+            --bar-mp: #4169e1; /* Barra de MP (azul royal) */
+            --bar-xp: #daa520; /* Barra de XP (dourado) */
+            --glow-color: rgba(194, 149, 70, 0.5); /* Brilho sutil dourado */
+            --shadow-color: rgba(0, 0, 0, 0.6); /* Sombra escura */
+            --dirty-metal: #555;
+        }
 
-      /* Novas variáveis para o efeito de vidro/neomorfismo */
-      --glass-blur: 8px; /* Reduz o blur para melhor performance e nitidez */
-      --glass-border: rgba(167, 139, 250, 0.3); /* Borda mais suave para vidro */
-      --glass-shadow-light: rgba(167, 139, 250, 0.15);
-      --glass-shadow-dark: rgba(0, 0, 0, 0.3);
-    }
+        /* --- Reset Básico e Body --- */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
 
-    /*— Reset básico e body —*/
-    * {
-      margin: 0;
-      padding: 0;
-      box-sizing: border-box;
-    }
+        html,
+        body {
+            height: 100%;
+            background: var(--dark-bg);
+            color: var(--text-light);
+            font-family: "Share Tech Mono", monospace; /* Mantido para dados numéricos/secundários */
+            overflow-x: hidden; /* Evita scroll horizontal */
+            overflow-y: auto;
+            display: flex;
+            flex-direction: column; /* Ajuste para layout de topo fixo */
+            min-height: 100vh;
+            position: relative; /* Para o canvas de fundo */
+        }
 
-    html,
-    body {
-      height: 100%;
-      background: var(--dark-bg);
-      color: var(--text-light);
-      font-family: "Share Tech Mono", monospace; /* Fonte tech para corpo */
-      overflow-x: hidden; /* Evita scroll horizontal */
-      overflow-y: auto;
-      display: flex; /* Para centralizar o ui-root */
-      justify-content: center;
-      align-items: center;
-      min-height: 100vh; /* Garante que o corpo ocupe a altura total */
-    }
+        /* --- Canvas de Partículas --- */
+        #particle-bg {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            z-index: -1;
+            opacity: 0.15; /* Opacidade bem suave */
+        }
 
-    /*— Container raiz (HUD Principal) —*/
-    .ui-root {
-      max-width: 1200px; /* Max-width ajustado para caber melhor */
-      width: 95%; /* Garante que ocupe a largura disponível, com margem */
-      margin: 20px auto; /* Margem para não colar nas bordas */
-      border-radius: 20px; /* Bordas mais arredondadas */
-      background: var(--panel-bg);
-      border: 2px solid var(--panel-border);
-      box-shadow: 0 0 40px var(--accent-purple), 0 0 15px rgba(0, 0, 0, 0.5); /* Sombra ajustada */
-      overflow: hidden;
-      display: flex;
-      flex-direction: column;
-      backdrop-filter: blur(var(--glass-blur)); /* Efeito de vidro */
-      -webkit-backdrop-filter: blur(var(--glass-blur));
-      border: 1px solid var(--glass-border);
-    }
+        /* --- HUD do Topo (Fixo) --- */
+        .top-hud {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            background: rgba(15, 15, 15, 0.9); /* Fundo quase opaco para destaque */
+            padding: 10px 15px;
+            box-shadow: 0 4px 15px var(--shadow-color);
+            z-index: 1000; /* Garante que fique acima de tudo */
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-bottom: 2px solid var(--panel-border);
+            flex-wrap: wrap; /* Permite quebrar linha em telas pequenas */
+            gap: 10px; /* Espaçamento entre itens */
+        }
 
-    /*— Abas do topo wrapper —*/
-    .tabs-container-wrapper {
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      gap: 10px; /* Espaçamento ajustado */
-      padding: 12px 0; /* Padding ajustado */
-      border-bottom: 1px solid var(--glass-border); /* Borda sutil */
-    }
+        .hud-group {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
 
-    /*— Abas do topo —*/
-    .tabs-container {
-      display: flex;
-      background: none;
-      padding: 0 20px; /* Padding nas laterais */
-      gap: 20px; /* Espaçamento entre as abas ajustado */
-      font-size: 1.1rem; /* Fonte ajustada */
-      font-weight: 700;
-      overflow-x: auto;
-      scroll-snap-type: x proximity;
-      color: var(--text-gray);
-    }
-    .tabs-container::-webkit-scrollbar {
-      display: none;
-    }
-    .tabs-container {
-      scrollbar-width: none;
-    }
+        .hud-bar-container {
+            width: 100px; /* Largura ajustada */
+            height: 12px;
+            background: var(--bar-bg);
+            border-radius: 3px;
+            overflow: hidden;
+            border: 1px solid var(--panel-border);
+            box-shadow: inset 0 0 5px rgba(0, 0, 0, 0.5);
+            position: relative;
+        }
 
-    /*— Aba padrão —*/
-    .tab {
-      flex: 0 0 auto;
-      background: transparent;
-      border: none;
-      color: var(--text-gray);
-      padding: 7px 18px; /* Padding ajustado */
-      border-radius: 14px; /* Arredondamento ajustado */
-      font-size: 0.95rem; /* Fonte ajustada */
-      font-weight: 600;
-      cursor: pointer;
-      transition: all 0.3s ease;
-      white-space: nowrap;
-      position: relative;
-      overflow: hidden;
-      text-transform: uppercase;
-    }
+        .hud-bar-fill {
+            height: 100%;
+            width: 70%; /* Exemplo */
+            border-radius: 3px 0 0 3px;
+            transition: width 0.3s ease-out;
+            box-shadow: 0 0 5px rgba(255, 255, 255, 0.2);
+            position: relative;
+        }
+        .hud-bar-fill::after {
+            content: attr(data-value);
+            position: absolute;
+            right: 5px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: rgba(255, 255, 255, 0.8);
+            font-size: 0.7em;
+            font-weight: bold;
+            text-shadow: 0 0 2px rgba(0, 0, 0, 0.7);
+        }
 
-    .tab::before {
-      content: '';
-      position: absolute;
-      top: 0;
-      left: 0;
-      width: 100%;
-      height: 100%;
-      background: linear-gradient(45deg, rgba(147, 51, 234, 0.2), rgba(167, 139, 250, 0.2));
-      transform: translateX(-100%);
-      transition: transform 0.3s ease;
-      z-index: -1;
-      border-radius: 14px;
-      border: 1px solid rgba(167, 139, 250, 0.2);
-    }
+        .hud-bar-hp { background-color: var(--bar-hp); }
+        .hud-bar-mp { background-color: var(--bar-mp); }
+        .hud-bar-xp { background-color: var(--bar-xp); }
 
-    .tab.active::before {
-      transform: translateX(0);
-    }
+        .hud-currency {
+            font-size: 0.9em;
+            color: var(--accent-gold);
+            font-weight: bold;
+            display: flex;
+            align-items: center;
+            gap: 5px;
+        }
+        .hud-currency img {
+            width: 18px; /* Ícones de moeda */
+            height: 18px;
+            vertical-align: middle;
+        }
+        .hud-level {
+            font-family: "Cinzel Decorative", serif;
+            font-size: 1em;
+            font-weight: 700;
+            color: var(--text-light);
+            background: var(--slot-bg);
+            border: 1px solid var(--panel-border);
+            padding: 3px 8px;
+            border-radius: 5px;
+            box-shadow: 0 0 5px var(--shadow-color);
+        }
 
-    .tab.active {
-      color: var(--text-light);
-      text-shadow: 0 0 6px var(--accent-purple); /* Sombra ajustada */
-      box-shadow: 0 0 20px var(--accent-purple); /* Sombra ajustada */
-    }
+        .hud-action-buttons button {
+            background: var(--slot-bg);
+            border: 1px solid var(--panel-border);
+            color: var(--text-light);
+            padding: 8px 12px;
+            border-radius: 5px;
+            cursor: pointer;
+            font-family: "Cinzel Decorative", serif;
+            font-size: 0.85em;
+            text-transform: uppercase;
+            transition: background 0.2s, border-color 0.2s, box-shadow 0.2s;
+            box-shadow: 0 0 5px var(--shadow-color);
+        }
+        .hud-action-buttons button:hover {
+            background: var(--accent-gold);
+            color: #fff;
+            border-color: var(--accent-gold);
+            box-shadow: 0 0 10px var(--glow-color);
+        }
 
-    .tab:hover:not(.active) {
-      color: var(--accent-purple);
-      text-shadow: 0 0 4px var(--accent-purple);
-      transform: translateY(-1px); /* Movimento menor */
-    }
+        /* --- Conteúdo Principal (Abaixo do HUD Fixo) --- */
+        .main-content {
+            padding-top: 70px; /* Espaço para o HUD fixo */
+            display: flex;
+            flex-direction: column; /* Padrão para mobile */
+            gap: 20px;
+            width: 100%;
+            max-width: 1200px; /* Largura máxima para desktop */
+            margin: 20px auto; /* Centraliza no desktop */
+            padding-left: 15px;
+            padding-right: 15px;
+        }
 
-    .store-row {
-      display: flex;
-      justify-content: center;
-      padding: 6px 0 12px; /* Padding ajustado */
-    }
+        /* --- Container Raiz dos Painéis (Inventário/Equipamento) --- */
+        .ui-root {
+            background: var(--main-panel-bg);
+            border: 2px solid var(--panel-border);
+            border-radius: 10px;
+            box-shadow: 0 0 25px var(--shadow-color), inset 0 0 10px rgba(255, 255, 255, 0.05);
+            padding: 20px;
+            display: flex;
+            flex-direction: column; /* Padrão mobile */
+            gap: 20px;
+        }
 
-    .tab-store {
-      background: linear-gradient(120deg, #1e121f 60%, #3d214d 100%);
-      border: 2px dashed var(--accent-purple);
-      color: var(--accent-purple);
-      font-weight: 700;
-      padding: 10px 24px; /* Padding ajustado */
-      border-radius: 16px; /* Arredondamento ajustado */
-      box-shadow: 0 0 20px rgba(168, 85, 247, 0.4); /* Sombra ajustada */
-      cursor: pointer;
-      transition: transform 0.2s, box-shadow 0.2s;
-      text-transform: uppercase;
-      letter-spacing: 0.5px; /* Espaçamento de letra ajustado */
-    }
+        /* --- Títulos dos Painéis/Seções --- */
+        .panel-title {
+            font-family: "Cinzel Decorative", serif;
+            font-size: 1.5em;
+            font-weight: 700;
+            color: var(--accent-gold);
+            text-shadow: 0 0 8px var(--glow-color);
+            border-bottom: 2px solid var(--panel-border);
+            padding-bottom: 10px;
+            margin-bottom: 15px;
+            text-align: center;
+            text-transform: uppercase;
+        }
 
-    .tab-store:hover {
-      transform: scale(1.03); /* Escala menor */
-      box-shadow: 0 0 30px var(--accent-purple), 0 0 12px var(--panel-border); /* Sombra ajustada */
-    }
+        /* --- Abas Principais (Visão Geral, Inventário, Equipamento) --- */
+        .tabs-container {
+            display: flex;
+            justify-content: center;
+            gap: 10px;
+            margin-bottom: 20px;
+            flex-wrap: wrap; /* Quebra linha no mobile */
+        }
+        .tab {
+            background: var(--slot-bg);
+            border: 1px solid var(--panel-border);
+            color: var(--text-muted);
+            padding: 8px 18px;
+            border-radius: 8px;
+            font-family: "Cinzel Decorative", serif;
+            font-size: 0.9em;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            text-transform: uppercase;
+            box-shadow: 0 0 5px var(--shadow-color);
+        }
+        .tab.active {
+            background: var(--accent-gold);
+            color: var(--dark-bg);
+            border-color: var(--accent-gold);
+            box-shadow: 0 0 15px var(--glow-color);
+        }
+        .tab:hover:not(.active) {
+            background: rgba(var(--accent-gold), 0.2);
+            color: var(--accent-gold);
+            border-color: var(--accent-gold);
+        }
 
-    /*— Conteúdo principal (Left - Center - Right) —*/
-    .content-container {
-      display: flex;
-      width: 100%;
-      min-height: 550px; /* Altura mínima ajustada */
-      position: relative;
-    }
+        /* --- Layout dos Painéis Internos --- */
+        .panel-content-wrapper {
+            display: flex;
+            flex-direction: column; /* Padrão mobile */
+            gap: 20px;
+        }
 
-    /* Painel Base para Left, Center, Right */
-    .panel-base {
-      background: rgba(36, 20, 52, 0.4);
-      backdrop-filter: blur(var(--glass-blur));
-      -webkit-backdrop-filter: blur(var(--glass-blur));
-      border: 1px solid var(--glass-border);
-      border-radius: 12px;
-      box-shadow: inset 0 0 8px rgba(167, 139, 250, 0.1), 0 0 12px var(--glass-shadow-dark); /* Sombra ajustada */
-      padding: 18px; /* Padding padrão ajustado */
-      margin: 12px; /* Espaçamento entre os painéis ajustado */
-      flex-shrink: 0; /* Impede que os painéis encolham demais */
-    }
+        .left-panel,
+        .right-panel {
+            flex: 1; /* Ocupa o espaço disponível */
+            background: rgba(30, 30, 30, 0.7);
+            border: 1px solid var(--panel-border);
+            border-radius: 8px;
+            padding: 15px;
+            box-shadow: inset 0 0 8px rgba(0, 0, 0, 0.5), 0 0 10px var(--shadow-color);
+        }
 
-    /*  – Left Panel */
-    .left-panel {
-      flex: 0 0 280px; /* Largura fixa ajustada */
-      display: flex;
-      flex-direction: column;
-      gap: 20px; /* Espaço entre seções ajustado */
-      padding: 0; /* Padding será handled pelo panel-base */
-      border-right: none;
-    }
-    .left-panel > div {
-      @extend .panel-base;
-      padding: 18px; /* Padding ajustado para o conteúdo interno */
-      border-radius: 10px; /* Arredondamento ajustado */
-      margin: 10px; /* Margem interna */
-    }
+        .center-panel {
+            flex: 1.2; /* Um pouco maior */
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 15px;
+            min-height: 300px; /* Altura mínima para o avatar */
+        }
 
-    /*  – Center Panel */
-    .center-panel {
-      flex: 1 1 auto;
-      background: transparent;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      position: relative;
-      overflow: hidden;
-      margin: 0;
-    }
+        /* --- Avatar e Slots de Armadura --- */
+        .avatar-container {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 15px;
+            width: 100%; /* Ocupa a largura disponível no mobile */
+            flex-direction: column; /* Avatar e slots em coluna no mobile */
+        }
 
-    .avatar-placeholder {
-      width: 380px; /* Avatar ajustado */
-      height: 520px;
-      border-radius: 14px;
-      background: linear-gradient(120deg, #1a0e26 65%, #381a4d 100%);
-      border: 3px dashed var(--accent-purple);
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      color: var(--accent-purple);
-      font-family: "Orbitron", sans-serif;
-      font-size: 2.5rem; /* Fonte ajustada */
-      font-weight: 700;
-      text-shadow: 0 0 25px rgba(147, 51, 234, 0.8);
-      box-shadow: 0 0 35px rgba(147, 51, 234, 0.4), inset 0 0 15px rgba(167, 139, 250, 0.1);
-      transition: all 0.4s ease; /* Transição ajustada */
-    }
-    .avatar-placeholder:hover {
-      transform: scale(1.01); /* Escala menor */
-      box-shadow: 0 0 45px var(--accent-purple), inset 0 0 20px rgba(167, 139, 250, 0.2);
-    }
+        .avatar-placeholder {
+            width: 200px; /* Tamanho base */
+            height: 280px;
+            background: linear-gradient(145deg, #2a2a2a, #1a1a1a);
+            border: 3px dashed var(--accent-gold);
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--accent-gold);
+            font-family: "Cinzel Decorative", serif;
+            font-size: 1.8em;
+            font-weight: 700;
+            text-shadow: 0 0 15px var(--glow-color);
+            box-shadow: 0 0 25px rgba(0, 0, 0, 0.7), inset 0 0 10px rgba(255, 255, 255, 0.1);
+            transition: all 0.3s ease;
+        }
+        .avatar-placeholder:hover {
+            transform: scale(1.02);
+            box-shadow: 0 0 35px var(--glow-color), inset 0 0 15px rgba(255, 255, 255, 0.15);
+        }
 
-    /*  – Right Panel */
-    .right-panel {
-      flex: 0 0 320px; /* Largura fixa ajustada */
-      display: flex;
-      flex-direction: column;
-      gap: 20px; /* Espaço entre seções ajustado */
-      padding: 0; /* Padding será handled pelo panel-base */
-      border-left: none;
-    }
-    .right-panel > div {
-      @extend .panel-base;
-      padding: 18px; /* Padding ajustado para o conteúdo interno */
-      border-radius: 10px; /* Arredondamento ajustado */
-      margin: 10px; /* Margem interna */
-    }
+        .armor-side {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+        }
+        .armor-side.left {
+            margin-right: auto; /* Para alinhar na esquerda no desktop */
+        }
+        .armor-side.right {
+            margin-left: auto; /* Para alinhar na direita no desktop */
+        }
 
-    /*— Left Panes —*/
-    .pane-overview,
-    .pane-inventory,
-    .pane-equipment {
-      display: none;
-      flex-direction: column;
-      gap: 20px; /* Espaço ajustado */
-    }
-    .pane-overview.active,
-    .pane-inventory.active,
-    .pane-equipment.active {
-      display: flex;
-    }
+        .equip-slot, .inv-slot {
+            width: 55px; /* Tamanho base do slot */
+            height: 55px;
+            background: var(--slot-bg);
+            border: 2px solid var(--slot-border);
+            border-radius: 5px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--text-muted);
+            font-size: 0.9em;
+            opacity: 0.7;
+            cursor: default;
+            transition: all 0.2s ease;
+            box-shadow: inset 0 0 6px rgba(0, 0, 0, 0.5);
+            position: relative; /* Para números de item */
+        }
+        .equip-slot:hover, .inv-slot:hover {
+            opacity: 1;
+            border-color: var(--accent-gold);
+            box-shadow: 0 0 12px var(--glow-color), inset 0 0 8px rgba(255, 255, 255, 0.1);
+        }
+        .item-count {
+            position: absolute;
+            bottom: 2px;
+            right: 2px;
+            background: rgba(0, 0, 0, 0.7);
+            color: var(--text-light);
+            font-size: 0.6em;
+            padding: 1px 3px;
+            border-radius: 3px;
+            font-family: "Share Tech Mono", monospace;
+            font-weight: bold;
+        }
 
-    /*— Quick Info & Bars —*/
-    .left-title {
-      font-family: "Orbitron", sans-serif;
-      font-size: 1.5rem; /* Fonte ajustada */
-      font-weight: 700;
-      color: var(--accent-purple);
-      text-shadow: 0 0 8px rgba(147, 51, 234, 0.8);
-      margin-bottom: 12px;
-      text-transform: uppercase;
-      letter-spacing: 0.8px;
-    }
-    .left-text {
-      font-size: 0.95rem; /* Fonte ajustada */
-      line-height: 1.4;
-      color: var(--text-light);
-      opacity: 0.9;
-      margin-bottom: 8px;
-    }
-    .info-row {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      font-size: 0.95rem; /* Fonte ajustada */
-      font-weight: 600;
-      color: var(--text-gray);
-      margin-bottom: 6px;
-      padding: 3px 0;
-      border-bottom: 1px dashed rgba(167, 139, 250, 0.2);
-    }
-    .info-row:last-child {
-      border-bottom: none;
-    }
-    .info-label {
-      color: var(--text-light);
-      text-transform: uppercase;
-    }
-    .edit-button, .add-point {
-      background: transparent;
-      border: 1px solid var(--accent-purple);
-      color: var(--accent-purple);
-      border-radius: 4px;
-      padding: 1px 5px; /* Padding ajustado */
-      margin-left: 6px; /* Margem ajustada */
-      cursor: pointer;
-      font-size: 0.8rem; /* Fonte ajustada */
-      transition: all 0.2s ease;
-      font-family: "Share Tech Mono", monospace;
-    }
-    .edit-button:hover, .add-point:hover {
-      background: var(--accent-purple);
-      color: #fff;
-      box-shadow: 0 0 8px var(--accent-purple);
-    }
+        /* --- Info Rows e Barras de Atributos --- */
+        .info-row {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            font-size: 0.9em;
+            color: var(--text-light);
+            margin-bottom: 8px;
+            padding-bottom: 5px;
+            border-bottom: 1px dashed rgba(255, 255, 255, 0.1);
+        }
+        .info-row:last-child {
+            border-bottom: none;
+        }
+        .info-label {
+            color: var(--text-muted);
+            text-transform: uppercase;
+        }
+        .edit-button, .add-point {
+            background: var(--panel-border);
+            border: 1px solid var(--accent-gold);
+            color: var(--accent-gold);
+            border-radius: 4px;
+            padding: 2px 6px;
+            margin-left: 8px;
+            cursor: pointer;
+            font-size: 0.75em;
+            transition: all 0.2s ease;
+            font-family: "Share Tech Mono", monospace;
+        }
+        .edit-button:hover, .add-point:hover {
+            background: var(--accent-gold);
+            color: var(--dark-bg);
+            box-shadow: 0 0 8px var(--glow-color);
+        }
 
-    .bar-container {
-      width: 100%;
-      height: 12px; /* Altura ajustada */
-      background: var(--bar-bg);
-      border-radius: 6px; /* Arredondamento ajustado */
-      overflow: hidden;
-      margin-top: 5px;
-      border: 1px solid rgba(167, 139, 250, 0.3);
-      box-shadow: inset 0 0 4px rgba(0, 0, 0, 0.5);
-    }
-    .bar-fill {
-      height: 100%;
-      background: var(--bar-fill);
-      border-radius: 6px 0 0 6px;
-      width: 0%;
-      transition: width 0.3s ease-out; /* Transição ajustada */
-      box-shadow: 0 0 8px var(--accent-purple);
-    }
+        .attribute-bar-container {
+            width: 100%;
+            height: 8px; /* Mais fino */
+            background: var(--bar-bg);
+            border-radius: 4px;
+            overflow: hidden;
+            margin-top: 3px;
+            margin-bottom: 15px;
+            border: 1px solid var(--panel-border);
+            box-shadow: inset 0 0 4px rgba(0, 0, 0, 0.5);
+        }
+        .attribute-bar-fill {
+            height: 100%;
+            background: linear-gradient(90deg, var(--bar-xp), var(--accent-gold));
+            border-radius: 4px 0 0 4px;
+            transition: width 0.3s ease-out;
+            box-shadow: 0 0 6px var(--glow-color);
+        }
 
-    .quick-info-title {
-      font-family: "Orbitron", sans-serif;
-      font-size: 1.1rem; /* Fonte ajustada */
-      font-weight: 700;
-      color: var(--text-light);
-      text-transform: uppercase;
-      margin-top: 20px;
-      padding-bottom: 6px;
-      border-bottom: 2px solid rgba(147, 51, 234, 0.4);
-    }
+        /* --- Inventário --- */
+        .inventory-filter {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+            justify-content: center;
+            padding: 10px 0;
+            border-bottom: 1px solid var(--panel-border);
+            margin-bottom: 15px;
+        }
+        .filter-btn {
+            background: var(--slot-bg);
+            border: 1px solid var(--panel-border);
+            color: var(--text-muted);
+            padding: 6px 12px;
+            border-radius: 6px;
+            cursor: pointer;
+            transition: all 0.2s;
+            font-family: "Cinzel Decorative", serif;
+            font-size: 0.8em;
+            text-transform: uppercase;
+        }
+        .filter-btn.active {
+            background: var(--accent-gold);
+            color: var(--dark-bg);
+            border-color: var(--accent-gold);
+            box-shadow: 0 0 10px var(--glow-color);
+        }
+        .filter-btn:hover:not(.active) {
+            background: rgba(var(--accent-gold), 0.2);
+            border-color: var(--accent-gold);
+            color: var(--accent-gold);
+        }
 
-    /*— Inventory Tabs & Grid —*/
-    .inv-categories {
-      display: flex;
-      gap: 10px; /* Espaçamento ajustado */
-      overflow-x: auto;
-      padding-bottom: 6px;
-      margin-bottom: 10px;
-      border-bottom: 1px dashed rgba(167, 139, 250, 0.2);
-    }
-    .inv-cat-tab {
-      flex: 0 0 auto;
-      background: rgba(30, 15, 45, 0.6);
-      border: 1px solid var(--accent-purple);
-      color: var(--text-light);
-      padding: 6px 14px; /* Padding ajustado */
-      border-radius: 10px; /* Arredondamento ajustado */
-      font-size: 0.85rem; /* Fonte ajustada */
-      font-weight: 600;
-      cursor: pointer;
-      transition: all 0.2s ease;
-      white-space: nowrap;
-      text-transform: uppercase;
-    }
-    .inv-cat-tab.active {
-      background: var(--accent-purple);
-      box-shadow: 0 0 10px rgba(147, 51, 234, 0.7);
-      color: #fff;
-      transform: translateY(-1px);
-    }
-    .inv-cat-tab:hover:not(.active) {
-      background: rgba(147, 51, 234, 0.3);
-      border-color: var(--text-gray);
-    }
-    .inv-grid {
-      display: grid;
-      grid-template-columns: repeat(2, 1fr); /* 2 colunas para inventário em desktop */
-      gap: 12px; /* Espaçamento ajustado */
-      padding-right: 6px;
-      max-height: 350px; /* Altura máxima para scroll ajustada */
-      overflow-y: auto;
-      margin-top: 8px;
-    }
-    .inv-slot {
-      width: 100%;
-      aspect-ratio: 1 / 1;
-      background: var(--slot-bg);
-      border: 2px dashed var(--slot-border);
-      border-radius: 8px; /* Arredondamento ajustado */
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      color: var(--accent-purple);
-      font-size: 1.1rem; /* Fonte ajustada */
-      opacity: 0.5;
-      cursor: default;
-      transition: all 0.2s ease;
-      box-shadow: inset 0 0 6px rgba(0, 0, 0, 0.4);
-    }
-    .inv-slot:hover {
-      opacity: 1;
-      border-style: solid;
-      box-shadow: 0 0 12px var(--accent-purple), inset 0 0 8px rgba(167, 139, 250, 0.2);
-    }
-    .inv-empty-label {
-      font-size: 0.85rem; /* Fonte ajustada */
-      color: var(--text-gray);
-      text-align: center;
-      margin-top: 15px;
-      opacity: 0.7;
-      font-style: italic;
-    }
+        .category-container {
+            margin-bottom: 20px;
+        }
+        .category-title {
+            font-family: "Cinzel Decorative", serif;
+            font-size: 1.2em;
+            color: var(--accent-gold);
+            margin-bottom: 10px;
+            border-bottom: 1px dotted var(--panel-border);
+            padding-bottom: 5px;
+            text-transform: uppercase;
+        }
+        .inv-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(50px, 1fr)); /* Slots fluidos */
+            gap: 8px;
+            max-height: 300px; /* Altura máxima para scroll */
+            overflow-y: auto;
+            padding-right: 5px; /* Para não cortar scrollbar */
+        }
+        .inv-empty-label {
+            font-size: 0.8em;
+            color: var(--text-muted);
+            text-align: center;
+            margin-top: 15px;
+            font-style: italic;
+        }
 
-    /*— Equipment Slots —*/
-    .equip-section {
-      display: flex;
-      flex-direction: column;
-      gap: 8px; /* Espaçamento ajustado */
-    }
-    .equip-title {
-      font-family: "Orbitron", sans-serif;
-      font-size: 1.05rem; /* Fonte ajustada */
-      font-weight: 700;
-      color: var(--accent-purple);
-      text-shadow: 0 0 6px rgba(147, 51, 234, 0.5);
-      text-transform: uppercase;
-      letter-spacing: 0.4px;
-      margin-bottom: 4px;
-    }
-    .equip-slots {
-      display: flex;
-      gap: 10px; /* Espaçamento ajustado */
-      flex-wrap: wrap;
-    }
-    .equip-slot {
-      width: 60px; /* Slots ajustados */
-      height: 60px;
-      background: var(--slot-bg);
-      border: 2px dashed var(--slot-border);
-      border-radius: 8px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      color: var(--accent-purple);
-      font-size: 1.1rem; /* Fonte ajustada */
-      opacity: 0.6;
-      cursor: default;
-      transition: all 0.2s ease;
-      box-shadow: inset 0 0 6px rgba(0, 0, 0, 0.4);
-    }
-    .equip-slot:hover {
-      opacity: 1;
-      border-style: solid;
-      box-shadow: 0 0 12px var(--accent-purple), inset 0 0 8px rgba(167, 139, 250, 0.2);
-    }
+        /* --- Equipamento --- */
+        .equip-section {
+            margin-bottom: 20px;
+        }
+        .equip-section-title {
+            font-family: "Cinzel Decorative", serif;
+            font-size: 1.1em;
+            color: var(--accent-gold);
+            margin-bottom: 10px;
+            border-bottom: 1px dotted var(--panel-border);
+            padding-bottom: 5px;
+            text-transform: uppercase;
+        }
+        .equip-slots-container {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+        }
 
-    /*— Scrollbar customizada —*/
-    ::-webkit-scrollbar {
-      width: 7px; /* Mais fino */
-      height: 7px;
-    }
-    ::-webkit-scrollbar-track {
-      background: rgba(30, 15, 45, 0.4); /* Mais transparente */
-      border-radius: 4px;
-    }
-    ::-webkit-scrollbar-thumb {
-      background: var(--accent-purple);
-      border-radius: 4px;
-      transition: background 0.2s;
-    }
-    ::-webkit-scrollbar-thumb:hover {
-      background: var(--panel-border);
-    }
+        .backpack-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(50px, 1fr)); /* Fluidos */
+            gap: 8px;
+        }
 
-    /* centraliza Loja em linha própria */
-    .store-row {
-      display: flex;
-      justify-content: center;
-      margin-top: 12px;
-    }
+        /* --- Scrollbar Customizada (Dark Fantasy Style) --- */
+        ::-webkit-scrollbar {
+            width: 8px;
+            height: 8px;
+        }
+        ::-webkit-scrollbar-track {
+            background: rgba(10, 10, 10, 0.5); /* Fundo escuro */
+            border-radius: 5px;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: var(--panel-border); /* Cor de metal/pedra */
+            border-radius: 5px;
+            border: 1px solid #333;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: var(--accent-gold); /* Detalhe dourado no hover */
+        }
 
-    /* garante que abas ocupem só uma linha */
-    .tabs-container {
-      display: flex;
-      gap: 12px;
-      flex-wrap: nowrap;
-    }
+        /* --- Responsividade --- */
+        @media (min-width: 768px) {
+            .top-hud {
+                flex-wrap: nowrap; /* Não quebra linha no desktop */
+                justify-content: center;
+                gap: 20px;
+                padding: 10px 20px;
+            }
+            .hud-group {
+                gap: 15px;
+            }
+            .hud-bar-container {
+                width: 150px; /* Barras um pouco maiores no desktop */
+            }
+            .hud-level {
+                font-size: 1.2em;
+            }
+            .hud-action-buttons button {
+                font-size: 0.95em;
+                padding: 10px 18px;
+            }
+            .main-content {
+                padding-top: 80px; /* Mais espaço para o HUD fixo */
+            }
+            .ui-root {
+                flex-direction: row; /* Volta para row no desktop */
+                gap: 30px;
+                padding: 30px;
+            }
+            .panel-content-wrapper {
+                flex-direction: row;
+            }
+            .left-panel,
+            .right-panel {
+                padding: 25px;
+            }
+            .avatar-container {
+                flex-direction: row; /* Avatar e slots lado a lado */
+            }
+            .avatar-placeholder {
+                width: 280px;
+                height: 400px;
+                font-size: 2.5em;
+            }
+            .equip-slot, .inv-slot {
+                width: 65px; /* Slots maiores */
+                height: 65px;
+            }
+            .inv-grid {
+                grid-template-columns: repeat(auto-fill, minmax(60px, 1fr));
+            }
+        }
 
-    /* ============================= */
-    /* Inventário: filtro e painel   */
-    /* ============================= */
-    .inventory-filter {
-      display: none;
-      flex-wrap: wrap;
-      gap: 8px; /* Espaçamento ajustado */
-      justify-content: center;
-      padding: 12px 0;
-      background: transparent;
-      border-bottom: 1px solid var(--glass-border);
-    }
-    .filter-btn {
-      background: var(--slot-bg);
-      border: 1px solid var(--accent-purple);
-      color: var(--text-gray);
-      padding: 7px 16px; /* Padding ajustado */
-      border-radius: 8px;
-      cursor: pointer;
-      transition: all 0.2s, box-shadow 0.2s;
-      text-transform: uppercase;
-      font-size: 0.9rem; /* Fonte ajustada */
-    }
-    .filter-btn.active {
-      background: var(--accent-purple);
-      color: #fff;
-      box-shadow: 0 0 10px rgba(147, 51, 234, 0.7);
-      transform: translateY(-1px);
-    }
-    .filter-btn:hover:not(.active) {
-      background: rgba(147, 51, 234, 0.2);
-      border-color: var(--text-light);
-    }
-    /* Quando em Inventário, zera a altura mínima para não deixar gap */
-    .content-container.inventory-active {
-      min-height: auto !important; /* Permitir altura flexível */
-      align-items: flex-start;
-      flex-direction: column; /* Reverte para coluna no inventário */
-      margin: 0 10px; /* Margem lateral */
-      width: auto; /* Deixa a largura ser definida pelo conteúdo */
-    }
-
-    /* Mochila em grid 6x3 */
-    .backpack-grid {
-      display: grid;
-      grid-template-columns: repeat(6, 1fr); /* 6 colunas em desktop */
-      gap: 8px; /* Espaçamento ajustado */
-    }
-
-    /* Ajuste visual se quiser diferenciar slots da mochila */
-    .backpack-grid .equip-slot {
-      opacity: 0.7;
-    }
-    .backpack-grid .equip-slot:hover {
-      opacity: 1;
-    }
-
-    /* === Avatar + Armadura alinhadas só no Equipamentos === */
-    .center-panel {
-      display: flex;
-      flex-direction: column; /* Padrão para centralizar avatar */
-      align-items: center;
-      justify-content: center;
-      flex: 1;
-      margin: 0; /* Remove margens extras */
-      padding: 10px; /* Padding para espaço interno */
-    }
-    .avatar-armor-container {
-      display: flex;
-      align-items: center;
-      gap: 15px; /* Espaçamento ajustado */
-      transition: all 0.4s ease;
-    }
-    .armor-side {
-      display: flex;
-      flex-direction: column;
-      gap: 8px; /* Espaçamento entre slots de armadura ajustado */
-    }
-
-    /* Particle Background */
-    .particle-bg-canvas {
-      position: fixed;
-      top: 0;
-      left: 0;
-      z-index: -1;
-      width: 100vw;
-      height: 100vh;
-      pointer-events: none;
-      opacity: 0.3; /* Opacidade ajustada */
-    }
-
-    /*— Responsividade —*/
-    @media (max-width: 1024px) {
-      .ui-root {
-        max-width: 950px;
-        margin: 15px auto;
-      }
-      .left-panel {
-        flex: 0 0 250px; /* Largura ajustada */
-      }
-      .right-panel {
-        flex: 0 0 290px; /* Largura ajustada */
-      }
-      .avatar-placeholder {
-        width: 320px;
-        height: 440px;
-        font-size: 2rem;
-      }
-      .inv-grid {
-        grid-template-columns: repeat(2, 1fr);
-      }
-      .backpack-grid {
-        grid-template-columns: repeat(5, 1fr); /* 5 colunas */
-      }
-      .equip-slot {
-        width: 55px;
-        height: 55px;
-        font-size: 1rem;
-      }
-    }
-
-    @media (max-width: 768px) {
-      .ui-root {
-        max-width: 98%;
-        margin: 10px auto;
-        border-radius: 15px;
-      }
-      .content-container {
-        flex-direction: column;
-        min-height: auto;
-        margin: 0; /* Remove margens extras do container principal */
-      }
-      .left-panel,
-      .right-panel {
-        flex: 1 1 auto; /* Permite que ocupem a largura total */
-        border: none;
-        padding: 0; /* Padding handled by internal divs */
-      }
-      .left-panel > div, .right-panel > div {
-        margin: 8px; /* Reduz margem entre painéis internos */
-        padding: 15px; /* Padding ajustado */
-      }
-      .center-panel {
-        min-height: 380px; /* Garante altura para o avatar */
-        padding: 10px; /* Padding */
-      }
-      .avatar-placeholder {
-        width: 280px;
-        height: 380px;
-        font-size: 1.8rem;
-      }
-      .tabs-container {
-        flex-wrap: wrap;
-        justify-content: center;
-        gap: 12px;
-        padding: 0 10px;
-      }
-      .tab {
-        padding: 6px 14px;
-        font-size: 0.85rem;
-      }
-      .tab-store {
-        padding: 8px 18px;
-        font-size: 0.9rem;
-      }
-      .left-title {
-        font-size: 1.3rem;
-      }
-      .left-text {
-        font-size: 0.9rem;
-      }
-      .info-row {
-        font-size: 0.9rem;
-      }
-      .bar-container {
-        height: 10px;
-      }
-      .inv-cat-tab, .filter-btn {
-        padding: 6px 10px;
-        font-size: 0.8rem;
-      }
-      .inv-grid {
-        grid-template-columns: repeat(3, 1fr); /* Volta para 3 colunas em telas menores */
-        gap: 10px;
-      }
-      .inv-slot {
-        font-size: 1rem;
-      }
-      .equip-slot {
-        width: 50px;
-        height: 50px;
-        font-size: 1rem;
-      }
-      .equip-title {
-        font-size: 1rem;
-      }
-      .backpack-grid {
-        grid-template-columns: repeat(4, 1fr); /* 4 colunas */
-      }
-    }
-
-    @media (max-width: 480px) {
-      .ui-root {
-        margin: 8px auto;
-        border-radius: 10px;
-        width: 100%; /* Ocupa 100% da largura */
-      }
-      .tabs-container-wrapper {
-        padding: 8px 0;
-      }
-      .tabs-container {
-        gap: 8px;
-        font-size: 0.95rem;
-        padding: 0 8px;
-      }
-      .tab {
-        padding: 4px 8px;
-        font-size: 0.75rem;
-        border-radius: 8px;
-      }
-      .tab-store {
-        padding: 6px 12px;
-        font-size: 0.8rem;
-        border-radius: 12px;
-      }
-      .left-panel > div, .right-panel > div {
-        margin: 5px;
-        padding: 12px;
-      }
-      .left-title {
-        font-size: 1.1rem;
-        margin-bottom: 8px;
-      }
-      .avatar-placeholder {
-        width: 200px;
-        height: 280px;
-        font-size: 1.4rem;
-      }
-      .avatar-armor-container {
-        flex-direction: column; /* Pilha em telas pequenas */
-        gap: 8px;
-      }
-      .armor-left, .armor-right {
-        margin: 0;
-        flex-direction: row; /* Slots em linha */
-        flex-wrap: wrap;
-        justify-content: center;
-      }
-      .armor-side .equip-slot {
-        width: 35px;
-        height: 35px;
-        font-size: 0.9rem;
-      }
-      .inv-grid {
-        grid-template-columns: repeat(2, 1fr); /* 2 colunas para mobile */
-        gap: 8px;
-      }
-      .backpack-grid {
-        grid-template-columns: repeat(3, 1fr); /* 3 colunas para mobile */
-      }
-      .equip-slot {
-        width: 40px;
-        height: 40px;
-        font-size: 0.9rem;
-      }
-    }
-  </style>
+        @media (min-width: 1024px) {
+            .hud-bar-container {
+                width: 180px;
+            }
+            .avatar-placeholder {
+                width: 320px;
+                height: 450px;
+            }
+            .equip-slot, .inv-slot {
+                width: 75px;
+                height: 75px;
+            }
+            .inv-grid {
+                grid-template-columns: repeat(auto-fill, minmax(70px, 1fr));
+            }
+        }
+    </style>
 </head>
 <body>
-<canvas id="particle-bg" class="particle-bg-canvas"></canvas>
-  <div class="ui-root">
-    <div class="tabs-container-wrapper">
-      <div class="tabs-container">
-        <button class="tab active" data-tab="overview">Visão Geral</button>
-        <button class="tab" data-tab="inventory">Inventário</button>
-        <button class="tab" data-tab="equipment">Equipamento</button>
-      </div>
-      <div class="store-row">
-        <button class="tab-store" onclick="location.href='store.html'">⛩ Loja</button>
-      </div>
+    <canvas id="particle-bg"></canvas>
+
+    <div class="top-hud">
+        <div class="hud-group">
+            <span class="hud-level">Nível: <span id="hud-level-value">3</span></span>
+            <div class="hud-bar-container">
+                <div class="hud-bar-fill hud-bar-xp" id="hud-xp-bar" data-value="67%"></div>
+            </div>
+        </div>
+        <div class="hud-group">
+            <div class="hud-bar-container">
+                <div class="hud-bar-fill hud-bar-hp" id="hud-hp-bar" data-value="100/100"></div>
+            </div>
+            <div class="hud-bar-container">
+                <div class="hud-bar-fill hud-bar-mp" id="hud-mp-bar" data-value="50/50"></div>
+            </div>
+        </div>
+        <div class="hud-group">
+            <span class="hud-currency">
+                <img src="https://via.placeholder.com/18/c29546/000000?text=G" alt="Gold" /> <span id="hud-gold">1250</span>
+            </span>
+            <span class="hud-currency">
+                <img src="https://via.placeholder.com/18/8b0000/FFFFFF?text=C" alt="Crystal" /> <span id="hud-crystals">25</span>
+            </span>
+        </div>
+        <div class="hud-action-buttons">
+            <button onclick="location.href='store.html'">⛩ Loja</button>
+        </div>
     </div>
 
-    <div class="content-container">
-      <div class="left-panel">
-        <div class="pane-overview active">
-          <div class="left-title">Visão Geral</div>
-          <div class="info-row">
-            <span class="info-label">Nome:</span>
-            <span id="nome-personagem">Ghoul Pionkim <button class="edit-button" onclick="editarNome()">✎</button></span>
-          </div>
-          <div class="info-row">
-            <span class="info-label">Classe:</span><span>Portador das Sombras</span>
-          </div>
-          <div class="info-row">
-            <span class="info-label">Facção:</span><span>Noctis Ordinem</span>
-          </div>
-          <div class="info-row" style="margin-top:16px;">
-            <span class="info-label">Despertar Vitalista</span>
-            <span id="valor-despertar">128.000 / 1.000.000</span>
-          </div>
-          <div class="bar-container" style="height:12px;border:2px solid #333;background:#000;">
-            <div class="bar-fill" id="barra-despertar"
-                 style="background:linear-gradient(90deg,red,orange,yellow,green,cyan,blue,violet);width:12.8%;box-shadow:inset 0 0 6px #000;">
+    <div class="main-content">
+        <div class="ui-root">
+            <div class="tabs-container">
+                <button class="tab active" data-tab="overview">Visão Geral</button>
+                <button class="tab" data-tab="inventory">Inventário</button>
+                <button class="tab" data-tab="equipment">Equipamento</button>
             </div>
-          </div>
 
-          <div class="quick-info-title">Atributos</div>
-          <div class="info-row"><span class="info-label">Nível</span><span id="nivel">3</span></div>
-          <div class="bar-container" style="height:12px;border:2px solid #333;background:#000;">
-            <div class="bar-fill" id="xp-bar" style="background:#4CAF50;width:67%;box-shadow:inset 0 0 6px #000;"></div>
-          </div>
-          <div class="info-row" style="margin-top:12px;">
-            <span class="info-label">Pontos Disponíveis</span><span id="pontos-disponiveis">4</span>
-          </div>
+            <div class="panel-content-wrapper">
+                <div class="left-panel">
+                    <div class="pane-overview active">
+                        <h2 class="panel-title">Informações do Herói</h2>
+                        <div class="info-row">
+                            <span class="info-label">Nome:</span>
+                            <span id="nome-personagem">Ghoul Pionkim <button class="edit-button" onclick="editarNome()">✎</button></span>
+                        </div>
+                        <div class="info-row">
+                            <span class="info-label">Classe:</span><span>Portador das Sombras</span>
+                        </div>
+                        <div class="info-row">
+                            <span class="info-label">Facção:</span><span>Noctis Ordinem</span>
+                        </div>
 
-          <div class="info-row">
-            <span class="info-label">Força</span>
-            <span id="valor-forca">1 <button class="add-point" data-add="forca">+</button></span>
-          </div>
-          <div class="bar-container"><div class="bar-fill" id="barra-forca" style="width:60%;"></div></div>
+                        <h2 class="panel-title" style="margin-top: 25px;">Atributos</h2>
+                        <div class="info-row">
+                            <span class="info-label">Pontos Disponíveis:</span><span id="pontos-disponiveis">4</span>
+                        </div>
 
-          <div class="info-row">
-            <span class="info-label">Destreza</span>
-            <span id="valor-destreza">1 <button class="add-point" data-add="destreza">+</button></span>
-          </div>
-          <div class="bar-container"><div class="bar-fill" id="barra-destreza" style="width:50%;"></div></div>
+                        <div class="info-row">
+                            <span class="info-label">Força</span>
+                            <span id="valor-forca">1 <button class="add-point" data-add="forca">+</button></span>
+                        </div>
+                        <div class="attribute-bar-container"><div class="attribute-bar-fill" id="barra-forca" style="width:60%;"></div></div>
 
-          <div class="info-row">
-            <span class="info-label">Constituição</span>
-            <span id="valor-constituicao">1 <button class="add-point" data-add="constituicao">+</button></span>
-          </div>
-          <div class="bar-container"><div class="bar-fill" id="barra-constituicao" style="width:65%;"></div></div>
+                        <div class="info-row">
+                            <span class="info-label">Destreza</span>
+                            <span id="valor-destreza">1 <button class="add-point" data-add="destreza">+</button></span>
+                        </div>
+                        <div class="attribute-bar-container"><div class="attribute-bar-fill" id="barra-destreza" style="width:50%;"></div></div>
 
-          <div class="info-row">
-            <span class="info-label">Inteligência</span>
-            <span id="valor-inteligencia">1 <button class="add-point" data-add="inteligencia">+</button></span>
-          </div>
-          <div class="bar-container"><div class="bar-fill" id="barra-inteligencia" style="width:45%;"></div></div>
+                        <div class="info-row">
+                            <span class="info-label">Constituição</span>
+                            <span id="valor-constituicao">1 <button class="add-point" data-add="constituicao">+</button></span>
+                        </div>
+                        <div class="attribute-bar-container"><div class="attribute-bar-fill" id="barra-constituicao" style="width:65%;"></div></div>
 
-          <div class="info-row">
-            <span class="info-label">Espírito</span>
-            <span id="valor-espirito">1 <button class="add-point" data-add="espirito">+</button></span>
-          </div>
-          <div class="bar-container"><div class="bar-fill" id="barra-espirito" style="width:40%;"></div></div>
+                        <div class="info-row">
+                            <span class="info-label">Inteligência</span>
+                            <span id="valor-inteligencia">1 <button class="add-point" data-add="inteligencia">+</button></span>
+                        </div>
+                        <div class="attribute-bar-container"><div class="attribute-bar-fill" id="barra-inteligencia" style="width:45%;"></div></div>
 
-          <div class="info-row">
-            <span class="info-label">Carisma</span>
-            <span id="valor-carisma">1 <button class="add-point" data-add="carisma">+</button></span>
-          </div>
-          <div class="bar-container"><div class="bar-fill" id="barra-carisma" style="width:30%;"></div></div>
+                        <div class="info-row">
+                            <span class="info-label">Espírito</span>
+                            <span id="valor-espirito">1 <button class="add-point" data-add="espirito">+</button></span>
+                        </div>
+                        <div class="attribute-bar-container"><div class="attribute-bar-fill" id="barra-espirito" style="width:40%;"></div></div>
+
+                        <div class="info-row">
+                            <span class="info-label">Carisma</span>
+                            <span id="valor-carisma">1 <button class="add-point" data-add="carisma">+</button></span>
+                        </div>
+                        <div class="attribute-bar-container"><div class="attribute-bar-fill" id="barra-carisma" style="width:30%;"></div></div>
+                    </div>
+
+                    <div class="pane-inventory" style="display: none;">
+                        <h2 class="panel-title">Inventário</h2>
+                        <p class="info-label" style="text-align: center; margin-bottom: 15px;">Tudo o que você coletou em suas jornadas.</p>
+                        <div class="inventory-filter">
+                            <button class="filter-btn active" data-filter="all">Tudo</button>
+                            <button class="filter-btn" data-filter="consumables">Consumíveis</button>
+                            <button class="filter-btn" data-filter="materials">Materiais</button>
+                            <button class="filter-btn" data-filter="quests">Missão</button>
+                            <button class="filter-btn" data-filter="misc">Diversos</button>
+                        </div>
+                        <div class="category-container" data-category="consumables">
+                            <h3 class="category-title">Consumíveis</h3>
+                            <div class="inv-grid">
+                                <div class="inv-slot"><span class="item-count">3</span></div><div class="inv-slot"></div>
+                                <div class="inv-slot"></div><div class="inv-slot"></div>
+                            </div>
+                            <div class="inv-empty-label" style="display: none;">Sem consumíveis no momento.</div>
+                        </div>
+                        <div class="category-container" data-category="materials" style="display: none;">
+                            <h3 class="category-title">Materiais</h3>
+                            <div class="inv-grid">
+                                <div class="inv-slot"></div><div class="inv-slot"></div>
+                            </div>
+                            <div class="inv-empty-label">Sem materiais para artesanato.</div>
+                        </div>
+                        <div class="category-container" data-category="quests" style="display: none;">
+                            <h3 class="category-title">Itens de Missão</h3>
+                            <div class="inv-grid">
+                                <div class="inv-slot"></div>
+                            </div>
+                            <div class="inv-empty-label">Nenhum item de missão ativa.</div>
+                        </div>
+                         <div class="category-container" data-category="misc" style="display: none;">
+                            <h3 class="category-title">Diversos</h3>
+                            <div class="inv-grid">
+                                <div class="inv-slot"></div>
+                            </div>
+                            <div class="inv-empty-label">Nada por aqui...</div>
+                        </div>
+                    </div>
+
+                    <div class="pane-equipment" style="display: none;">
+                        <h2 class="panel-title">Habilidades Ativas</h2>
+                        <div class="equip-section">
+                            <div class="equip-slots-container">
+                                <div class="equip-slot">S1</div>
+                                <div class="equip-slot">S2</div>
+                                <div class="equip-slot">S3</div>
+                                <div class="equip-slot">S4</div>
+                            </div>
+                        </div>
+
+                        <h2 class="panel-title" style="margin-top: 25px;">Bônus Atuais</h2>
+                        <p class="info-label">
+                            +10% Dano de Sombra<br>
+                            +5 Regeneração de MP<br>
+                            Armadura Arcana (50% Resistência Mágica)
+                        </p>
+                    </div>
+                </div>
+
+                <div class="center-panel">
+                    <div class="avatar-container">
+                        <div class="armor-side left" style="display: none;">
+                            <div class="equip-slot">Cabeça</div>
+                            <div class="equip-slot">Ombros</div>
+                            <div class="equip-slot">Braços</div>
+                            <div class="equip-slot">Luvas</div>
+                        </div>
+                        <div class="avatar-placeholder">Avatar</div>
+                        <div class="armor-side right" style="display: none;">
+                            <div class="equip-slot">Peito</div>
+                            <div class="equip-slot">Cintura</div>
+                            <div class="equip-slot">Pernas</div>
+                            <div class="equip-slot">Pés</div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="right-panel">
+                    <div class="pane-overview-right active">
+                        <h2 class="panel-title">Jornada e Progresso</h2>
+                        <div class="info-row">
+                            <span class="info-label">Despertar Vitalista:</span>
+                            <span id="valor-despertar">128.000 / 1.000.000</span>
+                        </div>
+                        <div class="attribute-bar-container" style="height:12px; border:2px solid #333; background:#000;">
+                            <div class="attribute-bar-fill" id="barra-despertar"
+                                 style="background:linear-gradient(90deg, #8b0000, #daa520, #006400); width:12.8%; box-shadow:inset 0 0 6px #000;">
+                            </div>
+                        </div>
+
+                        <h2 class="panel-title" style="margin-top: 25px;">Estatísticas de Combate</h2>
+                        <div class="info-row">
+                            <span class="info-label">Ataque:</span><span>+15</span>
+                        </div>
+                        <div class="info-row">
+                            <span class="info-label">Defesa:</span><span>+10</span>
+                        </div>
+                        <div class="info-row">
+                            <span class="info-label">Crítico:</span><span>5%</span>
+                        </div>
+                        <div class="info-row">
+                            <span class="info-label">Evasão:</span><span>8%</span>
+                        </div>
+                         <div class="info-row">
+                            <span class="info-label">Dano Mágico:</span><span>+20</span>
+                        </div>
+                         <div class="info-row">
+                            <span class="info-label">Resistência Física:</span><span>10%</span>
+                        </div>
+                         <div class="info-row">
+                            <span class="info-label">Resistência Mágica:</span><span>15%</span>
+                        </div>
+                    </div>
+
+                    <div class="pane-inventory-right" style="display: none;">
+                        <h2 class="panel-title">Mochila</h2>
+                        <p class="info-label" style="text-align: center; margin-bottom: 15px;">Seu espaço extra para itens.</p>
+                        <div class="equip-section">
+                            <div class="backpack-grid">
+                                <div class="equip-slot"></div><div class="equip-slot"></div><div class="equip-slot"></div>
+                                <div class="equip-slot"></div><div class="equip-slot"></div><div class="equip-slot"></div>
+                                <div class="equip-slot"></div><div class="equip-slot"></div><div class="equip-slot"></div>
+                                <div class="equip-slot"></div><div class="equip-slot"></div><div class="equip-slot"></div>
+                                <div class="equip-slot"></div><div class="equip-slot"></div><div class="equip-slot"></div>
+                                <div class="equip-slot"></div><div class="equip-slot"></div><div class="equip-slot"></div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="pane-equipment-right" style="display: none;">
+                        <h2 class="panel-title">Itens Equipados</h2>
+                        <div class="equip-section">
+                            <h3 class="equip-section-title">Arma Principal</h3>
+                            <div class="equip-slots-container">
+                                <div class="equip-slot"></div>
+                            </div>
+                        </div>
+                        <div class="equip-section">
+                            <h3 class="equip-section-title">Arma Secundária / Escudo</h3>
+                            <div class="equip-slots-container">
+                                <div class="equip-slot"></div>
+                            </div>
+                        </div>
+                        <div class="equip-section">
+                            <h3 class="equip-section-title">Acessórios</h3>
+                            <div class="equip-slots-container">
+                                <div class="equip-slot"></div>
+                                <div class="equip-slot"></div>
+                                <div class="equip-slot"></div>
+                            </div>
+                        </div>
+                        <div class="equip-section">
+                            <h3 class="equip-section-title">Troféus</h3>
+                            <div class="equip-slots-container">
+                                <div class="equip-slot"></div>
+                                <div class="equip-slot"></div>
+                                <div class="equip-slot"></div>
+                            </div>
+                        </div>
+                        <div class="equip-section">
+                            <h3 class="equip-section-title">Insígnias</h3>
+                            <div class="equip-slots-container">
+                                <div class="equip-slot"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
         </div>
-
-        <div class="pane-inventory">
-          <div class="left-title">Inventário</div>
-          <div class="left-text">
-            Aqui você vê tudo o que já comprou.<br />
-            Clique em cada categoria para ver os slots.
-          </div>
-        </div>
-
-        <div class="pane-equipment">
-          <div class="left-title">Equipamento</div>
-          <div class="left-text">
-            Seus slots de equipamento aparecem aqui.
-          </div>
-        </div>
-      </div>
-
-<div class="center-panel">
-  <div class="avatar-armor-container">
-    <div class="armor-side armor-left" style="display:none;">
-      <div class="equip-slot"></div>
-      <div class="equip-slot"></div>
-      <div class="equip-slot"></div>
-      <div class="equip-slot"></div>
     </div>
 
-    <div class="avatar-panel">
-      <div class="avatar-placeholder">Avatar</div>
-    </div>
+    <script>
+        // --- Lógica de Partículas para o Fundo ---
+        const canvas = document.getElementById('particle-bg');
+        const ctx = canvas.getContext('2d');
+        let particles = [];
+        const particleCount = 100; // Um pouco mais para densidade, mas ainda otimizado
+        const particleSize = 1.0; // Tamanho base das partículas
+        const particleSpeed = 0.2; // Velocidade bem lenta
+        const particleColor = 'rgba(100, 100, 100, 0.4)'; // Cinza escuro, quase imperceptível
 
-    <div class="armor-side armor-right" style="display:none;">
-      <div class="equip-slot"></div>
-      <div class="equip-slot"></div>
-      <div class="equip-slot"></div>
-      <div class="equip-slot"></div>
-    </div>
-  </div>
-
-  <div class="inventory-filter" style="display:none;">
-    <button class="filter-btn active" data-filter="all">Tudo</button>
-    <button class="filter-btn" data-filter="anime">Animes</button>
-    <button class="filter-btn" data-filter="manga">Mangás</button>
-    <button class="filter-btn" data-filter="ebook">eBooks</button>
-    <button class="filter-btn" data-filter="mentor">Mentorias</button>
-    <button class="filter-btn" data-filter="extras">Extras</button>
-  </div>
-</div>
-
-      <div class="right-panel">
-        <div class="pane-overview-right">
-          <div class="left-title">Informações Adicionais</div>
-          <div class="info-row">
-            <span class="info-label">HP:</span><span>100/100</span>
-          </div>
-          <div class="info-row">
-            <span class="info-label">MP:</span><span>50/50</span>
-          </div>
-          <div class="info-row">
-            <span class="info-label">Ouro:</span><span>1.250g</span>
-          </div>
-          <div class="info-row">
-            <span class="info-label">Cristais:</span><span>25</span>
-          </div>
-          <div class="quick-info-title" style="margin-top:20px;">Habilidades Ativas</div>
-          <div class="equip-slots">
-            <div class="equip-slot">S1</div>
-            <div class="equip-slot">S2</div>
-            <div class="equip-slot">S3</div>
-            <div class="equip-slot">S4</div>
-          </div>
-           <div class="quick-info-title" style="margin-top:20px;">Bônus Atuais</div>
-           <div class="left-text" style="font-size:0.9rem;margin-top:0;">
-             +10% Dano de Sombra<br>
-             +5 Regeneração de MP<br>
-             Armadura Arcana (50% Resistência Mágica)
-           </div>
-        </div>
-
-       <div class="pane-inventory-right" style="display:none;flex-direction:column;gap:12px;">
-         <div class="category-container" data-category="anime">
-           <div class="equip-title" style="font-size:1.05rem;margin-bottom:8px;">Animes</div>
-           <div class="inv-grid">
-             <div class="inv-slot"></div><div class="inv-slot"></div>
-             <div class="inv-slot"></div><div class="inv-slot"></div>
-           </div>
-           <div class="inv-empty-label">Sem Animes comprados.</div>
-         </div>
-
-         <div class="category-container" data-category="manga">
-           <div class="equip-title" style="font-size:1.05rem;margin-bottom:8px;">Mangás</div>
-           <div class="inv-grid">
-             <div class="inv-slot"></div><div class="inv-slot"></div>
-             <div class="inv-slot"></div><div class="inv-slot"></div>
-           </div>
-           <div class="inv-empty-label">Sem Mangás comprados.</div>
-         </div>
-
-         <div class="category-container" data-category="ebook">
-           <div class="equip-title" style="font-size:1.05rem;margin-bottom:8px;">eBooks</div>
-           <div class="inv-grid">
-             <div class="inv-slot"></div><div class="inv-slot"></div>
-             <div class="inv-slot"></div><div class="inv-slot"></div>
-           </div>
-           <div class="inv-empty-label">Sem eBooks comprados.</div>
-         </div>
-
-         <div class="category-container" data-category="mentor">
-           <div class="equip-title" style="font-size:1.05rem;margin-bottom:8px;">Mentorias</div>
-           <div class="inv-grid">
-             <div class="inv-slot"></div><div class="inv-slot"></div>
-             <div class="inv-slot"></div><div class="inv-slot"></div>
-           </div>
-           <div class="inv-empty-label">Sem Mentorias compradas.</div>
-         </div>
-
-         <div class="category-container" data-category="extras">
-           <div class="equip-title" style="font-size:1.05rem;margin-bottom:8px;">Extras</div>
-           <div class="inv-grid">
-             <div class="inv-slot"></div><div class="inv-slot"></div>
-             <div class="inv-slot"></div><div class="inv-slot"></div>
-           </div>
-           <div class="inv-empty-label">Sem Extras disponíveis.</div>
-         </div>
-       </div>
-
-        <div class="pane-equipment-right" style="display:none;flex-direction:column;gap:16px;">
-
-          <div class="equip-section">
-            <div class="equip-title">Slot Primário</div>
-            <div class="equip-slots">
-              <div class="equip-slot"></div>
-            </div>
-          </div>
-          <div class="equip-section">
-            <div class="equip-title">Slot Secundário</div>
-            <div class="equip-slots">
-              <div class="equip-slot"></div>
-            </div>
-          </div>
-          <div class="equip-section">
-            <div class="equip-title">Ferramentas</div>
-            <div class="equip-slots">
-              <div class="equip-slot"></div>
-              <div class="equip-slot"></div>
-              <div class="equip-slot"></div>
-            </div>
-          </div>
-
-          <div class="equip-section">
-            <div class="equip-title">Habilidades</div>
-            <div class="equip-slots">
-              <div class="equip-slot"></div>
-              <div class="equip-slot"></div>
-              <div class="equip-slot"></div>
-              <div class="equip-slot"></div>
-            </div>
-          </div>
-
-          <div class="equip-section">
-            <div class="equip-title">Armadura Esquerda</div>
-            <div class="equip-slots">
-              <div class="equip-slot"></div>
-              <div class="equip-slot"></div>
-              <div class="equip-slot"></div>
-              <div class="equip-slot"></div>
-            </div>
-          </div>
-          <div class="equip-section">
-            <div class="equip-title">Armadura Direita</div>
-            <div class="equip-slots">
-              <div class="equip-slot"></div>
-              <div class="equip-slot"></div>
-              <div class="equip-slot"></div>
-              <div class="equip-slot"></div>
-            </div>
-          </div>
-
-          <div class="equip-section">
-            <div class="equip-title">Acessórios</div>
-            <div class="equip-slots">
-              <div class="equip-slot"></div>
-              <div class="equip-slot"></div>
-              <div class="equip-slot"></div>
-            </div>
-          </div>
-          <div class="equip-section">
-            <div class="equip-title">Troféus</div>
-            <div class="equip-slots">
-              <div class="equip-slot"></div>
-              <div class="equip-slot"></div>
-              <div class="equip-slot"></div>
-            </div>
-          </div>
-          <div class="equip-section">
-            <div class="equip-title">Insígnias</div>
-            <div class="equip-slots">
-              <div class="equip-slot"></div>
-            </div>
-          </div>
-
-          <div class="equip-section">
-            <div class="equip-title">Mochila</div>
-            <div class="backpack-grid">
-              <div class="equip-slot"></div><div class="equip-slot"></div><div class="equip-slot"></div>
-              <div class="equip-slot"></div><div class="equip-slot"></div><div class="equip-slot"></div>
-              <div class="equip-slot"></div><div class="equip-slot"></div><div class="equip-slot"></div>
-              <div class="equip-slot"></div><div class="equip-slot"></div><div class="equip-slot"></div>
-              <div class="equip-slot"></div><div class="equip-slot"></div><div class="equip-slot"></div>
-              <div class="equip-slot"></div><div class="equip-slot"></div><div class="equip-slot"></div>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
-  </div>
-
-  <script>
-    // Seletores principais
-    const tabs             = document.querySelectorAll(".tab");
-    const leftPanes        = { overview:    document.querySelector(".pane-overview"),
-                               inventory:   document.querySelector(".pane-inventory"),
-                               equipment:   document.querySelector(".pane-equipment") };
-    const rightPanes       = { overview:    document.querySelector(".pane-overview-right"),
-                               inventory:   document.querySelector(".pane-inventory-right"),
-                               equipment:   document.querySelector(".pane-equipment-right") };
-    const centerPanel      = document.querySelector(".center-panel");
-    const contentContainer = document.querySelector(".content-container");
-    const invFilter        = document.querySelector(".inventory-filter");
-    const avatarPanel      = document.querySelector(".avatar-panel");
-    const armorSides       = document.querySelectorAll(".armor-side");
-    const filterBtns       = document.querySelectorAll(".filter-btn");
-    const catContainers    = document.querySelectorAll(".category-container");
-
-    // Função de clique em abas
-    function handleTabClick(tab) {
-      const key = tab.dataset.tab;
-      const isInv = key === "inventory";
-      const isEq  = key === "equipment";
-
-      // 1) Ativa a aba
-      tabs.forEach(t => t.classList.toggle("active", t === tab));
-
-      // 2) Mostra o painel esquerdo correspondente
-      Object.entries(leftPanes).forEach(([k,p]) =>
-        p.classList.toggle("active", k === key)
-      );
-
-      // 3) Mostra o painel direito correspondente
-      Object.entries(rightPanes).forEach(([k,p]) =>
-        p.style.display = (k === key ? "flex" : "none")
-      );
-
-      // 4) Ajusta a exibição do center-panel e content-container
-      if (isInv) {
-        centerPanel.style.display = "flex";
-        centerPanel.style.flexDirection = "column";
-        avatarPanel.style.display = "none";
-        invFilter.style.display = "flex";
-        contentContainer.classList.add("inventory-active");
-        armorSides.forEach(el => el.style.display = "none");
-      } else if (isEq) {
-        centerPanel.style.display = "flex";
-        centerPanel.style.flexDirection = "row";
-        avatarPanel.style.display = "flex";
-        invFilter.style.display = "none";
-        armorSides.forEach(el => el.style.display = "flex");
-        contentContainer.classList.remove("inventory-active");
-      } else { // overview
-        centerPanel.style.display = "flex";
-        centerPanel.style.flexDirection = "column";
-        avatarPanel.style.display = "flex";
-        invFilter.style.display = "none";
-        armorSides.forEach(el => el.style.display = "none");
-        contentContainer.classList.remove("inventory-active");
-      }
-
-      // 5) Reset de filtro ao entrar no Inventário
-      if (isInv) {
-        filterBtns.forEach(b => b.classList.remove("active"));
-        filterBtns[0].classList.add("active"); // Ativa "Tudo" por padrão
-        catContainers.forEach(c => c.style.display = "block");
-      }
-    }
-
-    // Associa click às tabs
-    tabs.forEach(tab =>
-      tab.addEventListener("click", () => handleTabClick(tab))
-    );
-
-    // Lógica de filtragem
-    filterBtns.forEach(btn =>
-      btn.addEventListener("click", () => {
-        filterBtns.forEach(b => b.classList.remove("active"));
-        btn.classList.add("active");
-        const f = btn.dataset.filter;
-        catContainers.forEach(c => {
-          c.style.display = (f === "all" || c.dataset.category === f)
-                            ? "block"
-                            : "none";
-        });
-      })
-    );
-
-    // Código de atributos permanece intacto
-    const estado = {
-      nivel: 3, xp: 6700, xpMax: 10000, pontosDisponiveis: 4,
-      atributos: { forca:1, destreza:1, constituicao:1, inteligencia:1, espirito:1, carisma:1 }
-    };
-    function atualizarInterface() {
-      document.getElementById("nivel").textContent = estado.nivel;
-      document.getElementById("xp-bar").style.width = (estado.xp/estado.xpMax)*100 + "%";
-      document.getElementById("pontos-disponiveis").textContent = estado.pontosDisponiveis;
-      for (let k in estado.atributos) {
-        const span = document.getElementById("valor-"+k);
-        if (!span) continue;
-        span.childNodes[0].nodeValue = estado.atributos[k] + " ";
-        // A barra de atributos vai até 20 para ter uma progressão visível
-        document.getElementById("barra-"+k).style.width =
-          Math.min((estado.atributos[k]/20)*100,100) + "%";
-      }
-    }
-    function adicionarPonto(at) {
-      if (estado.pontosDisponiveis<=0) return;
-      estado.atributos[at]++; estado.pontosDisponiveis--; atualizarInterface();
-    }
-    function editarNome() {
-      const span = document.getElementById("nome-personagem");
-      const currentText = span.textContent.replace("✎","").trim();
-      const novo  = prompt("Digite um novo nome:", currentText);
-      if (novo && novo.length > 1) {
-        span.innerHTML = novo + ' <button class="edit-button" onclick="editarNome()">✎</button>';
-      }
-    }
-    function ganharXp(q) { estado.xp+=q;
-      while (estado.xp>=estado.xpMax) {
-        estado.xp-=estado.xpMax; estado.nivel++; estado.pontosDisponiveis+=2;
-        estado.xpMax = Math.floor(estado.xpMax * 1.5); // Aumenta o XP necessário para o próximo nível
-      }
-      atualizarInterface();
-    }
-
-    // Gerador de partículas para o background
-    const canvas = document.getElementById('particle-bg');
-    const ctx = canvas.getContext('2d');
-    let particles = [];
-    const particleCount = 80; /* Reduzido para melhor performance */
-    const particleSize = 1.2; /* Reduzido */
-    const particleSpeed = 0.4; /* Reduzido */
-    const particleColor = 'rgba(147, 51, 234, 0.5)'; // Roxo com opacidade
-
-    function setCanvasSize() {
-      canvas.width = window.innerWidth;
-      canvas.height = window.innerHeight;
-    }
-
-    class Particle {
-      constructor() {
-        this.x = Math.random() * canvas.width;
-        this.y = Math.random() * canvas.height;
-        this.size = Math.random() * particleSize + 0.5;
-        this.speedX = (Math.random() * 1 - 0.5) * particleSpeed;
-        this.speedY = (Math.random() * 1 - 0.5) * particleSpeed;
-        this.color = particleColor;
-      }
-      update() {
-        this.x += this.speedX;
-        this.y += this.speedY;
-
-        if (this.size > 0.1) this.size -= 0.005; /* Taxa de encolhimento ajustada */
-
-        if (this.x < 0 || this.x > canvas.width || this.y < 0 || this.y > canvas.height || this.size <= 0.1) {
-          this.reset();
+        function setCanvasSize() {
+            canvas.width = window.innerWidth;
+            canvas.height = window.innerHeight;
         }
-      }
-      reset() {
-        this.x = Math.random() * canvas.width;
-        this.y = Math.random() * canvas.height;
-        this.size = Math.random() * particleSize + 0.5;
-        this.speedX = (Math.random() * 1 - 0.5) * particleSpeed;
-        this.speedY = (Math.random() * 1 - 0.5) * particleSpeed;
-      }
-      draw() {
-        ctx.fillStyle = this.color;
-        ctx.beginPath();
-        ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
-        ctx.fill();
-      }
-    }
 
-    function initParticles() {
-      particles = [];
-      for (let i = 0; i < particleCount; i++) {
-        particles.push(new Particle());
-      }
-    }
+        class Particle {
+            constructor() {
+                this.x = Math.random() * canvas.width;
+                this.y = Math.random() * canvas.height;
+                this.size = Math.random() * particleSize + 0.2; // Tamanho mínimo de 0.2
+                this.speedX = (Math.random() * 0.4 - 0.2) * particleSpeed; // Movimento sutil para os lados
+                this.speedY = (Math.random() * 0.4 - 0.2) * particleSpeed; // Movimento sutil para cima/baixo
+                this.opacity = Math.random() * 0.5 + 0.1; // Opacidade inicial variável
+            }
+            update() {
+                this.x += this.speedX;
+                this.y += this.speedY;
 
-    function animateParticles() {
-      ctx.clearRect(0, 0, canvas.width, canvas.height);
-      for (let i = 0; i < particles.length; i++) {
-        particles[i].update();
-        particles[i].draw();
-      }
-      requestAnimationFrame(animateParticles);
-    }
+                // Reduzir opacidade lentamente para simular desvanecimento
+                if (this.opacity > 0.01) {
+                    this.opacity -= 0.001;
+                } else {
+                    this.reset();
+                }
 
-    window.addEventListener('resize', setCanvasSize);
+                // Resetar se sair da tela
+                if (this.x < -10 || this.x > canvas.width + 10 || this.y < -10 || this.y > canvas.height + 10) {
+                    this.reset();
+                }
+            }
+            reset() {
+                this.x = Math.random() * canvas.width;
+                this.y = Math.random() * canvas.height;
+                this.size = Math.random() * particleSize + 0.2;
+                this.speedX = (Math.random() * 0.4 - 0.2) * particleSpeed;
+                this.speedY = (Math.random() * 0.4 - 0.2) * particleSpeed;
+                this.opacity = Math.random() * 0.5 + 0.1;
+            }
+            draw() {
+                ctx.fillStyle = `rgba(100, 100, 100, ${this.opacity})`;
+                ctx.beginPath();
+                ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
+                ctx.fill();
+            }
+        }
 
-    // Inicialização
-    document.addEventListener("DOMContentLoaded", () => {
-      document.querySelectorAll("[data-add]").forEach(btn =>
-        btn.addEventListener("click", ()=> adicionarPonto(btn.dataset.add))
-      );
-      atualizarInterface();
-      const init = document.querySelector(".tab.active");
-      if (init) handleTabClick(init);
+        function initParticles() {
+            particles = [];
+            for (let i = 0; i < particleCount; i++) {
+                particles.push(new Particle());
+            }
+        }
 
-      // Inicializa o background de partículas
-      setCanvasSize();
-      initParticles();
-      animateParticles();
+        function animateParticles() {
+            ctx.clearRect(0, 0, canvas.width, canvas.height); // Limpa o canvas
+            for (let i = 0; i < particles.length; i++) {
+                particles[i].update();
+                particles[i].draw();
+            }
+            requestAnimationFrame(animateParticles);
+        }
 
-      // Exemplo de como ganhar XP (pode ser ligado a ações do jogo)
-      // setInterval(() => ganharXp(100), 5000);
-    });
-  </script>
+        window.addEventListener('resize', setCanvasSize);
+
+        // --- Lógica do HUD e Abas ---
+        const tabs = document.querySelectorAll(".tab");
+        const leftPanes = {
+            overview: document.querySelector(".left-panel .pane-overview"),
+            inventory: document.querySelector(".left-panel .pane-inventory"),
+            equipment: document.querySelector(".left-panel .pane-equipment"),
+        };
+        const rightPanes = {
+            overview: document.querySelector(".right-panel .pane-overview-right"),
+            inventory: document.querySelector(".right-panel .pane-inventory-right"),
+            equipment: document.querySelector(".right-panel .pane-equipment-right"),
+        };
+        const centerPanel = document.querySelector(".center-panel");
+        const avatarContainer = document.querySelector(".avatar-container");
+        const armorSides = document.querySelectorAll(".armor-side");
+        const inventoryFilter = document.querySelector(".inventory-filter");
+        const filterBtns = document.querySelectorAll(".filter-btn");
+        const categoryContainers = document.querySelectorAll(".category-container");
+
+        function handleTabClick(tab) {
+            const key = tab.dataset.tab;
+
+            // 1) Ativa a aba
+            tabs.forEach(t => t.classList.remove("active"));
+            tab.classList.add("active");
+
+            // 2) Mostra o painel esquerdo correspondente
+            Object.values(leftPanes).forEach(p => p.style.display = "none");
+            leftPanes[key].style.display = "block"; // Visão geral e Equipamento usam block, Inventário usa flex
+            if (key === "inventory") {
+                leftPanes[key].style.display = "flex";
+                leftPanes[key].style.flexDirection = "column";
+            }
+
+            // 3) Mostra o painel direito correspondente
+            Object.values(rightPanes).forEach(p => p.style.display = "none");
+            rightPanes[key].style.display = "block"; // Similar ao esquerdo
+            if (key === "inventory" || key === "equipment") {
+                rightPanes[key].style.display = "flex";
+                rightPanes[key].style.flexDirection = "column";
+            }
+
+            // 4) Ajusta o painel central (avatar, armadura, filtro de inventário)
+            if (key === "equipment") {
+                avatarContainer.style.display = "flex"; // Mostra o avatar
+                armorSides.forEach(el => el.style.display = "flex"); // Mostra slots de armadura
+                inventoryFilter.style.display = "none"; // Esconde filtro de inventário
+                centerPanel.style.display = "flex";
+            } else if (key === "inventory") {
+                avatarContainer.style.display = "none"; // Esconde o avatar
+                armorSides.forEach(el => el.style.display = "none"); // Esconde slots de armadura
+                inventoryFilter.style.display = "flex"; // Mostra filtro de inventário
+                centerPanel.style.display = "none"; // Oculta o painel central quando no inventário
+            } else { // overview
+                avatarContainer.style.display = "flex"; // Mostra o avatar
+                armorSides.forEach(el => el.style.display = "none"); // Esconde slots de armadura
+                inventoryFilter.style.display = "none"; // Esconde filtro de inventário
+                centerPanel.style.display = "flex";
+            }
+
+            // 5) Reset de filtro ao entrar no Inventário
+            if (key === "inventory") {
+                filterBtns.forEach(b => b.classList.remove("active"));
+                filterBtns[0].classList.add("active"); // Ativa "Tudo" por padrão
+                categoryContainers.forEach(c => c.style.display = "block"); // Mostra todas as categorias
+            }
+        }
+
+        tabs.forEach(tab =>
+            tab.addEventListener("click", () => handleTabClick(tab))
+        );
+
+        filterBtns.forEach(btn =>
+            btn.addEventListener("click", () => {
+                filterBtns.forEach(b => b.classList.remove("active"));
+                btn.classList.add("active");
+                const filterCategory = btn.dataset.filter;
+
+                categoryContainers.forEach(c => {
+                    if (filterCategory === "all" || c.dataset.category === filterCategory) {
+                        c.style.display = "block";
+                    } else {
+                        c.style.display = "none";
+                    }
+                });
+            })
+        );
+
+        // --- Lógica de Atributos e HUD Bars ---
+        const estado = {
+            nivel: 3, xp: 6700, xpMax: 10000, pontosDisponiveis: 4,
+            hp: 100, hpMax: 100, mp: 50, mpMax: 50, gold: 1250, crystals: 25,
+            atributos: { forca:1, destreza:1, constituicao:1, inteligencia:1, espirito:1, carisma:1 }
+        };
+
+        function atualizarInterface() {
+            // HUD Topo
+            document.getElementById("hud-level-value").textContent = estado.nivel;
+            document.getElementById("hud-xp-bar").style.width = (estado.xp / estado.xpMax * 100) + "%";
+            document.getElementById("hud-xp-bar").setAttribute("data-value", `${Math.floor(estado.xp / estado.xpMax * 100)}%`);
+
+            document.getElementById("hud-hp-bar").style.width = (estado.hp / estado.hpMax * 100) + "%";
+            document.getElementById("hud-hp-bar").setAttribute("data-value", `${estado.hp}/${estado.hpMax}`);
+
+            document.getElementById("hud-mp-bar").style.width = (estado.mp / estado.mpMax * 100) + "%";
+            document.getElementById("hud-mp-bar").setAttribute("data-value", `${estado.mp}/${estado.mpMax}`);
+
+            document.getElementById("hud-gold").textContent = estado.gold;
+            document.getElementById("hud-crystals").textContent = estado.crystals;
+
+            // Painel de Visão Geral
+            document.getElementById("pontos-disponiveis").textContent = estado.pontosDisponiveis;
+            for (let k in estado.atributos) {
+                const span = document.getElementById("valor-"+k);
+                if (span) {
+                    span.childNodes[0].nodeValue = estado.atributos[k] + " ";
+                }
+                // A barra de atributos vai até 20 para ter uma progressão visível
+                const bar = document.getElementById("barra-"+k);
+                if (bar) {
+                    bar.style.width = Math.min((estado.atributos[k] / 20) * 100, 100) + "%";
+                }
+            }
+        }
+
+        function adicionarPonto(at) {
+            if (estado.pontosDisponiveis <= 0) return;
+            estado.atributos[at]++;
+            estado.pontosDisponiveis--;
+            atualizarInterface();
+        }
+
+        function editarNome() {
+            const span = document.getElementById("nome-personagem");
+            const currentText = span.textContent.replace("✎","").trim();
+            const novo  = prompt("Digite um novo nome:", currentText);
+            if (novo && novo.length > 1) {
+                span.innerHTML = novo + ' <button class="edit-button" onclick="editarNome()">✎</button>';
+            }
+        }
+
+        // --- Inicialização ---
+        document.addEventListener("DOMContentLoaded", () => {
+            // Adiciona listeners para botões de atributo
+            document.querySelectorAll("[data-add]").forEach(btn =>
+                btn.addEventListener("click", ()=> adicionarPonto(btn.dataset.add))
+            );
+
+            atualizarInterface(); // Atualiza o HUD e painel inicial
+
+            // Ativa a aba "Visão Geral" por padrão no carregamento
+            const initialTab = document.querySelector(".tab.active");
+            if (initialTab) {
+                handleTabClick(initialTab);
+            }
+
+            // Inicializa o background de partículas
+            setCanvasSize();
+            initParticles();
+            animateParticles();
+        });
+    </script>
 </body>
 </html>
