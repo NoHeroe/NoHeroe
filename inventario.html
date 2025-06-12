@@ -24,7 +24,7 @@
       --bar-fill: #9333ea; /* Preenchimento da barra */
 
       /* Novas variáveis para o efeito de vidro/neomorfismo */
-      --glass-blur: 10px;
+      --glass-blur: 8px; /* Reduz o blur para melhor performance e nitidez */
       --glass-border: rgba(167, 139, 250, 0.3); /* Borda mais suave para vidro */
       --glass-shadow-light: rgba(167, 139, 250, 0.15);
       --glass-shadow-dark: rgba(0, 0, 0, 0.3);
@@ -43,7 +43,7 @@
       background: var(--dark-bg);
       color: var(--text-light);
       font-family: "Share Tech Mono", monospace; /* Fonte tech para corpo */
-      overflow-x: hidden;
+      overflow-x: hidden; /* Evita scroll horizontal */
       overflow-y: auto;
       display: flex; /* Para centralizar o ui-root */
       justify-content: center;
@@ -53,13 +53,13 @@
 
     /*— Container raiz (HUD Principal) —*/
     .ui-root {
-      max-width: 1400px; /* Maior para mais espaço */
-      width: 95%; /* Responsivo */
-      margin: 24px auto;
+      max-width: 1200px; /* Max-width ajustado para caber melhor */
+      width: 95%; /* Garante que ocupe a largura disponível, com margem */
+      margin: 20px auto; /* Margem para não colar nas bordas */
       border-radius: 20px; /* Bordas mais arredondadas */
       background: var(--panel-bg);
       border: 2px solid var(--panel-border);
-      box-shadow: 0 0 60px var(--accent-purple), 0 0 20px rgba(0, 0, 0, 0.5);
+      box-shadow: 0 0 40px var(--accent-purple), 0 0 15px rgba(0, 0, 0, 0.5); /* Sombra ajustada */
       overflow: hidden;
       display: flex;
       flex-direction: column;
@@ -73,8 +73,8 @@
       display: flex;
       flex-direction: column;
       align-items: center;
-      gap: 12px; /* Aumenta o espaçamento */
-      padding: 16px 0; /* Aumenta o padding */
+      gap: 10px; /* Espaçamento ajustado */
+      padding: 12px 0; /* Padding ajustado */
       border-bottom: 1px solid var(--glass-border); /* Borda sutil */
     }
 
@@ -82,13 +82,13 @@
     .tabs-container {
       display: flex;
       background: none;
-      padding: 0 24px; /* Mais espaço nas laterais */
-      gap: 30px; /* Aumenta o espaçamento entre as abas */
-      font-size: 1.2rem; /* Maior fonte */
+      padding: 0 20px; /* Padding nas laterais */
+      gap: 20px; /* Espaçamento entre as abas ajustado */
+      font-size: 1.1rem; /* Fonte ajustada */
       font-weight: 700;
       overflow-x: auto;
       scroll-snap-type: x proximity;
-      color: var(--text-gray); /* Cor padrão das abas */
+      color: var(--text-gray);
     }
     .tabs-container::-webkit-scrollbar {
       display: none;
@@ -101,18 +101,18 @@
     .tab {
       flex: 0 0 auto;
       background: transparent;
-      border: none; /* Remove borda para o efeito de vidro */
+      border: none;
       color: var(--text-gray);
-      padding: 8px 20px; /* Mais padding */
-      border-radius: 16px; /* Mais arredondado */
-      font-size: 1rem;
+      padding: 7px 18px; /* Padding ajustado */
+      border-radius: 14px; /* Arredondamento ajustado */
+      font-size: 0.95rem; /* Fonte ajustada */
       font-weight: 600;
       cursor: pointer;
-      transition: all 0.3s ease; /* Transição mais suave */
+      transition: all 0.3s ease;
       white-space: nowrap;
       position: relative;
       overflow: hidden;
-      text-transform: uppercase; /* Mais RPG */
+      text-transform: uppercase;
     }
 
     .tab::before {
@@ -126,7 +126,7 @@
       transform: translateX(-100%);
       transition: transform 0.3s ease;
       z-index: -1;
-      border-radius: 16px;
+      border-radius: 14px;
       border: 1px solid rgba(167, 139, 250, 0.2);
     }
 
@@ -136,126 +136,126 @@
 
     .tab.active {
       color: var(--text-light);
-      text-shadow: 0 0 8px var(--accent-purple);
-      box-shadow: 0 0 25px var(--accent-purple);
+      text-shadow: 0 0 6px var(--accent-purple); /* Sombra ajustada */
+      box-shadow: 0 0 20px var(--accent-purple); /* Sombra ajustada */
     }
 
     .tab:hover:not(.active) {
       color: var(--accent-purple);
-      text-shadow: 0 0 5px var(--accent-purple);
-      transform: translateY(-2px);
+      text-shadow: 0 0 4px var(--accent-purple);
+      transform: translateY(-1px); /* Movimento menor */
     }
 
     .store-row {
       display: flex;
       justify-content: center;
-      padding: 8px 0 16px;
+      padding: 6px 0 12px; /* Padding ajustado */
     }
 
-    /* mantém o estilo original do botão Loja */
     .tab-store {
       background: linear-gradient(120deg, #1e121f 60%, #3d214d 100%);
       border: 2px dashed var(--accent-purple);
       color: var(--accent-purple);
       font-weight: 700;
-      padding: 12px 28px; /* Mais padding */
-      border-radius: 18px; /* Mais arredondado */
-      box-shadow: 0 0 25px rgba(168, 85, 247, 0.4); /* Sombra mais forte */
+      padding: 10px 24px; /* Padding ajustado */
+      border-radius: 16px; /* Arredondamento ajustado */
+      box-shadow: 0 0 20px rgba(168, 85, 247, 0.4); /* Sombra ajustada */
       cursor: pointer;
       transition: transform 0.2s, box-shadow 0.2s;
       text-transform: uppercase;
-      letter-spacing: 1px;
+      letter-spacing: 0.5px; /* Espaçamento de letra ajustado */
     }
 
     .tab-store:hover {
-      transform: scale(1.05);
-      box-shadow: 0 0 35px var(--accent-purple), 0 0 15px var(--panel-border);
+      transform: scale(1.03); /* Escala menor */
+      box-shadow: 0 0 30px var(--accent-purple), 0 0 12px var(--panel-border); /* Sombra ajustada */
     }
 
     /*— Conteúdo principal (Left - Center - Right) —*/
     .content-container {
       display: flex;
       width: 100%;
-      min-height: 650px; /* Aumenta a altura mínima */
-      position: relative; /* Para posicionar o avatar de forma absoluta */
+      min-height: 550px; /* Altura mínima ajustada */
+      position: relative;
     }
 
     /* Painel Base para Left, Center, Right */
     .panel-base {
-      background: rgba(36, 20, 52, 0.4); /* Base mais transparente */
+      background: rgba(36, 20, 52, 0.4);
       backdrop-filter: blur(var(--glass-blur));
       -webkit-backdrop-filter: blur(var(--glass-blur));
       border: 1px solid var(--glass-border);
       border-radius: 12px;
-      box-shadow: inset 0 0 10px rgba(167, 139, 250, 0.1), 0 0 15px var(--glass-shadow-dark);
-      padding: 20px; /* Padding padrão */
-      margin: 15px; /* Espaçamento entre os painéis */
+      box-shadow: inset 0 0 8px rgba(167, 139, 250, 0.1), 0 0 12px var(--glass-shadow-dark); /* Sombra ajustada */
+      padding: 18px; /* Padding padrão ajustado */
+      margin: 12px; /* Espaçamento entre os painéis ajustado */
+      flex-shrink: 0; /* Impede que os painéis encolham demais */
     }
 
     /*  – Left Panel */
     .left-panel {
-      flex: 0 0 320px; /* Largura fixa maior */
+      flex: 0 0 280px; /* Largura fixa ajustada */
       display: flex;
       flex-direction: column;
-      gap: 28px; /* Mais espaço entre seções */
-      padding: 30px 25px 25px 25px; /* Mais padding */
-      background: transparent; /* Será sobreposto pelo painel base */
+      gap: 20px; /* Espaço entre seções ajustado */
+      padding: 0; /* Padding será handled pelo panel-base */
       border-right: none;
     }
     .left-panel > div {
-      @extend .panel-base; /* Aplica estilos base aos painéis internos */
-      padding: 20px;
-      border-radius: 12px;
+      @extend .panel-base;
+      padding: 18px; /* Padding ajustado para o conteúdo interno */
+      border-radius: 10px; /* Arredondamento ajustado */
+      margin: 10px; /* Margem interna */
     }
 
     /*  – Center Panel */
     .center-panel {
       flex: 1 1 auto;
-      background: transparent; /* Transparente para o fundo animado */
+      background: transparent;
       display: flex;
       align-items: center;
       justify-content: center;
       position: relative;
       overflow: hidden;
-      margin: 0; /* Remove margem extra */
+      margin: 0;
     }
 
     .avatar-placeholder {
-      width: 420px; /* Avatar maior */
-      height: 580px;
-      border-radius: 16px; /* Mais arredondado */
+      width: 380px; /* Avatar ajustado */
+      height: 520px;
+      border-radius: 14px;
       background: linear-gradient(120deg, #1a0e26 65%, #381a4d 100%);
       border: 3px dashed var(--accent-purple);
       display: flex;
       align-items: center;
       justify-content: center;
       color: var(--accent-purple);
-      font-family: "Orbitron", sans-serif; /* Fonte RPG */
-      font-size: 2.8rem; /* Maior fonte */
+      font-family: "Orbitron", sans-serif;
+      font-size: 2.5rem; /* Fonte ajustada */
       font-weight: 700;
-      text-shadow: 0 0 30px rgba(147, 51, 234, 0.8); /* Sombra mais intensa */
-      box-shadow: 0 0 40px rgba(147, 51, 234, 0.4), inset 0 0 20px rgba(167, 139, 250, 0.1);
-      transition: all 0.5s ease;
+      text-shadow: 0 0 25px rgba(147, 51, 234, 0.8);
+      box-shadow: 0 0 35px rgba(147, 51, 234, 0.4), inset 0 0 15px rgba(167, 139, 250, 0.1);
+      transition: all 0.4s ease; /* Transição ajustada */
     }
     .avatar-placeholder:hover {
-      transform: scale(1.02);
-      box-shadow: 0 0 50px var(--accent-purple), inset 0 0 30px rgba(167, 139, 250, 0.2);
+      transform: scale(1.01); /* Escala menor */
+      box-shadow: 0 0 45px var(--accent-purple), inset 0 0 20px rgba(167, 139, 250, 0.2);
     }
 
     /*  – Right Panel */
     .right-panel {
-      flex: 0 0 360px; /* Largura fixa maior */
+      flex: 0 0 320px; /* Largura fixa ajustada */
       display: flex;
       flex-direction: column;
-      gap: 24px; /* Mais espaço entre seções */
-      padding: 30px 25px 25px 25px; /* Mais padding */
-      background: transparent; /* Será sobreposto pelo painel base */
+      gap: 20px; /* Espaço entre seções ajustado */
+      padding: 0; /* Padding será handled pelo panel-base */
       border-left: none;
     }
     .right-panel > div {
-      @extend .panel-base; /* Aplica estilos base aos painéis internos */
-      padding: 20px;
-      border-radius: 12px;
+      @extend .panel-base;
+      padding: 18px; /* Padding ajustado para o conteúdo interno */
+      border-radius: 10px; /* Arredondamento ajustado */
+      margin: 10px; /* Margem interna */
     }
 
     /*— Left Panes —*/
@@ -264,7 +264,7 @@
     .pane-equipment {
       display: none;
       flex-direction: column;
-      gap: 24px;
+      gap: 20px; /* Espaço ajustado */
     }
     .pane-overview.active,
     .pane-inventory.active,
@@ -274,32 +274,32 @@
 
     /*— Quick Info & Bars —*/
     .left-title {
-      font-family: "Orbitron", sans-serif; /* Fonte RPG */
-      font-size: 1.6rem; /* Maior */
+      font-family: "Orbitron", sans-serif;
+      font-size: 1.5rem; /* Fonte ajustada */
       font-weight: 700;
       color: var(--accent-purple);
-      text-shadow: 0 0 10px rgba(147, 51, 234, 0.8); /* Sombra mais intensa */
-      margin-bottom: 15px;
+      text-shadow: 0 0 8px rgba(147, 51, 234, 0.8);
+      margin-bottom: 12px;
       text-transform: uppercase;
-      letter-spacing: 1px;
+      letter-spacing: 0.8px;
     }
     .left-text {
-      font-size: 1rem;
-      line-height: 1.5;
+      font-size: 0.95rem; /* Fonte ajustada */
+      line-height: 1.4;
       color: var(--text-light);
       opacity: 0.9;
-      margin-bottom: 10px;
+      margin-bottom: 8px;
     }
     .info-row {
       display: flex;
       justify-content: space-between;
       align-items: center;
-      font-size: 1rem;
+      font-size: 0.95rem; /* Fonte ajustada */
       font-weight: 600;
       color: var(--text-gray);
-      margin-bottom: 8px;
-      padding: 4px 0;
-      border-bottom: 1px dashed rgba(167, 139, 250, 0.2); /* Linha divisória */
+      margin-bottom: 6px;
+      padding: 3px 0;
+      border-bottom: 1px dashed rgba(167, 139, 250, 0.2);
     }
     .info-row:last-child {
       border-bottom: none;
@@ -312,57 +312,57 @@
       background: transparent;
       border: 1px solid var(--accent-purple);
       color: var(--accent-purple);
-      border-radius: 5px;
-      padding: 2px 6px;
-      margin-left: 8px;
+      border-radius: 4px;
+      padding: 1px 5px; /* Padding ajustado */
+      margin-left: 6px; /* Margem ajustada */
       cursor: pointer;
-      font-size: 0.85rem;
+      font-size: 0.8rem; /* Fonte ajustada */
       transition: all 0.2s ease;
       font-family: "Share Tech Mono", monospace;
     }
     .edit-button:hover, .add-point:hover {
       background: var(--accent-purple);
       color: #fff;
-      box-shadow: 0 0 10px var(--accent-purple);
+      box-shadow: 0 0 8px var(--accent-purple);
     }
 
     .bar-container {
       width: 100%;
-      height: 14px; /* Mais alto */
+      height: 12px; /* Altura ajustada */
       background: var(--bar-bg);
-      border-radius: 8px; /* Mais arredondado */
+      border-radius: 6px; /* Arredondamento ajustado */
       overflow: hidden;
-      margin-top: 6px;
+      margin-top: 5px;
       border: 1px solid rgba(167, 139, 250, 0.3);
-      box-shadow: inset 0 0 5px rgba(0, 0, 0, 0.5);
+      box-shadow: inset 0 0 4px rgba(0, 0, 0, 0.5);
     }
     .bar-fill {
       height: 100%;
       background: var(--bar-fill);
-      border-radius: 8px 0 0 8px;
+      border-radius: 6px 0 0 6px;
       width: 0%;
-      transition: width 0.4s ease-out; /* Transição mais suave */
-      box-shadow: 0 0 10px var(--accent-purple); /* Sombra no preenchimento */
+      transition: width 0.3s ease-out; /* Transição ajustada */
+      box-shadow: 0 0 8px var(--accent-purple);
     }
 
     .quick-info-title {
       font-family: "Orbitron", sans-serif;
-      font-size: 1.2rem;
+      font-size: 1.1rem; /* Fonte ajustada */
       font-weight: 700;
       color: var(--text-light);
       text-transform: uppercase;
-      margin-top: 25px;
-      padding-bottom: 8px;
+      margin-top: 20px;
+      padding-bottom: 6px;
       border-bottom: 2px solid rgba(147, 51, 234, 0.4);
     }
 
     /*— Inventory Tabs & Grid —*/
     .inv-categories {
       display: flex;
-      gap: 12px;
+      gap: 10px; /* Espaçamento ajustado */
       overflow-x: auto;
-      padding-bottom: 8px;
-      margin-bottom: 15px;
+      padding-bottom: 6px;
+      margin-bottom: 10px;
       border-bottom: 1px dashed rgba(167, 139, 250, 0.2);
     }
     .inv-cat-tab {
@@ -370,9 +370,9 @@
       background: rgba(30, 15, 45, 0.6);
       border: 1px solid var(--accent-purple);
       color: var(--text-light);
-      padding: 8px 16px;
-      border-radius: 12px;
-      font-size: 0.9rem;
+      padding: 6px 14px; /* Padding ajustado */
+      border-radius: 10px; /* Arredondamento ajustado */
+      font-size: 0.85rem; /* Fonte ajustada */
       font-weight: 600;
       cursor: pointer;
       transition: all 0.2s ease;
@@ -381,9 +381,9 @@
     }
     .inv-cat-tab.active {
       background: var(--accent-purple);
-      box-shadow: 0 0 15px rgba(147, 51, 234, 0.7);
+      box-shadow: 0 0 10px rgba(147, 51, 234, 0.7);
       color: #fff;
-      transform: translateY(-2px);
+      transform: translateY(-1px);
     }
     .inv-cat-tab:hover:not(.active) {
       background: rgba(147, 51, 234, 0.3);
@@ -391,39 +391,39 @@
     }
     .inv-grid {
       display: grid;
-      grid-template-columns: repeat(3, 1fr); /* 3 colunas para inventário */
-      gap: 15px; /* Aumenta o espaçamento */
-      padding-right: 8px;
-      max-height: 400px; /* Altura máxima para scroll */
+      grid-template-columns: repeat(2, 1fr); /* 2 colunas para inventário em desktop */
+      gap: 12px; /* Espaçamento ajustado */
+      padding-right: 6px;
+      max-height: 350px; /* Altura máxima para scroll ajustada */
       overflow-y: auto;
-      margin-top: 10px;
+      margin-top: 8px;
     }
     .inv-slot {
       width: 100%;
       aspect-ratio: 1 / 1;
       background: var(--slot-bg);
       border: 2px dashed var(--slot-border);
-      border-radius: 10px; /* Mais arredondado */
+      border-radius: 8px; /* Arredondamento ajustado */
       display: flex;
       align-items: center;
       justify-content: center;
       color: var(--accent-purple);
-      font-size: 1.3rem; /* Maior */
+      font-size: 1.1rem; /* Fonte ajustada */
       opacity: 0.5;
       cursor: default;
       transition: all 0.2s ease;
-      box-shadow: inset 0 0 8px rgba(0, 0, 0, 0.4);
+      box-shadow: inset 0 0 6px rgba(0, 0, 0, 0.4);
     }
     .inv-slot:hover {
       opacity: 1;
       border-style: solid;
-      box-shadow: 0 0 15px var(--accent-purple), inset 0 0 10px rgba(167, 139, 250, 0.2);
+      box-shadow: 0 0 12px var(--accent-purple), inset 0 0 8px rgba(167, 139, 250, 0.2);
     }
     .inv-empty-label {
-      font-size: 0.9rem;
+      font-size: 0.85rem; /* Fonte ajustada */
       color: var(--text-gray);
       text-align: center;
-      margin-top: 20px;
+      margin-top: 15px;
       opacity: 0.7;
       font-style: italic;
     }
@@ -432,52 +432,52 @@
     .equip-section {
       display: flex;
       flex-direction: column;
-      gap: 10px; /* Espaçamento */
+      gap: 8px; /* Espaçamento ajustado */
     }
     .equip-title {
       font-family: "Orbitron", sans-serif;
-      font-size: 1.2rem;
+      font-size: 1.05rem; /* Fonte ajustada */
       font-weight: 700;
       color: var(--accent-purple);
-      text-shadow: 0 0 8px rgba(147, 51, 234, 0.5);
+      text-shadow: 0 0 6px rgba(147, 51, 234, 0.5);
       text-transform: uppercase;
-      letter-spacing: 0.5px;
-      margin-bottom: 5px;
+      letter-spacing: 0.4px;
+      margin-bottom: 4px;
     }
     .equip-slots {
       display: flex;
-      gap: 12px;
+      gap: 10px; /* Espaçamento ajustado */
       flex-wrap: wrap;
     }
     .equip-slot {
-      width: 70px; /* Slots maiores */
-      height: 70px;
+      width: 60px; /* Slots ajustados */
+      height: 60px;
       background: var(--slot-bg);
       border: 2px dashed var(--slot-border);
-      border-radius: 10px;
+      border-radius: 8px;
       display: flex;
       align-items: center;
       justify-content: center;
       color: var(--accent-purple);
-      font-size: 1.3rem;
+      font-size: 1.1rem; /* Fonte ajustada */
       opacity: 0.6;
       cursor: default;
       transition: all 0.2s ease;
-      box-shadow: inset 0 0 8px rgba(0, 0, 0, 0.4);
+      box-shadow: inset 0 0 6px rgba(0, 0, 0, 0.4);
     }
     .equip-slot:hover {
       opacity: 1;
       border-style: solid;
-      box-shadow: 0 0 15px var(--accent-purple), inset 0 0 10px rgba(167, 139, 250, 0.2);
+      box-shadow: 0 0 12px var(--accent-purple), inset 0 0 8px rgba(167, 139, 250, 0.2);
     }
 
     /*— Scrollbar customizada —*/
     ::-webkit-scrollbar {
-      width: 8px; /* Mais largo */
-      height: 8px;
+      width: 7px; /* Mais fino */
+      height: 7px;
     }
     ::-webkit-scrollbar-track {
-      background: rgba(30, 15, 45, 0.5);
+      background: rgba(30, 15, 45, 0.4); /* Mais transparente */
       border-radius: 4px;
     }
     ::-webkit-scrollbar-thumb {
@@ -493,43 +493,44 @@
     .store-row {
       display: flex;
       justify-content: center;
-      margin-top: 15px; /* Mais margem */
+      margin-top: 12px;
     }
 
     /* garante que abas ocupem só uma linha */
     .tabs-container {
       display: flex;
-      gap: 15px;
+      gap: 12px;
       flex-wrap: nowrap;
     }
+
     /* ============================= */
     /* Inventário: filtro e painel   */
     /* ============================= */
     .inventory-filter {
       display: none;
       flex-wrap: wrap;
-      gap: 10px; /* Mais espaço */
+      gap: 8px; /* Espaçamento ajustado */
       justify-content: center;
-      padding: 15px 0;
-      background: transparent; /* Integrado com o UI */
+      padding: 12px 0;
+      background: transparent;
       border-bottom: 1px solid var(--glass-border);
     }
     .filter-btn {
       background: var(--slot-bg);
       border: 1px solid var(--accent-purple);
       color: var(--text-gray);
-      padding: 8px 18px; /* Mais padding */
-      border-radius: 10px;
+      padding: 7px 16px; /* Padding ajustado */
+      border-radius: 8px;
       cursor: pointer;
       transition: all 0.2s, box-shadow 0.2s;
       text-transform: uppercase;
-      font-size: 0.95rem;
+      font-size: 0.9rem; /* Fonte ajustada */
     }
     .filter-btn.active {
       background: var(--accent-purple);
       color: #fff;
-      box-shadow: 0 0 12px rgba(147, 51, 234, 0.7);
-      transform: translateY(-2px);
+      box-shadow: 0 0 10px rgba(147, 51, 234, 0.7);
+      transform: translateY(-1px);
     }
     .filter-btn:hover:not(.active) {
       background: rgba(147, 51, 234, 0.2);
@@ -537,16 +538,18 @@
     }
     /* Quando em Inventário, zera a altura mínima para não deixar gap */
     .content-container.inventory-active {
-      min-height: 0 !important;
-      align-items: flex-start; /* Alinha no topo quando em inventário */
+      min-height: auto !important; /* Permitir altura flexível */
+      align-items: flex-start;
       flex-direction: column; /* Reverte para coluna no inventário */
+      margin: 0 10px; /* Margem lateral */
+      width: auto; /* Deixa a largura ser definida pelo conteúdo */
     }
 
     /* Mochila em grid 6x3 */
     .backpack-grid {
       display: grid;
-      grid-template-columns: repeat(6, 1fr);
-      gap: 10px; /* Aumenta o espaçamento */
+      grid-template-columns: repeat(6, 1fr); /* 6 colunas em desktop */
+      gap: 8px; /* Espaçamento ajustado */
     }
 
     /* Ajuste visual se quiser diferenciar slots da mochila */
@@ -560,187 +563,187 @@
     /* === Avatar + Armadura alinhadas só no Equipamentos === */
     .center-panel {
       display: flex;
-      flex-direction: column;
+      flex-direction: column; /* Padrão para centralizar avatar */
       align-items: center;
       justify-content: center;
-      flex: 1; /* Ocupa espaço disponível */
+      flex: 1;
+      margin: 0; /* Remove margens extras */
+      padding: 10px; /* Padding para espaço interno */
     }
     .avatar-armor-container {
       display: flex;
       align-items: center;
-      gap: 20px; /* Aumenta o espaçamento */
-      transition: all 0.5s ease;
+      gap: 15px; /* Espaçamento ajustado */
+      transition: all 0.4s ease;
     }
     .armor-side {
       display: flex;
       flex-direction: column;
-      gap: 10px; /* Espaçamento entre slots de armadura */
+      gap: 8px; /* Espaçamento entre slots de armadura ajustado */
     }
-    /* Avatar no centro */
-    .armor-left { margin-right: 20px; }
-    .armor-right { margin-left: 20px; }
 
+    /* Particle Background */
     .particle-bg-canvas {
       position: fixed;
       top: 0;
       left: 0;
-      z-index: -1; /* sempre atrás de todo conteúdo */
+      z-index: -1;
       width: 100vw;
       height: 100vh;
       pointer-events: none;
-      opacity: 0.4; /* ajuste de intensidade */
+      opacity: 0.3; /* Opacidade ajustada */
     }
 
     /*— Responsividade —*/
-    @media (max-width: 1200px) {
+    @media (max-width: 1024px) {
       .ui-root {
-        width: 98%;
+        max-width: 950px;
         margin: 15px auto;
       }
       .left-panel {
-        flex: 0 0 280px;
-        padding: 25px 20px;
-      }
-      .avatar-placeholder {
-        width: 360px;
-        height: 500px;
-        font-size: 2.5rem;
+        flex: 0 0 250px; /* Largura ajustada */
       }
       .right-panel {
-        flex: 0 0 320px;
-        padding: 25px 20px;
-      }
-    }
-
-    @media (max-width: 992px) {
-      .content-container {
-        flex-direction: column;
-        min-height: auto;
-      }
-      .left-panel,
-      .right-panel {
-        flex: 0 0 auto;
-        border: none;
-        padding: 20px 15px;
-      }
-      .left-panel > div, .right-panel > div {
-        margin: 10px;
-      }
-      .center-panel {
-        min-height: 400px; /* Garante altura para o avatar */
+        flex: 0 0 290px; /* Largura ajustada */
       }
       .avatar-placeholder {
-        width: 300px;
-        height: 420px;
+        width: 320px;
+        height: 440px;
         font-size: 2rem;
       }
-      .tabs-container {
-        flex-wrap: wrap;
-        justify-content: center;
-        gap: 15px;
-        padding: 0 15px;
-      }
       .inv-grid {
-        grid-template-columns: repeat(2, 1fr); /* 2 colunas em telas menores */
+        grid-template-columns: repeat(2, 1fr);
       }
       .backpack-grid {
-        grid-template-columns: repeat(4, 1fr); /* 4 colunas em telas menores */
+        grid-template-columns: repeat(5, 1fr); /* 5 colunas */
       }
       .equip-slot {
-        width: 60px;
-        height: 60px;
+        width: 55px;
+        height: 55px;
+        font-size: 1rem;
       }
     }
 
     @media (max-width: 768px) {
       .ui-root {
-        border-radius: 10px;
+        max-width: 98%;
         margin: 10px auto;
+        border-radius: 15px;
       }
-      .tabs-container-wrapper {
-        padding: 10px 0;
+      .content-container {
+        flex-direction: column;
+        min-height: auto;
+        margin: 0; /* Remove margens extras do container principal */
+      }
+      .left-panel,
+      .right-panel {
+        flex: 1 1 auto; /* Permite que ocupem a largura total */
+        border: none;
+        padding: 0; /* Padding handled by internal divs */
+      }
+      .left-panel > div, .right-panel > div {
+        margin: 8px; /* Reduz margem entre painéis internos */
+        padding: 15px; /* Padding ajustado */
+      }
+      .center-panel {
+        min-height: 380px; /* Garante altura para o avatar */
+        padding: 10px; /* Padding */
+      }
+      .avatar-placeholder {
+        width: 280px;
+        height: 380px;
+        font-size: 1.8rem;
       }
       .tabs-container {
-        gap: 10px;
-        font-size: 1.1rem;
+        flex-wrap: wrap;
+        justify-content: center;
+        gap: 12px;
+        padding: 0 10px;
       }
       .tab {
-        padding: 6px 15px;
-        font-size: 0.9rem;
-        border-radius: 10px;
+        padding: 6px 14px;
+        font-size: 0.85rem;
       }
       .tab-store {
-        padding: 10px 20px;
-        font-size: 0.95rem;
-        border-radius: 14px;
+        padding: 8px 18px;
+        font-size: 0.9rem;
       }
       .left-title {
-        font-size: 1.4rem;
+        font-size: 1.3rem;
       }
       .left-text {
         font-size: 0.9rem;
       }
       .info-row {
-        font-size: 0.95rem;
+        font-size: 0.9rem;
       }
       .bar-container {
         height: 10px;
       }
       .inv-cat-tab, .filter-btn {
-        padding: 6px 12px;
-        font-size: 0.85rem;
-        border-radius: 8px;
+        padding: 6px 10px;
+        font-size: 0.8rem;
       }
       .inv-grid {
+        grid-template-columns: repeat(3, 1fr); /* Volta para 3 colunas em telas menores */
         gap: 10px;
       }
       .inv-slot {
-        width: 100%;
-        height: auto;
         font-size: 1rem;
       }
       .equip-slot {
         width: 50px;
         height: 50px;
-        font-size: 1.1rem;
+        font-size: 1rem;
       }
       .equip-title {
         font-size: 1rem;
       }
       .backpack-grid {
-        grid-template-columns: repeat(3, 1fr);
+        grid-template-columns: repeat(4, 1fr); /* 4 colunas */
       }
     }
 
     @media (max-width: 480px) {
-      .left-panel > div, .right-panel > div {
-        margin: 5px;
-        padding: 15px;
+      .ui-root {
+        margin: 8px auto;
+        border-radius: 10px;
+        width: 100%; /* Ocupa 100% da largura */
+      }
+      .tabs-container-wrapper {
+        padding: 8px 0;
       }
       .tabs-container {
         gap: 8px;
-        font-size: 1rem;
+        font-size: 0.95rem;
+        padding: 0 8px;
       }
       .tab {
-        padding: 5px 10px;
-        font-size: 0.8rem;
+        padding: 4px 8px;
+        font-size: 0.75rem;
+        border-radius: 8px;
       }
       .tab-store {
-        padding: 8px 15px;
-        font-size: 0.85rem;
+        padding: 6px 12px;
+        font-size: 0.8rem;
+        border-radius: 12px;
+      }
+      .left-panel > div, .right-panel > div {
+        margin: 5px;
+        padding: 12px;
       }
       .left-title {
-        font-size: 1.2rem;
-        margin-bottom: 10px;
+        font-size: 1.1rem;
+        margin-bottom: 8px;
       }
       .avatar-placeholder {
-        width: 220px;
-        height: 300px;
-        font-size: 1.5rem;
+        width: 200px;
+        height: 280px;
+        font-size: 1.4rem;
       }
       .avatar-armor-container {
         flex-direction: column; /* Pilha em telas pequenas */
-        gap: 10px;
+        gap: 8px;
       }
       .armor-left, .armor-right {
         margin: 0;
@@ -749,14 +752,23 @@
         justify-content: center;
       }
       .armor-side .equip-slot {
-        width: 40px;
-        height: 40px;
+        width: 35px;
+        height: 35px;
+        font-size: 0.9rem;
+      }
+      .inv-grid {
+        grid-template-columns: repeat(2, 1fr); /* 2 colunas para mobile */
+        gap: 8px;
       }
       .backpack-grid {
-        grid-template-columns: repeat(2, 1fr); /* 2 colunas em telas muito pequenas */
+        grid-template-columns: repeat(3, 1fr); /* 3 colunas para mobile */
+      }
+      .equip-slot {
+        width: 40px;
+        height: 40px;
+        font-size: 0.9rem;
       }
     }
-
   </style>
 </head>
 <body>
@@ -1096,25 +1108,25 @@
 
       // 4) Ajusta a exibição do center-panel e content-container
       if (isInv) {
-        centerPanel.style.display = "flex"; // Volta a ser flex para o filtro do inventário
-        centerPanel.style.flexDirection = "column"; // Coloca o filtro abaixo do avatar
-        avatarPanel.style.display = "none"; // Esconde o avatar no inventário
-        invFilter.style.display = "flex"; // Mostra o filtro de inventário
-        contentContainer.classList.add("inventory-active"); // Ajuste de altura e alinhamento
-        armorSides.forEach(el => el.style.display = "none"); // Garante que armadura esteja escondida
+        centerPanel.style.display = "flex";
+        centerPanel.style.flexDirection = "column";
+        avatarPanel.style.display = "none";
+        invFilter.style.display = "flex";
+        contentContainer.classList.add("inventory-active");
+        armorSides.forEach(el => el.style.display = "none");
       } else if (isEq) {
         centerPanel.style.display = "flex";
-        centerPanel.style.flexDirection = "row"; // Volta para row para avatar + armadura
-        avatarPanel.style.display = "flex"; // Mostra o avatar
-        invFilter.style.display = "none"; // Esconde o filtro de inventário
-        armorSides.forEach(el => el.style.display = "flex"); // Mostra as armaduras
+        centerPanel.style.flexDirection = "row";
+        avatarPanel.style.display = "flex";
+        invFilter.style.display = "none";
+        armorSides.forEach(el => el.style.display = "flex");
         contentContainer.classList.remove("inventory-active");
       } else { // overview
         centerPanel.style.display = "flex";
-        centerPanel.style.flexDirection = "column"; // Para manter o avatar centralizado
-        avatarPanel.style.display = "flex"; // Mostra o avatar
-        invFilter.style.display = "none"; // Esconde o filtro
-        armorSides.forEach(el => el.style.display = "none"); // Garante que armadura esteja escondida
+        centerPanel.style.flexDirection = "column";
+        avatarPanel.style.display = "flex";
+        invFilter.style.display = "none";
+        armorSides.forEach(el => el.style.display = "none");
         contentContainer.classList.remove("inventory-active");
       }
 
@@ -1187,10 +1199,10 @@
     const canvas = document.getElementById('particle-bg');
     const ctx = canvas.getContext('2d');
     let particles = [];
-    const particleCount = 100;
-    const particleSize = 1.5;
-    const particleSpeed = 0.5;
-    const particleColor = 'rgba(147, 51, 234, 0.6)'; // Roxo com opacidade
+    const particleCount = 80; /* Reduzido para melhor performance */
+    const particleSize = 1.2; /* Reduzido */
+    const particleSpeed = 0.4; /* Reduzido */
+    const particleColor = 'rgba(147, 51, 234, 0.5)'; // Roxo com opacidade
 
     function setCanvasSize() {
       canvas.width = window.innerWidth;
@@ -1202,17 +1214,17 @@
         this.x = Math.random() * canvas.width;
         this.y = Math.random() * canvas.height;
         this.size = Math.random() * particleSize + 0.5;
-        this.speedX = (Math.random() * 1 - 0.5) * particleSpeed; // -0.5 to 0.5
-        this.speedY = (Math.random() * 1 - 0.5) * particleSpeed; // -0.5 to 0.5
+        this.speedX = (Math.random() * 1 - 0.5) * particleSpeed;
+        this.speedY = (Math.random() * 1 - 0.5) * particleSpeed;
         this.color = particleColor;
       }
       update() {
         this.x += this.speedX;
         this.y += this.speedY;
 
-        if (this.size > 0.2) this.size -= 0.01;
+        if (this.size > 0.1) this.size -= 0.005; /* Taxa de encolhimento ajustada */
 
-        if (this.x < 0 || this.x > canvas.width || this.y < 0 || this.y > canvas.height || this.size <= 0.2) {
+        if (this.x < 0 || this.x > canvas.width || this.y < 0 || this.y > canvas.height || this.size <= 0.1) {
           this.reset();
         }
       }
