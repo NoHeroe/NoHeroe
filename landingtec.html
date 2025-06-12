@@ -1,120 +1,424 @@
-<!DOCTYPE html><html lang="pt-BR">
+<!DOCTYPE html>
+<html lang="pt-BR">
 <head>
   <meta charset="UTF-8"/>
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>Tudo Está Conectado | NoHeroes</title>
-  <!-- Fontes -->
-  <link href="https://fonts.googleapis.com/css2?family=Unbounded:wght@400;700&family=Inter:wght@400;700&display=swap" rel="stylesheet">
-  <!-- Bibliotecas -->
+  <link href="https://fonts.googleapis.com/css2?family=Cinzel+Decorative:wght@400;700&family=Playfair+Display:wght@400;700&family=Roboto:wght@300;400;700&display=swap" rel="stylesheet">
   <script src="https://unpkg.com/scrollreveal"></script>
   <style>
+    /* Variáveis de Tema (Harmonizadas com Sistema Vivo LP) */
     :root {
-      --roxo: #a855f7;
-      --roxo-glow: #c084fc;
-      --dourado: #facc15;
-      --fundo: #0a0a0a;
-      --cinza: #17171a;
-      --cinza2: #23232a;
-      --claro: #f4f4f4;
-      --sucesso: #32de84;
-      --erro: #ff5252;
+      --color-dark-bg: #0A0710; /* Quase preto */
+      --color-deep-purple: #180C26; /* Roxo muito escuro */
+      --color-accent-purple: #9A3BFF; /* Roxo vibrante para destaque */
+      --color-accent-blue: #40A4FF; /* Azul etéreo para brilhos */
+      --color-text-light: #E8E2F0; /* Branco sujo */
+      --color-text-gray: #B0A0C0; /* Cinza-roxo para subtextos */
+      --color-border-dark: #3A1F5E; /* Borda roxa escura */
+      --color-glow-purple: rgba(154, 59, 255, 0.5);
+      --color-glow-blue: rgba(64, 164, 255, 0.4);
+      --color-button-bg: linear-gradient(90deg, #6D28D9, #9A3BFF);
+      --color-button-hover: linear-gradient(90deg, #9A3BFF, #6D28D9);
+      --color-attention: #FF5733; /* Laranja/vermelho para preço e erro */
+      --color-success: #32de84; /* Verde para sucesso */
+
+      /* Mantendo algumas do original para referências de matiz, mas ajustadas */
+      --roxo-original: #a855f7; /* Mapeia para --color-accent-purple */
+      --roxo-glow-original: #c084fc; /* Mapeia para --color-glow-purple */
+      --dourado-original: #facc15; /* Usado para alguns brilhos/detalhes de texto */
+      --fundo-original: #0a0a0a; /* Mapeia para --color-dark-bg */
+      --cinza-original: #17171a; /* Mapeia para --color-deep-purple ou --color-dark-bg em alguns contextos */
+      --cinza2-original: #23232a; /* Mapeia para --color-deep-purple ou --color-dark-bg em alguns contextos */
+      --claro-original: #f4f4f4; /* Mapeia para --color-text-light */
+      --sucesso-original: #32de84; /* Mapeia para --color-success */
+      --erro-original: #ff5252; /* Mapeia para --color-attention */
     }
+
     * { margin:0; padding:0; box-sizing:border-box; }
     html, body {
       width:100vw; min-height:100vh;
-      background:var(--fundo); color:var(--claro);
-      font-family:'Inter',sans-serif; scroll-behavior:smooth;
+      background:var(--color-dark-bg); /* Usando nova variável */
+      color:var(--color-text-light); /* Usando nova variável */
+      font-family:'Roboto', sans-serif; /* Nova fonte */
+      scroll-behavior:smooth;
       overflow-x:hidden;
     }
     /* Barra de Progresso */
-    #progressbar { position:fixed; top:0; left:0; height:6px; width:0;
-      background:linear-gradient(90deg,var(--roxo) 40%,var(--dourado) 100%);
-      border-radius:0 4px 4px 0; z-index:999; }
+    #progressbar {
+      position:fixed; top:0; left:0; height:6px; width:0;
+      background:linear-gradient(90deg, var(--color-accent-purple) 40%, var(--dourado-original) 100%); /* Mantém o dourado para esse brilho */
+      border-radius:0 4px 4px 0; z-index:999;
+      box-shadow: 0 0 15px rgba(154, 59, 255, 0.7); /* Adiciona brilho */
+    }
+
     /* Hero */
-    .hero { position:relative; min-height:100vh; display:flex;
+    .hero {
+      position:relative; min-height:100vh; display:flex;
       flex-direction:column; align-items:center; justify-content:center;
-      text-align:center; background:radial-gradient(circle at 60% 30%,#1e0029 0%,#0a0a0a 100%);
+      text-align:center;
+      background:radial-gradient(circle at 60% 30%, var(--color-deep-purple) 0%, var(--color-dark-bg) 100%); /* Ajustado para nova paleta */
       overflow:hidden;
+      padding: 20px; /* Adicionado padding para evitar corte em telas pequenas */
     }
-    .hero::before { content:''; position:absolute;inset:0;
-      background:url('https://images.unsplash.com/photo-1506744038136-46273834b3fb?auto=format&fit=crop&w=1350&q=80')center/cover;
+    .hero::before {
+      content:''; position:absolute;inset:0;
+      background:url('https://via.placeholder.com/1920x1080/0d081b/3a1f5e?text=NoHeroes+Tudo+Conectado+Background') center/cover; /* Placeholder temático */
       opacity:0.07; pointer-events:none;
+      z-index: 1; /* Garante que o background fique abaixo do conteúdo */
     }
-    .glow { color:var(--roxo); text-shadow:0 0 18px var(--roxo-glow),0 0 48px var(--roxo-glow);
+    .glow {
+      color:var(--color-accent-purple); /* Usando nova variável */
+      text-shadow:0 0 18px var(--color-glow-purple),0 0 48px var(--color-glow-purple); /* Usando nova variável */
       animation:glow-pulse 2.3s infinite alternate;
+      position: relative; z-index: 2; /* Para ficar acima do ::before */
     }
     @keyframes glow-pulse {
-      0% {text-shadow:0 0 18px var(--roxo-glow);} 100% {text-shadow:0 0 44px var(--roxo-glow);} }
-    .hero-title { font-family:'Unbounded',sans-serif; font-size:3rem; letter-spacing:2px; z-index:2; }
-    .hero-desc { margin:2rem auto; max-width:600px; font-size:1.3rem;
-      background:rgba(20,8,28,0.7); padding:1.2rem; border-radius:1rem; backdrop-filter:blur(2px);
-      box-shadow:0 4px 40px #000a;
+      0% {text-shadow:0 0 18px var(--color-glow-purple);}
+      100% {text-shadow:0 0 44px var(--color-glow-purple);}
     }
-    .hero-cta { margin-top:1.8rem; display:flex; flex-direction:column; align-items:center; gap:1rem; z-index:2; }
-    .cta-btn { background:linear-gradient(90deg,var(--roxo),var(--dourado)); color:#181825;
-      padding:1rem 2.5rem; border:none; border-radius:2em;
-      font-family:'Unbounded',sans-serif; font-size:1.1rem; font-weight:700;
-      cursor:pointer; transition:transform .2s,filter .2s;
+    .hero-title {
+      font-family:'Cinzel Decorative', serif; /* Nova fonte */
+      font-size:3.5rem; /* Aumentado um pouco */
+      letter-spacing:2px; z-index:2;
+      line-height: 1.1; /* Ajuste para melhor leitura */
     }
-    .cta-btn:hover { transform:scale(1.05); filter:brightness(1.1);}    
+    .hero-desc {
+      margin:2rem auto; max-width:700px; /* Aumentei max-width */
+      font-size:1.4rem; /* Aumentei um pouco */
+      font-family: 'Playfair Display', serif; /* Nova fonte para este texto */
+      background:rgba(20,8,28,0.7); padding:1.5rem; /* Aumentei padding */
+      border-radius:1.2rem; /* Aumentei border-radius */
+      backdrop-filter:blur(5px); /* Aumentei blur */
+      box-shadow:0 4px 40px rgba(0,0,0,0.8); /* Sombra mais intensa */
+      border: 1px solid var(--color-border-dark); /* Adiciona borda sutil */
+      position: relative; z-index: 2;
+      line-height: 1.4;
+    }
+    .hero-cta {
+      margin-top:2.5rem; /* Aumentei margin-top */
+      display:flex; flex-direction:column; align-items:center; gap:1.2rem; /* Aumentei gap */
+      z-index:2;
+    }
+    .cta-btn {
+      background:var(--color-button-bg); /* Usando nova variável */
+      color:var(--color-text-light); /* Cor do texto no botão */
+      padding:1.1rem 3rem; /* Aumentei padding */
+      border:none; border-radius:2.5em; /* Aumentei border-radius */
+      font-family:'Cinzel Decorative', serif; /* Nova fonte */
+      font-size:1.2rem; font-weight:700;
+      cursor:pointer;
+      transition:transform .3s ease, box-shadow .3s ease, background .3s ease; /* Transições mais suaves */
+      box-shadow: 0 0 25px var(--color-glow-purple); /* Brilho no botão */
+      letter-spacing: 1px;
+    }
+    .cta-btn:hover {
+      transform:scale(1.05) translateY(-3px); /* Movimento mais sutil */
+      background:var(--color-button-hover); /* Efeito hover de background */
+      box-shadow:0 0 40px var(--color-accent-blue); /* Brilho mais forte no hover */
+    }
+
     /* Seções */
-    section { padding:5rem 1.5rem; background:var(--cinza); }
-    .section-title { font-family:'Unbounded',sans-serif; font-size:2rem;
-      color:var(--roxo-glow); margin-bottom:2rem; text-shadow:0 0 8px var(--roxo);
+    section {
+      padding:6rem 1.5rem; /* Aumentei padding */
+      background:var(--color-dark-bg); /* Usando nova variável */
+      position: relative; /* Para z-index do conteúdo */
+      overflow: hidden; /* Para animções ou elementos que possam sair */
     }
+    section:nth-child(odd) { /* Altera a cor de fundo das seções ímpares */
+        background-color: var(--color-deep-purple);
+    }
+    .section-title {
+      font-family:'Cinzel Decorative', serif; /* Nova fonte */
+      font-size:2.8rem; /* Aumentei */
+      color:var(--color-accent-purple); /* Usando nova variável */
+      margin-bottom:2.5rem; /* Aumentei */
+      text-shadow:0 0 15px var(--color-glow-purple); /* Brilho mais intenso */
+      position: relative;
+      display: inline-block; /* Para o underline */
+      padding-bottom: 10px; /* Espaço para o underline */
+    }
+    /* Underline animado para títulos de seção */
+    .section-title::after {
+        content: '';
+        position: absolute;
+        left: 50%;
+        bottom: 0;
+        width: 0; /* Começa sem largura */
+        height: 3px;
+        background: var(--color-accent-blue);
+        box-shadow: 0 0 10px var(--color-glow-blue);
+        transition: width 0.6s ease-out, left 0.6s ease-out;
+    }
+    .section-title.active::after { /* Ativa a animação ao aparecer */
+        width: 100%;
+        left: 0;
+    }
+
+
     /* Sintomas/Causas */
-    .causas { display:flex; flex-wrap:wrap; gap:1.5rem; justify-content:center; }
-    .causa-card { background:linear-gradient(140deg,var(--cinza2) 75%,var(--roxo) 100%);
-      padding:1.8rem 1rem; border-radius:1.2rem; max-width:300px; flex:1 1 250px;
-      border:2px solid var(--roxo); box-shadow:0 4px 20px #0e0123bb;
-      transition:transform .2s,box-shadow .2s;
+    .causas {
+      display:flex; flex-wrap:wrap; gap:2rem; /* Aumentei o gap */
+      justify-content:center;
     }
-    .causa-card:hover { transform:translateY(-6px); box-shadow:0 8px 30px var(--roxo-glow);}    
-    .causa-icon { font-size:2.2rem; color:var(--dourado); margin-bottom:0.8rem; }
-    .causa-title { font-size:1.1rem; color:var(--dourado); margin-bottom:0.5rem; font-weight:700; }
-    .causa-desc { font-size:0.95rem; line-height:1.3; }
+    .causa-card {
+      background:linear-gradient(140deg,var(--color-deep-purple) 75%,var(--color-border-dark) 100%); /* Ajustado para nova paleta */
+      padding:2rem 1.5rem; /* Aumentei padding */
+      border-radius:1.5rem; /* Aumentei border-radius */
+      max-width:320px; flex:1 1 280px; /* Ajustei tamanhos */
+      border:2px solid var(--color-border-dark); /* Usando nova variável */
+      box-shadow:0 4px 25px rgba(14, 1, 35, 0.7); /* Sombra mais sutil */
+      transition:transform .3s ease, box-shadow .3s ease, border-color .3s ease; /* Transições mais suaves */
+      text-align: center; /* Centraliza conteúdo do card */
+    }
+    .causa-card:hover {
+      transform:translateY(-8px); /* Mais movimento */
+      box-shadow:0 8px 40px var(--color-glow-purple); /* Brilho mais intenso */
+      border-color:var(--color-accent-purple); /* Borda fica mais visível no hover */
+    }
+    .causa-icon {
+      font-size:2.8rem; /* Aumentei */
+      color:var(--dourado-original); /* Mantendo o dourado para os ícones */
+      margin-bottom:1rem; /* Aumentei */
+      text-shadow: 0 0 10px rgba(250, 205, 21, 0.7); /* Brilho para o ícone */
+    }
+    .causa-title {
+      font-family:'Cinzel Decorative', serif; /* Nova fonte */
+      font-size:1.3rem; /* Aumentei */
+      color:var(--color-accent-blue); /* Mudado para azul etéreo */
+      margin-bottom:0.8rem; /* Aumentei */
+      font-weight:700;
+      text-transform: uppercase;
+    }
+    .causa-desc {
+      font-size:1rem; line-height:1.5; /* Ajustei line-height */
+      color:var(--color-text-gray); /* Cor mais suave */
+    }
+
     /* Depoimentos */
-    .depoimentos { display:grid; grid-template-columns:repeat(auto-fit,minmax(260px,1fr)); gap:1.8rem; }
-    .depo { position:relative; background:linear-gradient(120deg,var(--cinza2) 75%,var(--roxo) 100%);
-      border-radius:1rem; padding:1.8rem 1.3rem 1rem; border:2px solid var(--roxo-glow);
-      box-shadow:0 4px 20px #12022f99; transition:transform .2s;
+    .depoimentos {
+      display:grid; grid-template-columns:repeat(auto-fit,minmax(280px,1fr)); /* Ajustei minmax */
+      gap:2rem; /* Aumentei o gap */
     }
-    .depo:hover { transform:translateY(-4px); border-color:var(--dourado); }
-    .avatar { width:48px;height:48px;border-radius:50%;border:3px solid var(--roxo-glow);
-      position:absolute;top:-24px;left:12px; background:#222;
+    .depo {
+      position:relative;
+      background:linear-gradient(120deg,var(--color-deep-purple) 75%,var(--color-border-dark) 100%); /* Ajustado para nova paleta */
+      border-radius:1.2rem; /* Aumentei */
+      padding:2.2rem 1.5rem 1.5rem; /* Aumentei padding */
+      border:2px solid var(--color-border-dark); /* Usando nova variável */
+      box-shadow:0 4px 25px rgba(18, 2, 47, 0.6); /* Sombra mais sutil */
+      transition:transform .3s ease, border-color .3s ease, box-shadow .3s ease;
     }
-    .aspecto { font-size:0.9rem; color:var(--roxo-glow); margin-bottom:0.8rem; }
-    .nome { margin-top:1.2rem; font-weight:700; color:var(--dourado); }
+    .depo:hover {
+      transform:translateY(-6px); /* Mais movimento */
+      border-color:var(--color-accent-purple); /* Borda dourada no hover */
+      box-shadow:0 8px 35px var(--color-glow-purple);
+    }
+    .avatar {
+      width:54px;height:54px; /* Aumentei tamanho */
+      border-radius:50%;
+      border:3px solid var(--color-accent-blue); /* Cor da borda do avatar */
+      position:absolute;top:-27px;left:18px; /* Ajustei posição */
+      background:var(--color-dark-bg); /* Fundo do avatar */
+      box-shadow: 0 0 15px rgba(64, 164, 255, 0.5); /* Brilho no avatar */
+    }
+    .aspecto {
+      font-size:0.95rem; /* Levemente maior */
+      color:var(--color-accent-blue); /* Azul etéreo */
+      margin-bottom:0.8rem;
+      text-transform: uppercase; /* Para um toque mais "runa" */
+      font-weight: 700;
+    }
+    .depo p:not(.nome) { /* Estilo do texto do depoimento */
+        font-family: 'Playfair Display', serif;
+        font-size: 1.05rem;
+        line-height: 1.5;
+        color: var(--color-text-light);
+    }
+    .nome {
+      margin-top:1.5rem; /* Aumentei */
+      font-weight:700;
+      color:var(--dourado-original); /* Mantendo o dourado para o nome */
+      font-family:'Cinzel Decorative', serif; /* Nova fonte */
+      font-size: 1.1rem;
+    }
+
     /* Sistema Vivo */
-    #sistema-vivo { background:linear-gradient(135deg,rgba(20,0,45,0.85),rgba(0,0,0,0.85)); }
-    #sistema-vivo .section-title { color:var(--dourado); text-shadow:0 0 8px var(--dourado); }
-    .subtitulo { font-size:1.05rem; max-width:700px; margin:1rem auto 2rem; opacity:0.9; }
-    .beneficios { list-style:none; max-width:700px; margin:0 auto 2rem; padding-left:1.2rem; }
-    .beneficios li { position:relative; margin-bottom:1rem; padding-left:1.5rem; line-height:1.4; }
-    .beneficios li:before { content:'▶'; position:absolute; left:0; color:var(--roxo); }
-    .preco { text-align:center; margin:1.5rem 0; }
-    .orig { color:#888; text-decoration:line-through; font-size:1.1rem; }
-    .novo { color:var(--sucesso); font-size:1.4rem; font-weight:700; margin-left:1rem;
-      text-shadow:0 0 6px var(--sucesso);
+    #sistema-vivo {
+      background:linear-gradient(135deg,rgba(20,0,45,0.85),rgba(0,0,0,0.85)); /* Mantém gradiente escuro */
+      border-top: 1px solid var(--color-border-dark); /* Borda superior */
     }
+    #sistema-vivo .section-title {
+      color:var(--dourado-original); /* Mantém dourado para esse título */
+      text-shadow:0 0 15px var(--dourado-original); /* Brilho dourado */
+    }
+    .subtitulo {
+      font-size:1.15rem; /* Aumentei */
+      font-family: 'Playfair Display', serif; /* Nova fonte */
+      max-width:800px; /* Aumentei max-width */
+      margin:1.2rem auto 2.5rem; /* Ajustei margins */
+      opacity:0.9;
+      color: var(--color-text-gray);
+      line-height: 1.4;
+    }
+    .beneficios {
+      list-style:none; max-width:800px; /* Aumentei max-width */
+      margin:0 auto 2.5rem; /* Ajustei margins */
+      padding-left:1.5rem; /* Aumentei padding */
+    }
+    .beneficios li {
+      position:relative; margin-bottom:1.2rem; /* Aumentei margin-bottom */
+      padding-left:1.8rem; /* Aumentei padding */
+      line-height:1.5;
+      font-size: 1.05rem;
+      color: var(--color-text-light);
+    }
+    .beneficios li:before {
+      content:'✦'; /* Ícone de estrela como no Sistema Vivo LP */
+      position:absolute; left:0;
+      color:var(--color-accent-purple); /* Cor roxa */
+      font-size: 1.2em; /* Aumentei */
+      line-height: 1; /* Alinhamento */
+    }
+    .preco {
+      text-align:center; margin:2rem 0; /* Aumentei margins */
+    }
+    .orig {
+      color:var(--color-text-gray); /* Mais sutil */
+      text-decoration:line-through; font-size:1.2rem; /* Aumentei */
+    }
+    .novo {
+      color:var(--color-success); /* Usando nova variável */
+      font-size:1.7rem; /* Aumentei bem */
+      font-weight:700; margin-left:1.2rem; /* Aumentei margin */
+      text-shadow:0 0 10px var(--color-success); /* Brilho mais forte */
+      animation: price-pulse 1.5s infinite alternate; /* Animação de pulso para o preço */
+    }
+    @keyframes price-pulse {
+        0% { transform: scale(1); opacity: 1; }
+        100% { transform: scale(1.05); opacity: 0.9; }
+    }
+
     /* Quiz */
-    .quiz-box { background:var(--cinza2); max-width:600px; margin:2rem auto; padding:1.8rem;
-      border-radius:1rem; box-shadow:0 4px 20px #0008;
+    #quiz {
+        background: var(--color-dark-bg); /* Garante que o fundo da seção quiz seja escuro */
+        border-top: 1px solid var(--color-border-dark);
     }
-    .quiz-pergunta { font-size:1.05rem; margin-bottom:1rem; color:var(--dourado); }
-    .quiz-opcoes { list-style:none; }
-    .quiz-opcoes li { margin-bottom:0.8rem; }
-    .quiz-btn { background:var(--cinza); color:var(--claro); padding:0.7rem;
-      border:2px solid var(--roxo-glow); border-radius:0.6rem; width:100%; text-align:left;
-      cursor:pointer; transition:background .2s;
+    .quiz-box {
+      background:var(--color-deep-purple); /* Usando nova variável */
+      max-width:650px; /* Aumentei max-width */
+      margin:2.5rem auto; /* Aumentei margins */
+      padding:2.2rem; /* Aumentei padding */
+      border-radius:1.5rem; /* Aumentei border-radius */
+      box-shadow:0 6px 30px rgba(0,0,0,0.8); /* Sombra mais intensa */
+      border: 1px solid var(--color-border-dark);
     }
-    .quiz-btn:hover { background:var(--roxo); color:#fff; }
-    .feedback { min-height:24px; margin-top:0.8rem; font-size:0.95rem; }
+    .quiz-pergunta {
+      font-family:'Playfair Display', serif; /* Nova fonte */
+      font-size:1.2rem; /* Aumentei */
+      margin-bottom:1.5rem; /* Aumentei */
+      color:var(--color-text-light); /* Mais visível */
+      text-align: center;
+      line-height: 1.4;
+    }
+    .quiz-opcoes { list-style:none; padding: 0; }
+    .quiz-opcoes li { margin-bottom:1rem; /* Aumentei */ }
+    .quiz-btn {
+      background:var(--color-dark-bg); /* Fundo do botão */
+      color:var(--color-text-light); /* Cor do texto */
+      padding:0.9rem 1.2rem; /* Aumentei padding */
+      border:2px solid var(--color-border-dark); /* Borda sutil */
+      border-radius:0.8rem; /* Aumentei border-radius */
+      width:100%; text-align:left;
+      cursor:pointer;
+      transition:background .3s ease, border-color .3s ease, color .3s ease, box-shadow .3s ease;
+      font-size: 1.05rem;
+    }
+    .quiz-btn:hover {
+      background:var(--color-accent-purple); /* Roxo no hover */
+      color:#fff;
+      border-color:var(--color-accent-blue);
+      box-shadow: 0 0 20px var(--color-glow-purple);
+    }
+    .quiz-btn.selected { /* Estilo para o botão selecionado */
+        background: var(--color-accent-blue);
+        color: #fff;
+        border-color: var(--color-accent-purple);
+        box-shadow: 0 0 25px var(--color-glow-blue);
+        cursor: default; /* Impede novos cliques */
+    }
+    .feedback {
+      min-height:28px; /* Aumentei */
+      margin-top:1.2rem; /* Aumentei */
+      font-size:1.05rem; /* Aumentei */
+      color:var(--color-success); /* Cor de sucesso */
+      text-align: center;
+      font-weight: 500;
+      text-shadow: 0 0 8px rgba(50, 222, 132, 0.5); /* Brilho sutil */
+    }
+
     /* CTA Final */
-    .cta-final { text-align:center; padding:3rem 1rem; }
-    .cta-final .cta-btn { margin-top:1rem; }
+    .cta-final {
+      text-align:center; padding:5rem 1.5rem; /* Aumentei padding */
+      background:var(--color-deep-purple); /* Harmonizado */
+      border-top: 1px solid var(--color-border-dark); /* Borda superior */
+    }
+    .cta-final .section-title {
+        color:var(--color-accent-blue); /* Cor diferente para destaque */
+        text-shadow:0 0 15px var(--color-glow-blue);
+    }
+    .cta-final p {
+        font-family: 'Playfair Display', serif;
+        font-size:1.4rem; /* Aumentei */
+        margin-bottom:2rem; /* Aumentei */
+        color:var(--color-text-light);
+        line-height: 1.4;
+    }
+    .cta-final strong {
+        color: var(--color-accent-purple);
+        text-shadow: 0 0 8px var(--color-glow-purple);
+    }
+    .cta-final .cta-btn { margin-top:1.5rem; /* Aumentei */ }
+
     /* Responsivo */
-    @media(max-width:600px){ .hero-title{font-size:2.2rem;} .hero-desc{font-size:1.1rem;} }
+    @media(max-width:992px){
+        .hero-title{font-size:3rem;}
+        .hero-desc{font-size:1.25rem;}
+        .section-title{font-size:2.4rem;}
+        .causa-card, .depo { flex:1 1 280px; }
+    }
+    @media(max-width:768px){
+      .hero-title{font-size:2.5rem;}
+      .hero-desc{font-size:1.15rem; padding:1rem;}
+      .hero-cta { margin-top:2rem; gap:1rem;}
+      .cta-btn { padding:1rem 2rem; font-size:1rem;}
+      section { padding:4rem 1rem; }
+      .section-title{font-size:2rem; margin-bottom:2rem;}
+      .causa-card { max-width: 90%; flex: 1 1 280px; }
+      .depoimentos { grid-template-columns:1fr; }
+      .avatar { top:-27px; left: calc(50% - 27px); } /* Centraliza o avatar no mobile */
+      .subtitulo { font-size:1rem; margin:1rem auto 2rem;}
+      .beneficios li { font-size:0.95rem; }
+      .preco .orig { font-size:1.1rem; }
+      .preco .novo { font-size:1.5rem; }
+      .quiz-box { padding:1.5rem; margin:2rem auto; }
+      .quiz-pergunta { font-size:1.1rem; }
+      .quiz-btn { font-size:0.95rem; padding:0.8rem 1rem; }
+      .feedback { font-size:0.9rem; }
+      .cta-final p { font-size:1.1rem; }
+    }
+    @media(max-width:480px){
+      .hero-title{font-size:2rem;}
+      .hero-desc{font-size:1rem; padding:0.8rem;}
+      .cta-btn { font-size:0.9rem; padding:0.8rem 1.8rem;}
+      .section-title{font-size:1.8rem;}
+      .causa-card { padding:1.5rem 0.8rem; }
+      .causa-icon { font-size:2.2rem; }
+      .causa-title { font-size:1.1rem; }
+      .depo { padding:1.8rem 1rem 1rem; }
+      .depo p:not(.nome) { font-size:0.95rem; }
+      .avatar { top:-24px; left: calc(50% - 24px); width:48px;height:48px; }
+    }
   </style>
 </head>
 <body>
@@ -123,87 +427,31 @@
     <h1 class="hero-title glow">Tudo Está Conectado</h1>
     <p class="hero-desc">Um portal para restaurar seu sistema. Da caspa à ansiedade, do intestino à criatividade: todos os sintomas refletem um único desequilíbrio.</p>
     <div class="hero-cta">
-      <button class="cta-btn" onclick="location.href='ebook.pdf'">Desbloquear eBook Grátis</button>
-      <img src="https://api.qrserver.com/v1/create-qr-code/?size=100x100&data=https://seulink.com/ebook.pdf" alt="QR code" style="margin-top:0.5rem;border-radius:8px;box-shadow:0 0 8px var(--roxo)">
+      <button class="cta-btn" onclick="window.open('ebook.pdf', '_blank');">Desbloquear eBook Grátis</button>
+      <img src="https://api.qrserver.com/v1/create-qr-code/?size=100x100&data=https://seulink.com/ebook.pdf" alt="QR code" style="margin-top:0.5rem;border-radius:8px;box-shadow:0 0 8px var(--color-accent-purple);">
     </div>
-  </div>  <section id="causas">
-    <h2 class="section-title">Tudo está conectado:</h2>
-    <div class="causas">
-      <div class="causa-card">
-        <div class="causa-icon">🦠</div>
-        <div class="causa-title">Fungos & Pele</div>
-        <p class="causa-desc">Fungos recorrentes e caspa indicam desequilíbrio intestinal e queda de imunidade. <em>Restaure sua microbiota e fortaleça todo o sistema.</em></p>
-      </div>
-      <div class="causa-card">
-        <div class="causa-icon">🧠</div>
-        <div class="causa-title">Ansiedade & Insônia</div>
-        <p class="causa-desc">Pensamentos acelerados e noites em claro são sinais de sistema nervoso sobrecarregado. <em>Aprenda a sincronizar mente e corpo.</em></p>
-      </div>
-      <div class="causa-card">
-        <div class="causa-icon">⚡</div>
-        <div class="causa-title">Cansaço Crônico</div>
-        <p class="causa-desc">Baixa energia e fadiga refletem falhas na comunicação celular. <em>Pequenos rituais diários recarregam sua força vital.</em></p>
-      </div>
-      <div class="causa-card">
-        <div class="causa-icon">🎭</div>
-        <div class="causa-title">Bloqueio Criativo</div>
-        <p class="causa-desc">Vazio e falta de propósito indicam desconexão sistêmica. <em>Desentrelaçe padrões tóxicos e recupere sua visão.</em></p>
-      </div>
-    </div>
-  </section>  <section id="depoimentos">
-    <h2 class="section-title">Quem já desbloqueou sabe:</h2>
-    <div class="depoimentos">
-      <div class="depo"><img class="avatar" src="https://randomuser.me/api/portraits/men/32.jpg"><p class="aspecto">Saúde Física</p><p>“Minhas alergias sumiram quando descobri que estavam ligadas à minha ansiedade. Agora vivo sem crises.”</p><p class="nome">Bruno T.</p></div>
-      <div class="depo"><img class="avatar" src="https://randomuser.me/api/portraits/women/49.jpg"><p class="aspecto">Bem-Estar Mental</p><p>“Ansiedade e insônia eram rotina. O eBook me deu métodos reais para sincronizar mente e corpo.”</p><p class="nome">Elisa M.</p></div>
-      <div class="depo"><img class="avatar" src="https://randomuser.me/api/portraits/men/85.jpg"><p class="aspecto">Energia</p><p>“Passei anos exausto. Agora recarrego minha energia com práticas simples e duradouras.”</p><p class="nome">Lucas F.</p></div>
-      <div class="depo"><img class="avatar" src="https://randomuser.me/api/portraits/women/66.jpg"><p class="aspecto">Criatividade</p><p>“Meu bloqueio criativo desapareceu. Tudo faz sentido quando entendemos o sistema por completo.”</p><p class="nome">Mariana S.</p></div>
-    </div>
-  </section>  <section id="sistema-vivo">
-    <h2 class="section-title">Desbloqueie a próxima camada: o Sistema Vivo</h2>
-    <p class="subtitulo">O que você experimentou até aqui foi só o início. A restauração completa acontece no Sistema Vivo.</p>
-    <ul class="beneficios">
-      <li>🔓 Restauração total de corpo, mente e energia.</li>
-      <li>🧠 Técnicas emocionais e neurobiológicas comprovadas.</li>
-      <li>🦠 Guia avançado para reconstrução intestinal.</li>
-      <li>🔍 Acesso ao painel secreto interativo no site.</li>
-      <li>💠 Rituais e desafios semanais dentro do universo NoHeroes.</li>
-    </ul>
-    <div class="preco"><span class="orig">R$120,00</span><span class="novo">R$29,97</span></div>
-    <div style="text-align:center;"><button class="cta-btn" onclick="location.href='landingsv.html'">Acessar o Sistema Vivo</button></div>
-  </section>  <section id="quiz">
-    <div class="quiz-box">
-      <p class="quiz-pergunta">Como você se sente mais frequentemente?</p>
-      <ul class="quiz-opcoes">
-        <li><button class="quiz-btn" data-feedback="Você pode fortalecer seu sistema nervoso com práticas de respiração." onclick="answerQuiz(this)">Ansioso(a)</button></li>
-        <li><button class="quiz-btn" data-feedback="Sua microbiota pode estar desequilibrada; conheça exercícios simples no eBook." onclick="answerQuiz(this)">Fadigado(a)</button></li>
-        <li><button class="quiz-btn" data-feedback="Bloqueios criativos podem ser sinal de desconexão sistêmica." onclick="answerQuiz(this)">Criativamente bloqueado(a)</button></li>
-        <li><button class="quiz-btn" data-feedback="Você sente múltiplos sintomas; busque o Sistema Vivo para integração completa." onclick="answerQuiz(this)">Todos os anteriores</button></li>
-      </ul>
-      <p class="feedback" id="quiz-feedback"></p>
-    </div>
-  </section>  <section class="cta-final">
-    <h2 class="section-title">Sua escolha:</h2>
-    <p>Permaneça onde está ou <strong>entre no Sistema Vivo</strong> e transforme tudo de uma vez.</p>
-    <button class="cta-btn" onclick="location.href='landingsv.html'">Entrar no Sistema Vivo</button>
-  </section>  <script>
-    // Progressbar
-    window.addEventListener('scroll',()=>{
-      const docHeight=document.documentElement.scrollHeight - window.innerHeight;
-      const scrolled=(window.scrollY/docHeight)*100;
-      document.getElementById('progressbar').style.width=scrolled+'%';
-    });
-    // ScrollReveal
-    ScrollReveal().reveal('.hero-title, .hero-desc, .hero-cta',{delay:200, distance:'30px', origin:'bottom'});
-    ScrollReveal().reveal('.causa-card',{interval:100, distance:'20px', origin:'bottom'});
-    ScrollReveal().reveal('.depo',{interval:120, distance:'20px', origin:'bottom'});
-    ScrollReveal().reveal('#sistema-vivo .section-title, #sistema-vivo .subtitulo, .beneficios li',{interval:100, distance:'20px', origin:'bottom'});
-    ScrollReveal().reveal('.quiz-box',{delay:200, distance:'30px', origin:'bottom'});
-    ScrollReveal().reveal('.cta-final',{delay:200, distance:'30px', origin:'bottom'});
-    // Quiz
-    function answerQuiz(btn){
-      document.querySelectorAll('.quiz-btn').forEach(b=>b.disabled=true);
-      btn.classList.add('selected');
-      document.getElementById('quiz-feedback').textContent = btn.dataset.feedback;
-    }
-  </script></body>
-</html>
+  </div>
+
+  <section id="causas">
+    <div class="container text-center">
+      <h2 class="section-title">Tudo está conectado:</h2>
+      <div class="causas">
+        <div class="causa-card">
+          <div class="causa-icon">🦠</div>
+          <div class="causa-title">Fungos & Pele</div>
+          <p class="causa-desc">Fungos recorrentes e caspa indicam desequilíbrio intestinal e queda de imunidade. <em>Restaure sua microbiota e fortaleça todo o sistema.</em></p>
+        </div>
+        <div class="causa-card">
+          <div class="causa-icon">🧠</div>
+          <div class="causa-title">Ansiedade & Insônia</div>
+          <p class="causa-desc">Pensamentos acelerados e noites em claro são sinais de sistema nervoso sobrecarregado. <em>Aprenda a sincronizar mente e corpo.</em></p>
+        </div>
+        <div class="causa-card">
+          <div class="causa-icon">⚡</div>
+          <div class="causa-title">Cansaço Crônico</div>
+          <p class="causa-desc">Baixa energia e fadiga refletem falhas na comunicação celular. <em>Pequenos rituais diários recarregam sua força vital.</em></p>
+        </div>
+        <div class="causa-card">
+          <div class="causa-icon">🎭</div>
+          <div class="causa-title">Bloqueio Criativo</div>
+          <p class="causa-desc">Vazio e
