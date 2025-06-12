@@ -7,49 +7,51 @@
   <link href="https://fonts.googleapis.com/css2?family=Cinzel+Decorative:wght@400;700&family=Playfair+Display:wght@400;700&family=Roboto:wght@300;400;700&display=swap" rel="stylesheet">
   <script src="https://unpkg.com/scrollreveal"></script>
   <style>
-    /* Variáveis de Tema (Harmonizadas com Sistema Vivo LP) */
+    /* Variáveis de Tema (PALETA ORIGINAL RESTAURADA) */
     :root {
-      --color-dark-bg: #0A0710; /* Quase preto */
-      --color-deep-purple: #180C26; /* Roxo muito escuro */
-      --color-accent-purple: #9A3BFF; /* Roxo vibrante para destaque */
-      --color-accent-blue: #40A4FF; /* Azul etéreo para brilhos */
-      --color-text-light: #E8E2F0; /* Branco sujo */
-      --color-text-gray: #B0A0C0; /* Cinza-roxo para subtextos */
-      --color-border-dark: #3A1F5E; /* Borda roxa escura */
-      --color-glow-purple: rgba(154, 59, 255, 0.5);
-      --color-glow-blue: rgba(64, 164, 255, 0.4);
-      --color-button-bg: linear-gradient(90deg, #6D28D9, #9A3BFF);
-      --color-button-hover: linear-gradient(90deg, #9A3BFF, #6D28D9);
-      --color-attention: #FF5733; /* Laranja/vermelho para preço e erro */
-      --color-success: #32de84; /* Verde para sucesso */
+      --roxo: #a855f7;
+      --roxo-glow: #c084fc;
+      --dourado: #facc15;
+      --fundo: #0a0a0a;
+      --cinza: #17171a;
+      --cinza2: #23232a;
+      --claro: #f4f4f4;
+      --sucesso: #32de84;
+      --erro: #ff5252;
 
-      /* Mantendo algumas do original para referências de matiz, mas ajustadas */
-      --roxo-original: #a855f7; /* Mapeia para --color-accent-purple */
-      --roxo-glow-original: #c084fc; /* Mapeia para --color-glow-purple */
-      --dourado-original: #facc15; /* Usado para alguns brilhos/detalhes de texto */
-      --fundo-original: #0a0a0a; /* Mapeia para --color-dark-bg */
-      --cinza-original: #17171a; /* Mapeia para --color-deep-purple ou --color-dark-bg em alguns contextos */
-      --cinza2-original: #23232a; /* Mapeia para --color-deep-purple ou --color-dark-bg em alguns contextos */
-      --claro-original: #f4f4f4; /* Mapeia para --color-text-light */
-      --sucesso-original: #32de84; /* Mapeia para --color-success */
-      --erro-original: #ff5252; /* Mapeia para --color-attention */
+      /* Novas variáveis para consistência de brilho/sombra com a outra LP, mas usando as cores acima */
+      --color-glow-purple: rgba(192, 132, 252, 0.5); /* Baseado em roxo-glow */
+      --color-glow-blue: rgba(64, 164, 255, 0.4); /* Para um toque sutil de azul onde apropriado */
+      --color-button-bg: linear-gradient(90deg, var(--roxo), var(--dourado));
+      --color-button-hover: linear-gradient(90deg, var(--roxo-glow), var(--dourado)); /* Mais brilho no hover */
+      --color-border-accent: #6d28d9; /* Um roxo um pouco mais escuro para bordas secundárias */
     }
 
     * { margin:0; padding:0; box-sizing:border-box; }
     html, body {
       width:100vw; min-height:100vh;
-      background:var(--color-dark-bg); /* Usando nova variável */
-      color:var(--color-text-light); /* Usando nova variável */
-      font-family:'Roboto', sans-serif; /* Nova fonte */
+      background:var(--fundo); color:var(--claro);
+      font-family:'Roboto', sans-serif; /* Aprimorado para Roboto */
       scroll-behavior:smooth;
       overflow-x:hidden;
     }
+    
+    /* Utilitários */
+    .container {
+        max-width: 1200px;
+        margin: 0 auto;
+        padding: 0 15px; /* Ajuste para melhor espaçamento em telas menores */
+    }
+    .text-center {
+        text-align: center;
+    }
+
     /* Barra de Progresso */
     #progressbar {
       position:fixed; top:0; left:0; height:6px; width:0;
-      background:linear-gradient(90deg, var(--color-accent-purple) 40%, var(--dourado-original) 100%); /* Mantém o dourado para esse brilho */
+      background:linear-gradient(90deg,var(--roxo) 40%,var(--dourado) 100%);
       border-radius:0 4px 4px 0; z-index:999;
-      box-shadow: 0 0 15px rgba(154, 59, 255, 0.7); /* Adiciona brilho */
+      box-shadow: 0 0 12px rgba(168, 85, 247, 0.7); /* Brilho sutil */
     }
 
     /* Hero */
@@ -57,242 +59,215 @@
       position:relative; min-height:100vh; display:flex;
       flex-direction:column; align-items:center; justify-content:center;
       text-align:center;
-      background:radial-gradient(circle at 60% 30%, var(--color-deep-purple) 0%, var(--color-dark-bg) 100%); /* Ajustado para nova paleta */
+      background:radial-gradient(circle at 60% 30%,#1e0029 0%,#0a0a0a 100%);
       overflow:hidden;
-      padding: 20px; /* Adicionado padding para evitar corte em telas pequenas */
+      padding: 20px;
     }
     .hero::before {
       content:''; position:absolute;inset:0;
-      background:url('https://via.placeholder.com/1920x1080/0d081b/3a1f5e?text=NoHeroes+Tudo+Conectado+Background') center/cover; /* Placeholder temático */
+      /* Imagem original com um fallback mais escuro para o caso de falha */
+      background:url('https://images.unsplash.com/photo-1506744038136-46273834b3fb?auto=format&fit=crop&w=1350&q=80')center/cover;
       opacity:0.07; pointer-events:none;
-      z-index: 1; /* Garante que o background fique abaixo do conteúdo */
+      z-index: 1;
     }
     .glow {
-      color:var(--color-accent-purple); /* Usando nova variável */
-      text-shadow:0 0 18px var(--color-glow-purple),0 0 48px var(--color-glow-purple); /* Usando nova variável */
+      color:var(--roxo); text-shadow:0 0 18px var(--roxo-glow),0 0 48px var(--roxo-glow);
       animation:glow-pulse 2.3s infinite alternate;
-      position: relative; z-index: 2; /* Para ficar acima do ::before */
+      position: relative; z-index: 2;
     }
     @keyframes glow-pulse {
-      0% {text-shadow:0 0 18px var(--color-glow-purple);}
-      100% {text-shadow:0 0 44px var(--color-glow-purple);}
+      0% {text-shadow:0 0 18px var(--roxo-glow);} 100% {text-shadow:0 0 44px var(--roxo-glow);}
     }
     .hero-title {
       font-family:'Cinzel Decorative', serif; /* Nova fonte */
-      font-size:3.5rem; /* Aumentado um pouco */
+      font-size:3.8rem; /* Aumentado */
       letter-spacing:2px; z-index:2;
-      line-height: 1.1; /* Ajuste para melhor leitura */
+      line-height: 1.1;
     }
     .hero-desc {
-      margin:2rem auto; max-width:700px; /* Aumentei max-width */
-      font-size:1.4rem; /* Aumentei um pouco */
-      font-family: 'Playfair Display', serif; /* Nova fonte para este texto */
-      background:rgba(20,8,28,0.7); padding:1.5rem; /* Aumentei padding */
-      border-radius:1.2rem; /* Aumentei border-radius */
-      backdrop-filter:blur(5px); /* Aumentei blur */
-      box-shadow:0 4px 40px rgba(0,0,0,0.8); /* Sombra mais intensa */
-      border: 1px solid var(--color-border-dark); /* Adiciona borda sutil */
+      margin:2rem auto; max-width:700px; /* Aumentado */
+      font-size:1.4rem; /* Aumentado */
+      font-family:'Playfair Display', serif; /* Nova fonte */
+      background:rgba(20,8,28,0.7); padding:1.5rem; /* Aumentado */
+      border-radius:1.2rem; /* Aumentado */
+      backdrop-filter:blur(3px); /* Ajuste sutil no blur */
+      box-shadow:0 4px 40px rgba(0,0,0,0.8);
+      border: 1px solid rgba(168, 85, 247, 0.3); /* Borda sutil com a cor roxa */
       position: relative; z-index: 2;
       line-height: 1.4;
     }
     .hero-cta {
-      margin-top:2.5rem; /* Aumentei margin-top */
-      display:flex; flex-direction:column; align-items:center; gap:1.2rem; /* Aumentei gap */
-      z-index:2;
+      margin-top:2.5rem; display:flex; flex-direction:column; align-items:center; gap:1.2rem; z-index:2;
     }
     .cta-btn {
-      background:var(--color-button-bg); /* Usando nova variável */
-      color:var(--color-text-light); /* Cor do texto no botão */
-      padding:1.1rem 3rem; /* Aumentei padding */
-      border:none; border-radius:2.5em; /* Aumentei border-radius */
+      background:var(--color-button-bg); /* Usando nova variável baseada nas originais */
+      color:#181825; /* Cor do texto no botão */
+      padding:1.1rem 3rem; border:none; border-radius:2.5em;
       font-family:'Cinzel Decorative', serif; /* Nova fonte */
       font-size:1.2rem; font-weight:700;
       cursor:pointer;
-      transition:transform .3s ease, box-shadow .3s ease, background .3s ease; /* Transições mais suaves */
-      box-shadow: 0 0 25px var(--color-glow-purple); /* Brilho no botão */
-      letter-spacing: 1px;
+      transition:transform .3s ease, filter .3s ease, box-shadow .3s ease, background .3s ease;
+      box-shadow: 0 0 20px rgba(168, 85, 247, 0.6); /* Brilho sutil */
+      letter-spacing: 0.5px;
     }
     .cta-btn:hover {
-      transform:scale(1.05) translateY(-3px); /* Movimento mais sutil */
+      transform:scale(1.05) translateY(-3px);
+      filter:brightness(1.1);
       background:var(--color-button-hover); /* Efeito hover de background */
-      box-shadow:0 0 40px var(--color-accent-blue); /* Brilho mais forte no hover */
+      box-shadow:0 0 35px var(--roxo-glow); /* Brilho mais forte no hover */
     }
-
+    .hero-cta img { /* Estilo para o QR code */
+        box-shadow:0 0 12px var(--roxo); /* Brilho consistente */
+        transition: transform 0.3s ease;
+    }
+    .hero-cta img:hover {
+        transform: scale(1.05);
+    }
+    
     /* Seções */
     section {
-      padding:6rem 1.5rem; /* Aumentei padding */
-      background:var(--color-dark-bg); /* Usando nova variável */
-      position: relative; /* Para z-index do conteúdo */
-      overflow: hidden; /* Para animções ou elementos que possam sair */
+      padding:6rem 1.5rem;
+      background:var(--fundo); /* Fundo base da seção */
+      position: relative;
+      overflow: hidden;
+      border-top: 1px solid var(--cinza); /* Linha divisória sutil */
     }
-    section:nth-child(odd) { /* Altera a cor de fundo das seções ímpares */
-        background-color: var(--color-deep-purple);
+    section:nth-of-type(even) { /* Apenas para a seção "Causas" e "Sistema Vivo" */
+        background-color: var(--cinza); /* Cor do fundo original */
     }
+
     .section-title {
       font-family:'Cinzel Decorative', serif; /* Nova fonte */
-      font-size:2.8rem; /* Aumentei */
-      color:var(--color-accent-purple); /* Usando nova variável */
-      margin-bottom:2.5rem; /* Aumentei */
-      text-shadow:0 0 15px var(--color-glow-purple); /* Brilho mais intenso */
+      font-size:2.8rem; /* Aumentado */
+      color:var(--roxo-glow); margin-bottom:2.5rem; /* Aumentado */
+      text-shadow:0 0 15px var(--roxo); /* Brilho mais intenso */
       position: relative;
-      display: inline-block; /* Para o underline */
-      padding-bottom: 10px; /* Espaço para o underline */
+      display: inline-block;
+      padding-bottom: 10px;
     }
-    /* Underline animado para títulos de seção */
-    .section-title::after {
+    .section-title::after { /* Underline animado */
         content: '';
         position: absolute;
         left: 50%;
         bottom: 0;
-        width: 0; /* Começa sem largura */
+        width: 0;
         height: 3px;
-        background: var(--color-accent-blue);
-        box-shadow: 0 0 10px var(--color-glow-blue);
+        background: var(--dourado); /* Linha dourada */
+        box-shadow: 0 0 10px var(--dourado);
         transition: width 0.6s ease-out, left 0.6s ease-out;
     }
-    .section-title.active::after { /* Ativa a animação ao aparecer */
+    .section-title.active::after {
         width: 100%;
         left: 0;
     }
 
-
     /* Sintomas/Causas */
     .causas {
-      display:flex; flex-wrap:wrap; gap:2rem; /* Aumentei o gap */
-      justify-content:center;
+      display:flex; flex-wrap:wrap; gap:2rem; justify-content:center;
     }
     .causa-card {
-      background:linear-gradient(140deg,var(--color-deep-purple) 75%,var(--color-border-dark) 100%); /* Ajustado para nova paleta */
-      padding:2rem 1.5rem; /* Aumentei padding */
-      border-radius:1.5rem; /* Aumentei border-radius */
-      max-width:320px; flex:1 1 280px; /* Ajustei tamanhos */
-      border:2px solid var(--color-border-dark); /* Usando nova variável */
-      box-shadow:0 4px 25px rgba(14, 1, 35, 0.7); /* Sombra mais sutil */
-      transition:transform .3s ease, box-shadow .3s ease, border-color .3s ease; /* Transições mais suaves */
-      text-align: center; /* Centraliza conteúdo do card */
+      background:linear-gradient(140deg,var(--cinza2) 75%,var(--roxo) 100%); /* Mantido original */
+      padding:2rem 1.5rem; border-radius:1.5rem; /* Aumentado */
+      max-width:320px; flex:1 1 280px;
+      border:2px solid var(--roxo); box-shadow:0 4px 25px rgba(14, 1, 35, 0.7);
+      transition:transform .3s ease, box-shadow .3s ease;
+      text-align: center;
     }
     .causa-card:hover {
-      transform:translateY(-8px); /* Mais movimento */
-      box-shadow:0 8px 40px var(--color-glow-purple); /* Brilho mais intenso */
-      border-color:var(--color-accent-purple); /* Borda fica mais visível no hover */
-    }
+      transform:translateY(-8px); box-shadow:0 8px 40px var(--roxo-glow);
+    }    
     .causa-icon {
-      font-size:2.8rem; /* Aumentei */
-      color:var(--dourado-original); /* Mantendo o dourado para os ícones */
-      margin-bottom:1rem; /* Aumentei */
-      text-shadow: 0 0 10px rgba(250, 205, 21, 0.7); /* Brilho para o ícone */
+      font-size:3rem; /* Aumentado */
+      color:var(--dourado); margin-bottom:1rem;
+      text-shadow: 0 0 12px rgba(250, 205, 21, 0.8);
     }
     .causa-title {
       font-family:'Cinzel Decorative', serif; /* Nova fonte */
-      font-size:1.3rem; /* Aumentei */
-      color:var(--color-accent-blue); /* Mudado para azul etéreo */
-      margin-bottom:0.8rem; /* Aumentei */
-      font-weight:700;
+      font-size:1.3rem; /* Aumentado */
+      color:var(--dourado); margin-bottom:0.8rem; font-weight:700;
       text-transform: uppercase;
     }
     .causa-desc {
-      font-size:1rem; line-height:1.5; /* Ajustei line-height */
-      color:var(--color-text-gray); /* Cor mais suave */
+      font-family:'Roboto', sans-serif;
+      font-size:1rem; line-height:1.5;
     }
 
     /* Depoimentos */
     .depoimentos {
-      display:grid; grid-template-columns:repeat(auto-fit,minmax(280px,1fr)); /* Ajustei minmax */
-      gap:2rem; /* Aumentei o gap */
+      display:grid; grid-template-columns:repeat(auto-fit,minmax(280px,1fr)); gap:2rem; /* Ajustado */
     }
     .depo {
       position:relative;
-      background:linear-gradient(120deg,var(--color-deep-purple) 75%,var(--color-border-dark) 100%); /* Ajustado para nova paleta */
-      border-radius:1.2rem; /* Aumentei */
-      padding:2.2rem 1.5rem 1.5rem; /* Aumentei padding */
-      border:2px solid var(--color-border-dark); /* Usando nova variável */
-      box-shadow:0 4px 25px rgba(18, 2, 47, 0.6); /* Sombra mais sutil */
+      background:linear-gradient(120deg,var(--cinza2) 75%,var(--roxo) 100%); /* Mantido original */
+      border-radius:1.2rem; padding:2.2rem 1.5rem 1.5rem; /* Aumentado */
+      border:2px solid var(--roxo-glow); box-shadow:0 4px 25px rgba(18, 2, 47, 0.6);
       transition:transform .3s ease, border-color .3s ease, box-shadow .3s ease;
+      text-align: center; /* Centraliza o texto */
     }
     .depo:hover {
-      transform:translateY(-6px); /* Mais movimento */
-      border-color:var(--color-accent-purple); /* Borda dourada no hover */
-      box-shadow:0 8px 35px var(--color-glow-purple);
+      transform:translateY(-6px); border-color:var(--dourado); /* Borda dourada no hover */
+      box-shadow:0 8px 35px var(--roxo-glow);
     }
     .avatar {
-      width:54px;height:54px; /* Aumentei tamanho */
-      border-radius:50%;
-      border:3px solid var(--color-accent-blue); /* Cor da borda do avatar */
-      position:absolute;top:-27px;left:18px; /* Ajustei posição */
-      background:var(--color-dark-bg); /* Fundo do avatar */
-      box-shadow: 0 0 15px rgba(64, 164, 255, 0.5); /* Brilho no avatar */
+      width:54px;height:54px;border-radius:50%;
+      border:3px solid var(--roxo-glow); /* Mantido original */
+      position:absolute;top:-27px;left:50%; transform:translateX(-50%); /* Centraliza avatar */
+      background:var(--cinza2); /* Fundo do avatar */
+      box-shadow: 0 0 15px rgba(192, 132, 252, 0.5); /* Brilho sutil */
     }
     .aspecto {
-      font-size:0.95rem; /* Levemente maior */
-      color:var(--color-accent-blue); /* Azul etéreo */
-      margin-bottom:0.8rem;
-      text-transform: uppercase; /* Para um toque mais "runa" */
+      font-family:'Cinzel Decorative', serif; /* Nova fonte */
+      font-size:0.95rem; color:var(--roxo-glow); margin-bottom:0.8rem;
+      text-transform: uppercase;
       font-weight: 700;
     }
     .depo p:not(.nome) { /* Estilo do texto do depoimento */
-        font-family: 'Playfair Display', serif;
+        font-family: 'Playfair Display', serif; /* Nova fonte */
         font-size: 1.05rem;
         line-height: 1.5;
-        color: var(--color-text-light);
+        color: var(--claro);
     }
     .nome {
-      margin-top:1.5rem; /* Aumentei */
-      font-weight:700;
-      color:var(--dourado-original); /* Mantendo o dourado para o nome */
+      margin-top:1.5rem; font-weight:700; color:var(--dourado);
       font-family:'Cinzel Decorative', serif; /* Nova fonte */
       font-size: 1.1rem;
     }
 
     /* Sistema Vivo */
     #sistema-vivo {
-      background:linear-gradient(135deg,rgba(20,0,45,0.85),rgba(0,0,0,0.85)); /* Mantém gradiente escuro */
-      border-top: 1px solid var(--color-border-dark); /* Borda superior */
+      background:linear-gradient(135deg,rgba(20,0,45,0.85),rgba(0,0,0,0.85));
+      border-top: 1px solid var(--cinza); /* Borda superior sutil */
     }
     #sistema-vivo .section-title {
-      color:var(--dourado-original); /* Mantém dourado para esse título */
-      text-shadow:0 0 15px var(--dourado-original); /* Brilho dourado */
+      color:var(--dourado); text-shadow:0 0 15px var(--dourado);
     }
     .subtitulo {
-      font-size:1.15rem; /* Aumentei */
-      font-family: 'Playfair Display', serif; /* Nova fonte */
-      max-width:800px; /* Aumentei max-width */
-      margin:1.2rem auto 2.5rem; /* Ajustei margins */
-      opacity:0.9;
-      color: var(--color-text-gray);
+      font-family:'Playfair Display', serif; /* Nova fonte */
+      font-size:1.15rem; max-width:800px; margin:1.2rem auto 2.5rem; opacity:0.9;
       line-height: 1.4;
     }
     .beneficios {
-      list-style:none; max-width:800px; /* Aumentei max-width */
-      margin:0 auto 2.5rem; /* Ajustei margins */
-      padding-left:1.5rem; /* Aumentei padding */
+      list-style:none; max-width:800px; margin:0 auto 2.5rem; padding-left:1.5rem;
     }
     .beneficios li {
-      position:relative; margin-bottom:1.2rem; /* Aumentei margin-bottom */
-      padding-left:1.8rem; /* Aumentei padding */
-      line-height:1.5;
+      position:relative; margin-bottom:1.2rem; padding-left:1.8rem; line-height:1.5;
+      font-family:'Roboto', sans-serif; /* Nova fonte */
       font-size: 1.05rem;
-      color: var(--color-text-light);
     }
     .beneficios li:before {
-      content:'✦'; /* Ícone de estrela como no Sistema Vivo LP */
-      position:absolute; left:0;
-      color:var(--color-accent-purple); /* Cor roxa */
-      font-size: 1.2em; /* Aumentei */
-      line-height: 1; /* Alinhamento */
+      content:'✦'; /* Ícone de estrela */
+      position:absolute; left:0; color:var(--roxo);
+      font-size: 1.2em;
+      line-height: 1;
     }
-    .preco {
-      text-align:center; margin:2rem 0; /* Aumentei margins */
-    }
+    .preco { text-align:center; margin:2rem 0; }
     .orig {
-      color:var(--color-text-gray); /* Mais sutil */
-      text-decoration:line-through; font-size:1.2rem; /* Aumentei */
+      color:#888; text-decoration:line-through; font-size:1.2rem;
     }
     .novo {
-      color:var(--color-success); /* Usando nova variável */
-      font-size:1.7rem; /* Aumentei bem */
-      font-weight:700; margin-left:1.2rem; /* Aumentei margin */
-      text-shadow:0 0 10px var(--color-success); /* Brilho mais forte */
-      animation: price-pulse 1.5s infinite alternate; /* Animação de pulso para o preço */
+      color:var(--sucesso); font-size:1.7rem; font-weight:700; margin-left:1.2rem;
+      text-shadow:0 0 10px var(--sucesso);
+      animation: price-pulse 1.5s infinite alternate; /* Animação de pulso */
     }
     @keyframes price-pulse {
         0% { transform: scale(1); opacity: 1; }
@@ -301,84 +276,81 @@
 
     /* Quiz */
     #quiz {
-        background: var(--color-dark-bg); /* Garante que o fundo da seção quiz seja escuro */
-        border-top: 1px solid var(--color-border-dark);
+        background: var(--fundo); /* Garante que o fundo da seção quiz seja escuro */
+        border-top: 1px solid var(--cinza);
     }
     .quiz-box {
-      background:var(--color-deep-purple); /* Usando nova variável */
-      max-width:650px; /* Aumentei max-width */
-      margin:2.5rem auto; /* Aumentei margins */
-      padding:2.2rem; /* Aumentei padding */
-      border-radius:1.5rem; /* Aumentei border-radius */
-      box-shadow:0 6px 30px rgba(0,0,0,0.8); /* Sombra mais intensa */
-      border: 1px solid var(--color-border-dark);
+      background:var(--cinza2); max-width:650px; margin:2.5rem auto; padding:2.2rem;
+      border-radius:1.5rem; box-shadow:0 6px 30px rgba(0,0,0,0.8);
+      border: 1px solid var(--cinza); /* Borda sutil */
     }
     .quiz-pergunta {
       font-family:'Playfair Display', serif; /* Nova fonte */
-      font-size:1.2rem; /* Aumentei */
-      margin-bottom:1.5rem; /* Aumentei */
-      color:var(--color-text-light); /* Mais visível */
-      text-align: center;
-      line-height: 1.4;
+      font-size:1.2rem; margin-bottom:1.5rem; color:var(--dourado);
+      text-align: center; line-height: 1.4;
     }
     .quiz-opcoes { list-style:none; padding: 0; }
-    .quiz-opcoes li { margin-bottom:1rem; /* Aumentei */ }
+    .quiz-opcoes li { margin-bottom:1rem; }
     .quiz-btn {
-      background:var(--color-dark-bg); /* Fundo do botão */
-      color:var(--color-text-light); /* Cor do texto */
-      padding:0.9rem 1.2rem; /* Aumentei padding */
-      border:2px solid var(--color-border-dark); /* Borda sutil */
-      border-radius:0.8rem; /* Aumentei border-radius */
-      width:100%; text-align:left;
+      background:var(--cinza); color:var(--claro); padding:0.9rem 1.2rem;
+      border:2px solid var(--roxo-glow); border-radius:0.8rem; width:100%; text-align:left;
       cursor:pointer;
       transition:background .3s ease, border-color .3s ease, color .3s ease, box-shadow .3s ease;
+      font-family:'Roboto', sans-serif;
       font-size: 1.05rem;
     }
     .quiz-btn:hover {
-      background:var(--color-accent-purple); /* Roxo no hover */
-      color:#fff;
-      border-color:var(--color-accent-blue);
-      box-shadow: 0 0 20px var(--color-glow-purple);
+      background:var(--roxo); color:#fff;
+      border-color:var(--dourado);
+      box-shadow: 0 0 20px var(--roxo-glow);
     }
-    .quiz-btn.selected { /* Estilo para o botão selecionado */
-        background: var(--color-accent-blue);
+    .quiz-btn.selected {
+        background: var(--roxo);
         color: #fff;
-        border-color: var(--color-accent-purple);
-        box-shadow: 0 0 25px var(--color-glow-blue);
-        cursor: default; /* Impede novos cliques */
+        border-color: var(--dourado);
+        box-shadow: 0 0 25px var(--roxo-glow);
+        cursor: default;
     }
     .feedback {
-      min-height:28px; /* Aumentei */
-      margin-top:1.2rem; /* Aumentei */
-      font-size:1.05rem; /* Aumentei */
-      color:var(--color-success); /* Cor de sucesso */
-      text-align: center;
-      font-weight: 500;
-      text-shadow: 0 0 8px rgba(50, 222, 132, 0.5); /* Brilho sutil */
+      min-height:28px; margin-top:1.2rem; font-size:1.05rem;
+      color:var(--sucesso); text-align: center; font-weight: 500;
+      text-shadow: 0 0 8px rgba(50, 222, 132, 0.5);
     }
 
     /* CTA Final */
     .cta-final {
-      text-align:center; padding:5rem 1.5rem; /* Aumentei padding */
-      background:var(--color-deep-purple); /* Harmonizado */
-      border-top: 1px solid var(--color-border-dark); /* Borda superior */
+      text-align:center; padding:5rem 1.5rem;
+      background:var(--cinza); /* Harmonizado */
+      border-top: 1px solid var(--cinza2); /* Borda superior sutil */
     }
     .cta-final .section-title {
-        color:var(--color-accent-blue); /* Cor diferente para destaque */
-        text-shadow:0 0 15px var(--color-glow-blue);
+        color:var(--roxo-glow); /* Mantido roxo-glow para consistência */
+        text-shadow:0 0 15px var(--roxo);
     }
     .cta-final p {
-        font-family: 'Playfair Display', serif;
-        font-size:1.4rem; /* Aumentei */
-        margin-bottom:2rem; /* Aumentei */
-        color:var(--color-text-light);
+        font-family:'Playfair Display', serif; /* Nova fonte */
+        font-size:1.4rem; margin-bottom:2rem;
+        color:var(--claro);
         line-height: 1.4;
     }
     .cta-final strong {
-        color: var(--color-accent-purple);
-        text-shadow: 0 0 8px var(--color-glow-purple);
+        color: var(--dourado); /* Dourado para destaque */
+        text-shadow: 0 0 8px var(--dourado);
     }
-    .cta-final .cta-btn { margin-top:1.5rem; /* Aumentei */ }
+    .cta-final .cta-btn { margin-top:1.5rem; }
+
+    /* Footer */
+    .footer {
+        background-color: var(--fundo);
+        color: var(--cinza2); /* Cor mais discreta */
+        text-align: center;
+        padding: 30px 0;
+        font-size: 0.85em;
+        border-top: 1px solid var(--cinza);
+    }
+    .footer p {
+        font-family: 'Roboto', sans-serif;
+    }
 
     /* Responsivo */
     @media(max-width:992px){
@@ -396,7 +368,7 @@
       .section-title{font-size:2rem; margin-bottom:2rem;}
       .causa-card { max-width: 90%; flex: 1 1 280px; }
       .depoimentos { grid-template-columns:1fr; }
-      .avatar { top:-27px; left: calc(50% - 27px); } /* Centraliza o avatar no mobile */
+      .avatar { top:-27px; } /* Mantém centralizado */
       .subtitulo { font-size:1rem; margin:1rem auto 2rem;}
       .beneficios li { font-size:0.95rem; }
       .preco .orig { font-size:1.1rem; }
@@ -417,7 +389,7 @@
       .causa-title { font-size:1.1rem; }
       .depo { padding:1.8rem 1rem 1rem; }
       .depo p:not(.nome) { font-size:0.95rem; }
-      .avatar { top:-24px; left: calc(50% - 24px); width:48px;height:48px; }
+      .avatar { top:-24px; width:48px;height:48px; }
     }
   </style>
 </head>
@@ -428,7 +400,7 @@
     <p class="hero-desc">Um portal para restaurar seu sistema. Da caspa à ansiedade, do intestino à criatividade: todos os sintomas refletem um único desequilíbrio.</p>
     <div class="hero-cta">
       <button class="cta-btn" onclick="window.open('ebook.pdf', '_blank');">Desbloquear eBook Grátis</button>
-      <img src="https://api.qrserver.com/v1/create-qr-code/?size=100x100&data=https://seulink.com/ebook.pdf" alt="QR code" style="margin-top:0.5rem;border-radius:8px;box-shadow:0 0 8px var(--color-accent-purple);">
+      <img src="https://api.qrserver.com/v1/create-qr-code/?size=100x100&data=https://seulink.com/ebook.pdf" alt="QR code para o eBook Grátis" style="margin-top:0.5rem;border-radius:8px;box-shadow:0 0 8px var(--roxo)">
     </div>
   </div>
 
@@ -454,4 +426,134 @@
         <div class="causa-card">
           <div class="causa-icon">🎭</div>
           <div class="causa-title">Bloqueio Criativo</div>
-          <p class="causa-desc">Vazio e
+          <p class="causa-desc">Vazio e falta de propósito indicam desconexão sistêmica. <em>Desentrelaçe padrões tóxicos e recupere sua visão.</em></p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section id="depoimentos">
+    <div class="container text-center">
+      <h2 class="section-title">Quem já desbloqueou sabe:</h2>
+      <div class="depoimentos">
+        <div class="depo"><img class="avatar" src="https://randomuser.me/api/portraits/men/32.jpg" alt="Avatar de Bruno T."><p class="aspecto">Saúde Física</p><p>“Minhas alergias sumiram quando descobri que estavam ligadas à minha ansiedade. Agora vivo sem crises.”</p><p class="nome">Bruno T.</p></div>
+        <div class="depo"><img class="avatar" src="https://randomuser.me/api/portraits/women/49.jpg" alt="Avatar de Elisa M."><p class="aspecto">Bem-Estar Mental</p><p>“Ansiedade e insônia eram rotina. O eBook me deu métodos reais para sincronizar mente e corpo.”</p><p class="nome">Elisa M.</p></div>
+        <div class="depo"><img class="avatar" src="https://randomuser.me/api/portraits/men/85.jpg" alt="Avatar de Lucas F."><p class="aspecto">Energia</p><p>“Passei anos exausto. Agora recarrego minha energia com práticas simples e duradouras.”</p><p class="nome">Lucas F.</p></div>
+        <div class="depo"><img class="avatar" src="https://randomuser.me/api/portraits/women/66.jpg" alt="Avatar de Mariana S."><p class="aspecto">Criatividade</p><p>“Meu bloqueio criativo desapareceu. Tudo faz sentido quando entendemos o sistema por completo.”</p><p class="nome">Mariana S.</p></div>
+      </div>
+    </div>
+  </section>
+
+  <section id="sistema-vivo">
+    <div class="container text-center">
+      <h2 class="section-title">Desbloqueie a próxima camada: o Sistema Vivo</h2>
+      <p class="subtitulo">O que você experimentou até aqui foi só o início. A restauração completa acontece no Sistema Vivo.</p>
+      <ul class="beneficios">
+        <li>🔓 Restauração total de corpo, mente e energia.</li>
+        <li>🧠 Técnicas emocionais e neurobiológicas comprovadas.</li>
+        <li>🦠 Guia avançado para reconstrução intestinal.</li>
+        <li>🔍 Acesso ao painel secreto interativo no site.</li>
+        <li>💠 Rituais e desafios semanais dentro do universo NoHeroes.</li>
+      </ul>
+      <div class="preco"><span class="orig">R$120,00</span><span class="novo">R$29,97</span></div>
+      <div style="text-align:center;"><button class="cta-btn" onclick="location.href='landingsv.html'">Acessar o Sistema Vivo</button></div>
+    </div>
+  </section>
+
+  <section id="quiz">
+    <div class="container">
+      <div class="quiz-box">
+        <p class="quiz-pergunta">Como você se sente mais frequentemente?</p>
+        <ul class="quiz-opcoes">
+          <li><button class="quiz-btn" data-feedback="Você pode fortalecer seu sistema nervoso com práticas de respiração e alinhamento." onclick="answerQuiz(this)">Ansioso(a)</button></li>
+          <li><button class="quiz-btn" data-feedback="Sua essência pode estar desequilibrada; conheça rituais simples para reenergizar no eBook." onclick="answerQuiz(this)">Fadigado(a)</button></li>
+          <li><button class="quiz-btn" data-feedback="Bloqueios criativos podem ser sinal de desconexão com seu fluxo primordial. Explore o Sistema Vivo." onclick="answerQuiz(this)">Criativamente bloqueado(a)</button></li>
+          <li><button class="quiz-btn" data-feedback="Você sente múltiplos sintomas; busque o Sistema Vivo para uma integração completa e profunda." onclick="answerQuiz(this)">Todos os anteriores</button></li>
+        </ul>
+        <p class="feedback" id="quiz-feedback"></p>
+      </div>
+    </div>
+  </section>
+
+  <section class="cta-final">
+    <div class="container">
+      <h2 class="section-title">Sua escolha:</h2>
+      <p>Permaneça onde está ou <strong>entre no Sistema Vivo</strong> e transforme tudo de uma vez.</p>
+      <button class="cta-btn" onclick="location.href='landingsv.html'">Entrar no Sistema Vivo</button>
+    </div>
+  </section>
+
+  <footer class="footer">
+    <div class="container">
+        <p>&copy; 2025 NoHeroes. Todos os direitos reservados. Uma obra de Raul "NoHeroe".</p>
+    </div>
+  </footer>
+
+  <script>
+    // Progressbar
+    window.addEventListener('scroll', () => {
+      const docHeight = document.documentElement.scrollHeight - window.innerHeight;
+      const scrolled = (window.scrollY / docHeight) * 100;
+      document.getElementById('progressbar').style.width = scrolled + '%';
+    });
+
+    // Intersection Observer para animações (underline dos títulos de seção)
+    const observerOptions = {
+        root: null,
+        rootMargin: '0px',
+        threshold: 0.1 // Ativa quando 10% do elemento está visível
+    };
+
+    const observer = new IntersectionObserver((entries, observer) => {
+        entries.forEach(entry => {
+            if (entry.isIntersecting) {
+                entry.target.classList.add('active');
+                // Para garantir que a animação da linha de h2 ocorra sempre
+                if (entry.target.tagName === 'H2' && entry.target.classList.contains('section-title')) {
+                    entry.target.classList.remove('active');
+                    void entry.target.offsetWidth; // Trigger reflow
+                    entry.target.classList.add('active');
+                }
+                // Não unobserve para permitir re-animação ao rolar para cima e para baixo
+                // Se quiser que anime apenas uma vez, descomente a linha abaixo:
+                // observer.unobserve(entry.target);
+            } else {
+                 // Remove a classe 'active' quando o elemento sai da tela para que possa ser re-animado
+                entry.target.classList.remove('active');
+            }
+        });
+    }, observerOptions);
+
+    // Observe todos os elementos com a classe .section-title
+    document.querySelectorAll('.section-title').forEach(element => {
+        observer.observe(element);
+    });
+
+    // ScrollReveal
+    ScrollReveal().reveal('.hero-title, .hero-desc, .hero-cta', { delay: 200, distance: '40px', origin: 'bottom', opacity: 0, easing: 'ease-in-out' });
+    ScrollReveal().reveal('.causa-card', { interval: 120, distance: '30px', origin: 'bottom', opacity: 0, easing: 'ease-in-out' });
+    ScrollReveal().reveal('.depo', { interval: 120, distance: '30px', origin: 'bottom', opacity: 0, easing: 'ease-in-out' });
+    ScrollReveal().reveal('#sistema-vivo .subtitulo', { delay: 200, distance: '40px', origin: 'bottom', opacity: 0, easing: 'ease-in-out' });
+    ScrollReveal().reveal('.beneficios li', { interval: 80, distance: '20px', origin: 'left', opacity: 0, easing: 'ease-in-out' });
+    ScrollReveal().reveal('.preco', { delay: 250, distance: '30px', origin: 'bottom', opacity: 0, easing: 'ease-in-out' });
+    ScrollReveal().reveal('.quiz-box', { delay: 200, distance: '40px', origin: 'bottom', opacity: 0, easing: 'ease-in-out' });
+    ScrollReveal().reveal('.cta-final p, .cta-final .cta-btn', { delay: 150, distance: '30px', origin: 'bottom', opacity: 0, easing: 'ease-in-out' });
+
+
+    // Quiz
+    function answerQuiz(btn) {
+      document.querySelectorAll('.quiz-btn').forEach(b => {
+        b.disabled = true; // Desabilita todos os botões após uma seleção
+        b.classList.remove('selected'); // Garante que apenas o clicado terá 'selected'
+      });
+      btn.classList.add('selected'); // Adiciona a classe 'selected' ao botão clicado
+      document.getElementById('quiz-feedback').textContent = btn.dataset.feedback;
+      
+      // Opcional: Adicionar um pequeno atraso para a remoção da desabilitação para permitir nova seleção
+      // setTimeout(() => {
+      //    document.querySelectorAll('.quiz-btn').forEach(b => b.disabled = false);
+      // }, 2000); // 2 segundos, por exemplo
+    }
+  </script>
+</body>
+</html>
