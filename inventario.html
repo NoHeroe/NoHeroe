@@ -1007,18 +1007,21 @@
                 centerPanel.style.display = "flex";
             }
 
-            // 5) Atualiza categorias de inventário de forma segura
-categoryContainers.forEach(c => {
-    if (key === "inventory") {
-        c.style.display = "block"; // Mostra todas no inventário
-    } else {
-        c.style.display = "none"; // Esconde todas fora do inventário
-    }
-});
-
+            // 5) Lógica de filtro e visibilidade das categorias
 if (key === "inventory") {
+    // Ativa botão "Tudo" por padrão
     filterBtns.forEach(b => b.classList.remove("active"));
-    filterBtns[0].classList.add("active"); // Ativa "Tudo" por padrão
+    filterBtns[0].classList.add("active");
+
+    // Exibe todas as categorias
+    categoryContainers.forEach(c => {
+        c.style.display = "block";
+    });
+} else {
+    // Garante que todas as categorias estejam escondidas ao sair do inventário
+    categoryContainers.forEach(c => {
+        c.style.display = "none";
+    });
 }
 
         tabs.forEach(tab =>
