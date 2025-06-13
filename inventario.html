@@ -1007,13 +1007,19 @@
                 centerPanel.style.display = "flex";
             }
 
-            // 5) Reset de filtro ao entrar no Inventário
-            if (key === "inventory") {
-                filterBtns.forEach(b => b.classList.remove("active"));
-                filterBtns[0].classList.add("active"); // Ativa "Tudo" por padrão
-                categoryContainers.forEach(c => c.style.display = "block"); // Mostra todas as categorias
-            }
-        }
+            // 5) Atualiza categorias de inventário de forma segura
+categoryContainers.forEach(c => {
+    if (key === "inventory") {
+        c.style.display = "block"; // Mostra todas no inventário
+    } else {
+        c.style.display = "none"; // Esconde todas fora do inventário
+    }
+});
+
+if (key === "inventory") {
+    filterBtns.forEach(b => b.classList.remove("active"));
+    filterBtns[0].classList.add("active"); // Ativa "Tudo" por padrão
+}
 
         tabs.forEach(tab =>
             tab.addEventListener("click", () => handleTabClick(tab))
