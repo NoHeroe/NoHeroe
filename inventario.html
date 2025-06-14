@@ -555,9 +555,6 @@ body {
             <span class="hud-currency">
                 <img src="https://via.placeholder.com/18/c29546/000000?text=G" alt="Gold" /> <span id="hud-gold">1250</span>
             </span>
-            <span class="hud-currency">
-                <img src="https://via.placeholder.com/18/8b0000/FFFFFF?text=C" alt="Crystal" /> <span id="hud-crystals">25</span>
-            </span>
         </div>
         <div class="hud-action-buttons">
             <button onclick="location.href='store.html'">⛩ Loja</button>
@@ -962,9 +959,7 @@ body {
     const estado = {
         nivel: 3, xp: 6700, xpMax: 10000,
         hp: 100, hpMax: 100, mp: 50, mpMax: 50,
-        gold: 1250, crystals: 25,
-        pontosDisponiveis: 4,
-        atributos: { forca:1,destreza:1,constituicao:1,inteligencia:1,espirito:1,carisma:1 }
+        gold: 1250, pontosDisponiveis: 4, atributos: { forca:1,destreza:1,constituicao:1,inteligencia:1,espirito:1,carisma:1 }
     };
 
     function atualizarInterface() {
@@ -983,7 +978,6 @@ body {
         mpBar.setAttribute("data-value", `${estado.mp}/${estado.mpMax}`);
 
         document.getElementById("hud-gold").textContent = estado.gold;
-        document.getElementById("hud-crystals").textContent = estado.crystals;
 
         // atributos
         document.getElementById("pontos-disponiveis").textContent = estado.pontosDisponiveis;
@@ -1011,7 +1005,6 @@ body {
             span.innerHTML = `${novo} <button class="edit-button" onclick="editarNome()">✎</button>`;
         }
     }
-
 
     // --- Inicialização ao Carregar a Página ---
     document.addEventListener("DOMContentLoaded", () => {
