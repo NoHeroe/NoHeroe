@@ -1119,6 +1119,24 @@ if (key === "inventory") {
             initParticles();
             animateParticles();
         });
+// Garante que categorias só aparecem quando estiver na aba inventário
+function verificarAbaAtiva() {
+    const isInventario = document.querySelector('.pane-inventory').style.display === 'block';
+    document.querySelectorAll('.category-container').forEach(cat => {
+        if (isInventario) {
+            cat.classList.remove('hidden-category');
+        } else {
+            cat.classList.add('hidden-category');
+        }
+    });
+}
+
+// Ativa verificação sempre que clicar numa aba
+document.querySelectorAll('.tab').forEach(tab => {
+    tab.addEventListener('click', () => {
+        setTimeout(verificarAbaAtiva, 50); // pequeno delay pra esperar troca de aba
+    });
+});
     </script>
 </body>
 </html>
