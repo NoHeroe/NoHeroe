@@ -1028,25 +1028,6 @@
     }
 }
 
-        tabs.forEach(tab =>
-            tab.addEventListener("click", () => handleTabClick(tab))
-        );
-
-        filterBtns.forEach(btn =>
-            btn.addEventListener("click", () => {
-                filterBtns.forEach(b => b.classList.remove("active"));
-                btn.classList.add("active");
-                const filterCategory = btn.dataset.filter;
-
-                categoryContainers.forEach(c => {
-                    if (filterCategory === "all" || c.dataset.category === filterCategory) {
-                        c.style.display = "block";
-                    } else {
-                        c.style.display = "none";
-                    }
-                });
-            })
-        );
 
         // --- Lógica de Atributos e HUD Bars ---
         const estado = {
