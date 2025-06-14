@@ -972,9 +972,6 @@
         const categoryContainers = document.querySelectorAll(".category-container");
 
         function handleTabClick(tab) {
-            const key = tab.dataset.tab;
-
-            function handleTabClick(tab) {
     const key = tab.dataset.tab;
 
     // Ativa a aba clicada
@@ -1007,17 +1004,13 @@
         inventoryFilter.style.display = "flex";
         centerPanel.style.display = "none";
 
-        // Aqui está o ponto que ativa o filtro “Tudo” ao entrar
+        // Ativa o filtro “Tudo” ao entrar
         filterBtns.forEach(b => b.classList.remove("active"));
         filterBtns[0].classList.add("active");
         const filterCategory = filterBtns[0].dataset.filter;
 
         categoryContainers.forEach(c => {
-            if (filterCategory === "all" || c.dataset.category === filterCategory) {
-                c.style.display = "block";
-            } else {
-                c.style.display = "none";
-            }
+            c.style.display = (filterCategory === "all" || c.dataset.category === filterCategory) ? "block" : "none";
         });
 
     } else {
@@ -1027,8 +1020,6 @@
         centerPanel.style.display = "flex";
     }
 }
-
-
         // --- Lógica de Atributos e HUD Bars ---
         const estado = {
             nivel: 3, xp: 6700, xpMax: 10000, pontosDisponiveis: 4,
