@@ -9,572 +9,529 @@
         rel="stylesheet"
     />
     <style>
-        /* --- Variáveis de Cor: Dark Fantasy / Medieval --- */
-        :root {
-            --dark-bg: #1a1a1a; /* Fundo mais escuro */
-            --main-panel-bg: rgba(25, 25, 25, 0.85); /* Cinza escuro, levemente transparente */
-            --panel-border: #4a4a4a; /* Borda cinza escuro */
-            --accent-gold: #c29546; /* Dourado/Bronze antigo */
-            --accent-red: #8b0000; /* Vermelho escuro, sangue */
-            --accent-green: #006400; /* Verde escuro, poção/magia */
-            --text-light: #e0e0e0; /* Texto claro */
-            --text-muted: #a0a0a0; /* Texto secundário, acinzentado */
-            --slot-bg: rgba(35, 35, 35, 0.6); /* Fundo de slot mais escuro */
-            --slot-border: #6b6b6b; /* Borda de slot acinzentada */
-            --bar-bg: #2a2a2a; /* Fundo da barra */
-            --bar-hp: #dc143c; /* Barra de HP (carmesim) */
-            --bar-mp: #4169e1; /* Barra de MP (azul royal) */
-            --bar-xp: #daa520; /* Barra de XP (dourado) */
-            --glow-color: rgba(194, 149, 70, 0.5); /* Brilho sutil dourado */
-            --shadow-color: rgba(0, 0, 0, 0.6); /* Sombra escura */
-            --dirty-metal: #555;
-            --accent-gold: #c29546;
-            --accent-gold-rgb: 194, 149, 70;
-        }
+/* --- Variáveis de Cor: Dark Fantasy / Magical Purple --- */
+:root {
+    --dark-bg: #1a1a1a;                     /* Fundo mais escuro */
+    --main-panel-bg: rgba(25,25,25,0.85);   /* Cinza escuro, levemente transparente */
+    --panel-border: #4a4a4a;                /* Borda cinza escuro */
+    --accent-purple: #9b59b6;               /* Roxo mágico */
+    --accent-purple-rgb: 155,89,182;        /* Valores RGB sem espaços */
+    --accent-red: #8b0000;                  /* Vermelho escuro, sangue */
+    --accent-green: #006400;                /* Verde escuro, poção/magia */
+    --text-light: #e0e0e0;                  /* Texto claro */
+    --text-muted: #a0a0a0;                  /* Texto secundário, acinzentado */
+    --slot-bg: rgba(35,35,35,0.6);          /* Fundo de slot mais escuro */
+    --slot-border: #6b6b6b;                 /* Borda de slot acinzentada */
+    --bar-bg: #2a2a2a;                      /* Fundo da barra */
+    --bar-hp: #dc143c;                      /* Barra de HP (carmesim) */
+    --bar-mp: #4169e1;                      /* Barra de MP (azul royal) */
+    --bar-xp: #9b59b6;                      /* Barra de XP (roxo mágico) */
+    --glow-color: rgba(var(--accent-purple-rgb),0.5);  /* Brilho sutil roxo */
+    --shadow-color: rgba(0,0,0,0.6);        /* Sombra escura */
+}
 
-        /* --- Reset Básico e Body --- */
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
+/* --- Reset Básico e Body --- */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+html,
+body {
+    height: 100%;
+    background: var(--dark-bg);
+    color: var(--text-light);
+    font-family: "Share Tech Mono", monospace;
+    overflow-x: hidden;
+    overflow-y: auto;
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+    position: relative;
+}
 
-        html,
-        body {
-            height: 100%;
-            background: var(--dark-bg);
-            color: var(--text-light);
-            font-family: "Share Tech Mono", monospace; /* Mantido para dados numéricos/secundários */
-            overflow-x: hidden; /* Evita scroll horizontal */
-            overflow-y: auto;
-            display: flex;
-            flex-direction: column; /* Ajuste para layout de topo fixo */
-            min-height: 100vh;
-            position: relative; /* Para o canvas de fundo */
-        }
+/* --- Canvas de Partículas --- */
+#particle-bg {
+    position: fixed;
+    top: 0; left: 0;
+    width: 100vw; height: 100vh;
+    z-index: -1;
+    opacity: 0.15;
+}
 
-        /* --- Canvas de Partículas --- */
-        #particle-bg {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100vw;
-            height: 100vh;
-            z-index: -1;
-            opacity: 0.15; /* Opacidade bem suave */
-        }
+/* --- HUD do Topo (Fixo) --- */
+.top-hud {
+    position: fixed;
+    top: 0; left: 0;
+    width: 100%;
+    background: rgba(15,15,15,0.9);
+    padding: 10px 15px;
+    box-shadow: 0 4px 15px var(--shadow-color);
+    z-index: 1000;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-bottom: 2px solid var(--panel-border);
+    flex-wrap: wrap;
+    gap: 10px;
+}
+.hud-group {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+.hud-bar-container {
+    width: 100px;
+    height: 12px;
+    background: var(--bar-bg);
+    border-radius: 3px;
+    overflow: hidden;
+    border: 1px solid var(--panel-border);
+    box-shadow: inset 0 0 5px rgba(0,0,0,0.5);
+    position: relative;
+}
+.hud-bar-fill {
+    height: 100%;
+    width: 70%;
+    border-radius: 3px 0 0 3px;
+    transition: width 0.3s ease-out;
+    box-shadow: 0 0 5px rgba(255,255,255,0.2);
+    position: relative;
+}
+.hud-bar-fill::after {
+    content: attr(data-value);
+    position: absolute;
+    right: 5px;
+    top: 50%;
+    transform: translateY(-50%);
+    color: rgba(255,255,255,0.8);
+    font-size: 0.7em;
+    font-weight: bold;
+    text-shadow: 0 0 2px rgba(0,0,0,0.7);
+}
+.hud-bar-hp { background-color: var(--bar-hp); }
+.hud-bar-mp { background-color: var(--bar-mp); }
+.hud-bar-xp { background-color: var(--bar-xp); }
 
-        /* --- HUD do Topo (Fixo) --- */
-        .top-hud {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            background: rgba(15, 15, 15, 0.9); /* Fundo quase opaco para destaque */
-            padding: 10px 15px;
-            box-shadow: 0 4px 15px var(--shadow-color);
-            z-index: 1000; /* Garante que fique acima de tudo */
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            border-bottom: 2px solid var(--panel-border);
-            flex-wrap: wrap; /* Permite quebrar linha em telas pequenas */
-            gap: 10px; /* Espaçamento entre itens */
-        }
+.hud-currency {
+    font-size: 0.9em;
+    color: var(--accent-purple);
+    font-weight: bold;
+    display: flex;
+    align-items: center;
+    gap: 5px;
+}
+.hud-currency img {
+    width: 18px; height: 18px;
+    vertical-align: middle;
+}
 
-        .hud-group {
-            display: flex;
-            align-items: center;
-            gap: 10px;
-        }
+.hud-level {
+    font-family: "Cinzel Decorative", serif;
+    font-size: 1em;
+    font-weight: 700;
+    color: var(--text-light);
+    background: var(--slot-bg);
+    border: 1px solid var(--panel-border);
+    padding: 3px 8px;
+    border-radius: 5px;
+    box-shadow: 0 0 5px var(--shadow-color);
+}
 
-        .hud-bar-container {
-            width: 100px; /* Largura ajustada */
-            height: 12px;
-            background: var(--bar-bg);
-            border-radius: 3px;
-            overflow: hidden;
-            border: 1px solid var(--panel-border);
-            box-shadow: inset 0 0 5px rgba(0, 0, 0, 0.5);
-            position: relative;
-        }
+.hud-action-buttons button {
+    background: var(--slot-bg);
+    border: 1px solid var(--panel-border);
+    color: var(--text-light);
+    padding: 8px 12px;
+    border-radius: 5px;
+    cursor: pointer;
+    font-family: "Cinzel Decorative", serif;
+    font-size: 0.85em;
+    text-transform: uppercase;
+    transition: background 0.2s, border-color 0.2s, box-shadow 0.2s;
+    box-shadow: 0 0 5px var(--shadow-color);
+}
+.hud-action-buttons button:hover {
+    background: var(--accent-purple);
+    color: var(--dark-bg);
+    border-color: var(--accent-purple);
+    box-shadow: 0 0 10px var(--glow-color);
+}
 
-        .hud-bar-fill {
-            height: 100%;
-            width: 70%; /* Exemplo */
-            border-radius: 3px 0 0 3px;
-            transition: width 0.3s ease-out;
-            box-shadow: 0 0 5px rgba(255, 255, 255, 0.2);
-            position: relative;
-        }
-        .hud-bar-fill::after {
-            content: attr(data-value);
-            position: absolute;
-            right: 5px;
-            top: 50%;
-            transform: translateY(-50%);
-            color: rgba(255, 255, 255, 0.8);
-            font-size: 0.7em;
-            font-weight: bold;
-            text-shadow: 0 0 2px rgba(0, 0, 0, 0.7);
-        }
+/* --- Conteúdo Principal (Abaixo do HUD Fixo) --- */
+.main-content {
+    padding-top: 120px;
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    width: 100%;
+    max-width: 1200px;
+    margin: 20px auto;
+    padding-left: 15px;
+    padding-right: 15px;
+}
 
-        .hud-bar-hp { background-color: var(--bar-hp); }
-        .hud-bar-mp { background-color: var(--bar-mp); }
-        .hud-bar-xp { background-color: var(--bar-xp); }
+/* --- Container Raiz dos Painéis --- */
+.ui-root {
+    background: var(--main-panel-bg);
+    border: 2px solid var(--panel-border);
+    border-radius: 10px;
+    box-shadow: 0 0 25px var(--shadow-color), inset 0 0 10px rgba(255,255,255,0.05);
+    padding: 20px;
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
 
-        .hud-currency {
-            font-size: 0.9em;
-            color: var(--accent-gold-rgb);
-            font-weight: bold;
-            display: flex;
-            align-items: center;
-            gap: 5px;
-        }
-        .hud-currency img {
-            width: 18px; /* Ícones de moeda */
-            height: 18px;
-            vertical-align: middle;
-        }
-        .hud-level {
-            font-family: "Cinzel Decorative", serif;
-            font-size: 1em;
-            font-weight: 700;
-            color: var(--text-light);
-            background: var(--slot-bg);
-            border: 1px solid var(--panel-border);
-            padding: 3px 8px;
-            border-radius: 5px;
-            box-shadow: 0 0 5px var(--shadow-color);
-        }
+/* --- Títulos dos Painéis/Seções --- */
+.panel-title {
+    font-family: "Cinzel Decorative", serif;
+    font-size: 1.5em;
+    font-weight: 700;
+    color: var(--accent-purple);
+    text-shadow: 0 0 8px var(--glow-color);
+    border-bottom: 2px solid var(--panel-border);
+    padding-bottom: 10px;
+    margin-bottom: 15px;
+    text-align: center;
+    text-transform: uppercase;
+}
 
-        .hud-action-buttons button {
-            background: var(--slot-bg);
-            border: 1px solid var(--panel-border);
-            color: var(--text-light);
-            padding: 8px 12px;
-            border-radius: 5px;
-            cursor: pointer;
-            font-family: "Cinzel Decorative", serif;
-            font-size: 0.85em;
-            text-transform: uppercase;
-            transition: background 0.2s, border-color 0.2s, box-shadow 0.2s;
-            box-shadow: 0 0 5px var(--shadow-color);
-        }
-        .hud-action-buttons button:hover {
-            background: var(--accent-gold-rgb);
-            color: #fff;
-            border-color: var(--accent-gold-rgb);
-            box-shadow: 0 0 10px var(--glow-color);
-        }
+/* --- Abas Principais --- */
+.tabs-container {
+    display: flex;
+    justify-content: center;
+    gap: 10px;
+    margin-bottom: 20px;
+    flex-wrap: wrap;
+}
+.tab {
+    background: var(--slot-bg);
+    border: 1px solid var(--panel-border);
+    color: var(--text-muted);
+    padding: 8px 18px;
+    border-radius: 8px;
+    font-family: "Cinzel Decorative", serif;
+    font-size: 0.9em;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    text-transform: uppercase;
+    box-shadow: 0 0 5px var(--shadow-color);
+}
+.tab.active {
+    background: var(--accent-purple);
+    color: var(--dark-bg);
+    border-color: var(--accent-purple);
+    box-shadow: 0 0 15px var(--glow-color);
+}
+.tab:hover:not(.active) {
+    background: rgba(var(--accent-purple-rgb),0.2);
+    color: var(--accent-purple);
+    border-color: var(--accent-purple);
+}
 
-        /* --- Conteúdo Principal (Abaixo do HUD Fixo) --- */
-        .main-content {
-            padding-top: 120px; /* Espaço para o HUD fixo */
-            display: flex;
-            flex-direction: column; /* Padrão para mobile */
-            gap: 20px;
-            width: 100%;
-            max-width: 1200px; /* Largura máxima para desktop */
-            margin: 20px auto; /* Centraliza no desktop */
-            padding-left: 15px;
-            padding-right: 15px;
-        }
+/* --- Layout dos Painéis Internos --- */
+.panel-content-wrapper {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+.left-panel,
+.right-panel {
+    flex: 1;
+    background: rgba(30,30,30,0.7);
+    border: 1px solid var(--panel-border);
+    border-radius: 8px;
+    padding: 15px;
+    box-shadow: inset 0 0 8px rgba(0,0,0,0.5), 0 0 10px var(--shadow-color);
+}
+.center-panel {
+    flex: 1.2;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 15px;
+    min-height: 300px;
+}
 
-        /* --- Container Raiz dos Painéis (Inventário/Equipamento) --- */
-        .ui-root {
-            background: var(--main-panel-bg);
-            border: 2px solid var(--panel-border);
-            border-radius: 10px;
-            box-shadow: 0 0 25px var(--shadow-color), inset 0 0 10px rgba(255, 255, 255, 0.05);
-            padding: 20px;
-            display: flex;
-            flex-direction: column; /* Padrão mobile */
-            gap: 20px;
-        }
+/* --- Avatar e Slots --- */
+.avatar-container {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 15px;
+    width: 100%;
+    flex-direction: column;
+}
+.avatar-placeholder {
+    width: 200px;
+    height: 280px;
+    background: linear-gradient(145deg,#2a2a2a,#1a1a1a);
+    border: 3px dashed var(--accent-purple);
+    border-radius: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: var(--accent-purple);
+    font-family: "Cinzel Decorative", serif;
+    font-size: 1.8em;
+    font-weight: 700;
+    text-shadow: 0 0 15px var(--glow-color);
+    box-shadow: 0 0 25px rgba(0,0,0,0.7), inset 0 0 10px rgba(255,255,255,0.1);
+    transition: all 0.3s ease;
+}
+.avatar-placeholder:hover {
+    transform: scale(1.02);
+    box-shadow: 0 0 35px var(--glow-color), inset 0 0 15px rgba(255,255,255,0.15);
+}
+.armor-side {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+.armor-side.left { margin-right: auto; }
+.armor-side.right { margin-left: auto; }
 
-        /* --- Títulos dos Painéis/Seções --- */
-        .panel-title {
-            font-family: "Cinzel Decorative", serif;
-            font-size: 1.5em;
-            font-weight: 700;
-            color: var(--accent-gold);
-            text-shadow: 0 0 8px var(--glow-color);
-            border-bottom: 2px solid var(--panel-border);
-            padding-bottom: 10px;
-            margin-bottom: 15px;
-            text-align: center;
-            text-transform: uppercase;
-        }
+.equip-slot,
+.inv-slot {
+    width: 55px; height: 55px;
+    background: var(--slot-bg);
+    border: 2px solid var(--slot-border);
+    border-radius: 5px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: var(--text-muted);
+    font-size: 0.9em;
+    opacity: 0.7;
+    cursor: default;
+    transition: all 0.2s ease;
+    box-shadow: inset 0 0 6px rgba(0,0,0,0.5);
+    position: relative;
+}
+.equip-slot:hover,
+.inv-slot:hover {
+    opacity: 1;
+    border-color: var(--accent-purple);
+    box-shadow: 0 0 12px var(--glow-color), inset 0 0 8px rgba(255,255,255,0.1);
+}
+.item-count {
+    position: absolute;
+    bottom: 2px; right: 2px;
+    background: rgba(0,0,0,0.7);
+    color: var(--text-light);
+    font-size: 0.6em;
+    padding: 1px 3px;
+    border-radius: 3px;
+    font-family: "Share Tech Mono", monospace;
+    font-weight: bold;
+}
 
-        /* --- Abas Principais (Visão Geral, Inventário, Equipamento) --- */
-        .tabs-container {
-            display: flex;
-            justify-content: center;
-            gap: 10px;
-            margin-bottom: 20px;
-            flex-wrap: wrap; /* Quebra linha no mobile */
-        }
-        .tab {
-            background: var(--slot-bg);
-            border: 1px solid var(--panel-border);
-            color: var(--text-muted);
-            padding: 8px 18px;
-            border-radius: 8px;
-            font-family: "Cinzel Decorative", serif;
-            font-size: 0.9em;
-            cursor: pointer;
-            transition: all 0.2s ease;
-            text-transform: uppercase;
-            box-shadow: 0 0 5px var(--shadow-color);
-        }
-        .tab.active {
-            background: var(--accent-gold);
-            color: var(--dark-bg);
-            border-color: var(--accent-gold-rgb);
-            box-shadow: 0 0 15px var(--glow-color);
-        }
-        .tab:hover:not(.active) {
-            background: rgba(var(--accent-gold-rgb), 0.2);
-            color: var(--accent-gold);
-            border-color: var(--accent-gold-rgb);
-        }
+/* --- Info Rows e Barras de Atributos --- */
+.info-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-size: 0.9em;
+    color: var(--text-light);
+    margin-bottom: 8px;
+    padding-bottom: 5px;
+    border-bottom: 1px dashed rgba(255,255,255,0.1);
+}
+.info-row:last-child {
+    border-bottom: none;
+}
+.info-label {
+    color: var(--text-muted);
+    text-transform: uppercase;
+}
+.edit-button,
+.add-point {
+    background: var(--panel-border);
+    border: 1px solid var(--accent-purple);
+    color: var(--accent-purple);
+    border-radius: 4px;
+    padding: 2px 6px;
+    margin-left: 8px;
+    cursor: pointer;
+    font-size: 0.75em;
+    transition: all 0.2s ease;
+    font-family: "Share Tech Mono", monospace;
+}
+.edit-button:hover,
+.add-point:hover {
+    background: var(--accent-purple);
+    color: var(--dark-bg);
+    box-shadow: 0 0 8px var(--glow-color);
+}
 
-        /* --- Layout dos Painéis Internos --- */
-        .panel-content-wrapper {
-            display: flex;
-            flex-direction: column; /* Padrão mobile */
-            gap: 20px;
-        }
+.attribute-bar-container {
+    width: 100%;
+    height: 8px;
+    background: var(--bar-bg);
+    border-radius: 4px;
+    overflow: hidden;
+    margin-top: 3px;
+    margin-bottom: 15px;
+    border: 1px solid var(--panel-border);
+    box-shadow: inset 0 0 4px rgba(0,0,0,0.5);
+}
+.attribute-bar-fill {
+    height: 100%;
+    background: linear-gradient(90deg, var(--bar-xp), var(--accent-purple));
+    border-radius: 4px 0 0 4px;
+    transition: width 0.3s ease-out;
+    box-shadow: 0 0 6px var(--glow-color);
+}
 
-        .left-panel,
-        .right-panel {
-            flex: 1; /* Ocupa o espaço disponível */
-            background: rgba(30, 30, 30, 0.7);
-            border: 1px solid var(--panel-border);
-            border-radius: 8px;
-            padding: 15px;
-            box-shadow: inset 0 0 8px rgba(0, 0, 0, 0.5), 0 0 10px var(--shadow-color);
-        }
+/* --- Inventário --- */
+.inventory-filter {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    justify-content: center;
+    padding: 10px 0;
+    border-bottom: 1px solid var(--panel-border);
+    margin-bottom: 15px;
+}
+.filter-btn {
+    background: var(--slot-bg);
+    border: 1px solid var(--panel-border);
+    color: var(--text-muted);
+    padding: 6px 12px;
+    border-radius: 6px;
+    cursor: pointer;
+    transition: all 0.2s;
+    font-family: "Cinzel Decorative", serif;
+    font-size: 0.8em;
+    text-transform: uppercase;
+}
+.filter-btn.active {
+    background: var(--accent-purple);
+    color: var(--dark-bg);
+    border-color: var(--accent-purple);
+    box-shadow: 0 0 10px var(--glow-color);
+}
+.filter-btn:hover:not(.active) {
+    background: rgba(var(--accent-purple-rgb),0.2);
+    border-color: var(--accent-purple);
+    color: var(--accent-purple);
+}
 
-        .center-panel {
-            flex: 1.2; /* Um pouco maior */
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            padding: 15px;
-            min-height: 300px; /* Altura mínima para o avatar */
-        }
+.category-container {
+    margin-bottom: 20px;
+}
+.category-title {
+    font-family: "Cinzel Decorative", serif;
+    font-size: 1.2em;
+    color: var(--accent-purple);
+    margin-bottom: 10px;
+    border-bottom: 1px dotted var(--panel-border);
+    padding-bottom: 5px;
+    text-transform: uppercase;
+}
+.inv-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(50px,1fr));
+    gap: 8px;
+    max-height: 300px;
+    overflow-y: auto;
+    padding-right: 5px;
+}
+.inv-empty-label {
+    font-size: 0.8em;
+    color: var(--text-muted);
+    text-align: center;
+    margin-top: 15px;
+    font-style: italic;
+}
 
-        /* --- Avatar e Slots de Armadura --- */
-        .avatar-container {
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 15px;
-            width: 100%; /* Ocupa a largura disponível no mobile */
-            flex-direction: column; /* Avatar e slots em coluna no mobile */
-        }
+/* --- Equipamento --- */
+.equip-section {
+    margin-bottom: 20px;
+}
+.equip-section-title {
+    font-family: "Cinzel Decorative", serif;
+    font-size: 1.1em;
+    color: var(--accent-purple);
+    margin-bottom: 10px;
+    border-bottom: 1px dotted var(--panel-border);
+    padding-bottom: 5px;
+    text-transform: uppercase;
+}
+.equip-slots-container {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+}
+.backpack-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(50px,1fr));
+    gap: 8px;
+}
 
-        .avatar-placeholder {
-            width: 200px; /* Tamanho base */
-            height: 280px;
-            background: linear-gradient(145deg, #2a2a2a, #1a1a1a);
-            border: 3px dashed var(--accent-gold-rgb);
-            border-radius: 10px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            color: var(--accent-gold);
-            font-family: "Cinzel Decorative", serif;
-            font-size: 1.8em;
-            font-weight: 700;
-            text-shadow: 0 0 15px var(--glow-color);
-            box-shadow: 0 0 25px rgba(0, 0, 0, 0.7), inset 0 0 10px rgba(255, 255, 255, 0.1);
-            transition: all 0.3s ease;
-        }
-        .avatar-placeholder:hover {
-            transform: scale(1.02);
-            box-shadow: 0 0 35px var(--glow-color), inset 0 0 15px rgba(255, 255, 255, 0.15);
-        }
+/* --- Scrollbar Customizada --- */
+::-webkit-scrollbar {
+    width: 8px; height: 8px;
+}
+::-webkit-scrollbar-track {
+    background: rgba(10,10,10,0.5);
+    border-radius: 5px;
+}
+::-webkit-scrollbar-thumb {
+    background: var(--panel-border);
+    border-radius: 5px;
+    border: 1px solid #333;
+}
+::-webkit-scrollbar-thumb:hover {
+    background: var(--accent-purple);
+}
 
-        .armor-side {
-            display: flex;
-            flex-direction: column;
-            gap: 8px;
-        }
-        .armor-side.left {
-            margin-right: auto; /* Para alinhar na esquerda no desktop */
-        }
-        .armor-side.right {
-            margin-left: auto; /* Para alinhar na direita no desktop */
-        }
+/* --- Responsividade --- */
+@media (min-width: 768px) {
+    .top-hud {
+        flex-wrap: nowrap;
+        justify-content: center;
+        gap: 20px;
+        padding: 10px 20px;
+    }
+    .hud-group { gap: 15px; }
+    .hud-bar-container { width: 150px; }
+    .hud-level { font-size: 1.2em; }
+    .hud-action-buttons button {
+        font-size: 0.95em;
+        padding: 10px 18px;
+    }
+    .main-content { padding-top: 80px; }
+    .ui-root {
+        flex-direction: row;
+        gap: 30px;
+        padding: 30px;
+    }
+    .panel-content-wrapper { flex-direction: row; }
+    .left-panel,
+    .right-panel { padding: 25px; }
+    .avatar-container { flex-direction: row; }
+    .avatar-placeholder {
+        width: 280px; height: 400px; font-size: 2.5em;
+    }
+    .equip-slot, .inv-slot { width: 65px; height: 65px; }
+    .inv-grid {
+        grid-template-columns: repeat(auto-fill, minmax(60px,1fr));
+    }
+}
 
-        .equip-slot, .inv-slot {
-            width: 55px; /* Tamanho base do slot */
-            height: 55px;
-            background: var(--slot-bg);
-            border: 2px solid var(--slot-border);
-            border-radius: 5px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            color: var(--text-muted);
-            font-size: 0.9em;
-            opacity: 0.7;
-            cursor: default;
-            transition: all 0.2s ease;
-            box-shadow: inset 0 0 6px rgba(0, 0, 0, 0.5);
-            position: relative; /* Para números de item */
-        }
-        .equip-slot:hover, .inv-slot:hover {
-            opacity: 1;
-            border-color: var(--accent-gold-rgb);
-            box-shadow: 0 0 12px var(--glow-color), inset 0 0 8px rgba(255, 255, 255, 0.1);
-        }
-        .item-count {
-            position: absolute;
-            bottom: 2px;
-            right: 2px;
-            background: rgba(0, 0, 0, 0.7);
-            color: var(--text-light);
-            font-size: 0.6em;
-            padding: 1px 3px;
-            border-radius: 3px;
-            font-family: "Share Tech Mono", monospace;
-            font-weight: bold;
-        }
-
-        /* --- Info Rows e Barras de Atributos --- */
-        .info-row {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            font-size: 0.9em;
-            color: var(--text-light);
-            margin-bottom: 8px;
-            padding-bottom: 5px;
-            border-bottom: 1px dashed rgba(255, 255, 255, 0.1);
-        }
-        .info-row:last-child {
-            border-bottom: none;
-        }
-        .info-label {
-            color: var(--text-muted);
-            text-transform: uppercase;
-        }
-        .edit-button, .add-point {
-            background: var(--panel-border);
-            border: 1px solid var(--accent-gold-rgb);
-            color: var(--accent-gold-rgb);
-            border-radius: 4px;
-            padding: 2px 6px;
-            margin-left: 8px;
-            cursor: pointer;
-            font-size: 0.75em;
-            transition: all 0.2s ease;
-            font-family: "Share Tech Mono", monospace;
-        }
-        .edit-button:hover, .add-point:hover {
-            background: var(--accent-gold-rgb);
-            color: var(--dark-bg);
-            box-shadow: 0 0 8px var(--glow-color);
-        }
-
-        .attribute-bar-container {
-            width: 100%;
-            height: 8px; /* Mais fino */
-            background: var(--bar-bg);
-            border-radius: 4px;
-            overflow: hidden;
-            margin-top: 3px;
-            margin-bottom: 15px;
-            border: 1px solid var(--panel-border);
-            box-shadow: inset 0 0 4px rgba(0, 0, 0, 0.5);
-        }
-        .attribute-bar-fill {
-            height: 100%;
-            background: linear-gradient(90deg, var(--bar-xp), var(--accent-gold));
-            border-radius: 4px 0 0 4px;
-            transition: width 0.3s ease-out;
-            box-shadow: 0 0 6px var(--glow-color);
-        }
-
-        /* --- Inventário --- */
-        .inventory-filter {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 8px;
-            justify-content: center;
-            padding: 10px 0;
-            border-bottom: 1px solid var(--panel-border);
-            margin-bottom: 15px;
-        }
-        .filter-btn {
-            background: var(--slot-bg);
-            border: 1px solid var(--panel-border);
-            color: var(--text-muted);
-            padding: 6px 12px;
-            border-radius: 6px;
-            cursor: pointer;
-            transition: all 0.2s;
-            font-family: "Cinzel Decorative", serif;
-            font-size: 0.8em;
-            text-transform: uppercase;
-        }
-        .filter-btn.active {
-            background: var(--accent-gold-rgb);
-            color: var(--dark-bg);
-            border-color: var(--accent-gold-rgb);
-            box-shadow: 0 0 10px var(--glow-color);
-        }
-        .filter-btn:hover:not(.active) {
-            background: rgba(var(--accent-gold-rgb), 0.2);
-            border-color: var(--accent-gold-rgb);
-            color: var(--accent-gold-rgb);
-        }
-
-        .category-container {
-            margin-bottom: 20px;
-        }
-        .category-title {
-            font-family: "Cinzel Decorative", serif;
-            font-size: 1.2em;
-            color: var(--accent-gold-rgb);
-            margin-bottom: 10px;
-            border-bottom: 1px dotted var(--panel-border);
-            padding-bottom: 5px;
-            text-transform: uppercase;
-        }
-        .inv-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(50px, 1fr)); /* Slots fluidos */
-            gap: 8px;
-            max-height: 300px; /* Altura máxima para scroll */
-            overflow-y: auto;
-            padding-right: 5px; /* Para não cortar scrollbar */
-        }
-        .inv-empty-label {
-            font-size: 0.8em;
-            color: var(--text-muted);
-            text-align: center;
-            margin-top: 15px;
-            font-style: italic;
-        }
-
-        /* --- Equipamento --- */
-        .equip-section {
-            margin-bottom: 20px;
-        }
-        .equip-section-title {
-            font-family: "Cinzel Decorative", serif;
-            font-size: 1.1em;
-            color: var(--accent-gold-rgb);
-            margin-bottom: 10px;
-            border-bottom: 1px dotted var(--panel-border);
-            padding-bottom: 5px;
-            text-transform: uppercase;
-        }
-        .equip-slots-container {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 8px;
-        }
-
-        .backpack-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(50px, 1fr)); /* Fluidos */
-            gap: 8px;
-        }
-
-        /* --- Scrollbar Customizada (Dark Fantasy Style) --- */
-        ::-webkit-scrollbar {
-            width: 8px;
-            height: 8px;
-        }
-        ::-webkit-scrollbar-track {
-            background: rgba(10, 10, 10, 0.5); /* Fundo escuro */
-            border-radius: 5px;
-        }
-        ::-webkit-scrollbar-thumb {
-            background: var(--panel-border); /* Cor de metal/pedra */
-            border-radius: 5px;
-            border: 1px solid #333;
-        }
-        ::-webkit-scrollbar-thumb:hover {
-            background: var(--accent-gold-rgb); /* Detalhe dourado no hover */
-        }
-
-        /* --- Responsividade --- */
-        @media (min-width: 768px) {
-            .top-hud {
-                flex-wrap: nowrap; /* Não quebra linha no desktop */
-                justify-content: center;
-                gap: 20px;
-                padding: 10px 20px;
-            }
-            .hud-group {
-                gap: 15px;
-            }
-            .hud-bar-container {
-                width: 150px; /* Barras um pouco maiores no desktop */
-            }
-            .hud-level {
-                font-size: 1.2em;
-            }
-            .hud-action-buttons button {
-                font-size: 0.95em;
-                padding: 10px 18px;
-            }
-            .main-content {
-                padding-top: 80px; /* Mais espaço para o HUD fixo */
-            }
-            .ui-root {
-                flex-direction: row; /* Volta para row no desktop */
-                gap: 30px;
-                padding: 30px;
-            }
-            .panel-content-wrapper {
-                flex-direction: row;
-            }
-            .left-panel,
-            .right-panel {
-                padding: 25px;
-            }
-            .avatar-container {
-                flex-direction: row; /* Avatar e slots lado a lado */
-            }
-            .avatar-placeholder {
-                width: 280px;
-                height: 400px;
-                font-size: 2.5em;
-            }
-            .equip-slot, .inv-slot {
-                width: 65px; /* Slots maiores */
-                height: 65px;
-            }
-            .inv-grid {
-                grid-template-columns: repeat(auto-fill, minmax(60px, 1fr));
-            }
-        }
-
-        @media (min-width: 1024px) {
-            .hud-bar-container {
-                width: 180px;
-            }
-            .avatar-placeholder {
-                width: 320px;
-                height: 450px;
-            }
-            .equip-slot, .inv-slot {
-                width: 75px;
-                height: 75px;
-            }
-            .inv-grid {
-                grid-template-columns: repeat(auto-fill, minmax(70px, 1fr));
-            }
-        }
-    </style>
+@media (min-width: 1024px) {
+    .hud-bar-container { width: 180px; }
+    .avatar-placeholder {
+        width: 320px; height: 450px;
+    }
+    .equip-slot, .inv-slot { width: 75px; height: 75px; }
+    .inv-grid {
+        grid-template-columns: repeat(auto-fill, minmax(70px,1fr));
+    }
+}
+</style>
 </head>
 <body>
     <canvas id="particle-bg"></canvas>
