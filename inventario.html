@@ -836,238 +836,219 @@ body {
     </div>
 
     <script>
-        // --- Lógica de Partículas para o Fundo ---
-        const canvas = document.getElementById('particle-bg');
-        const ctx = canvas.getContext('2d');
-        let particles = [];
-        const particleCount = 100; // Um pouco mais para densidade, mas ainda otimizado
-        const particleSize = 1.0; // Tamanho base das partículas
-        const particleSpeed = 0.2; // Velocidade bem lenta
-        const particleColor = 'rgba(100, 100, 100, 0.4)'; // Cinza escuro, quase imperceptível
+    // --- Lógica de Partículas para o Fundo ---
+    const canvas = document.getElementById('particle-bg');
+    const ctx = canvas.getContext('2d');
+    let particles = [];
+    const particleCount = 100;
+    const particleSize = 1.0;
+    const particleSpeed = 0.2;
 
-        function setCanvasSize() {
-            canvas.width = window.innerWidth;
-            canvas.height = window.innerHeight;
-        }
-
-        class Particle {
-            constructor() {
-                this.x = Math.random() * canvas.width;
-                this.y = Math.random() * canvas.height;
-                this.size = Math.random() * particleSize + 0.2; // Tamanho mínimo de 0.2
-                this.speedX = (Math.random() * 0.4 - 0.2) * particleSpeed; // Movimento sutil para os lados
-                this.speedY = (Math.random() * 0.4 - 0.2) * particleSpeed; // Movimento sutil para cima/baixo
-                this.opacity = Math.random() * 0.5 + 0.1; // Opacidade inicial variável
-            }
-            update() {
-                this.x += this.speedX;
-                this.y += this.speedY;
-
-                // Reduzir opacidade lentamente para simular desvanecimento
-                if (this.opacity > 0.01) {
-                    this.opacity -= 0.001;
-                } else {
-                    this.reset();
-                }
-
-                // Resetar se sair da tela
-                if (this.x < -10 || this.x > canvas.width + 10 || this.y < -10 || this.y > canvas.height + 10) {
-                    this.reset();
-                }
-            }
-            reset() {
-                this.x = Math.random() * canvas.width;
-                this.y = Math.random() * canvas.height;
-                this.size = Math.random() * particleSize + 0.2;
-                this.speedX = (Math.random() * 0.4 - 0.2) * particleSpeed;
-                this.speedY = (Math.random() * 0.4 - 0.2) * particleSpeed;
-                this.opacity = Math.random() * 0.5 + 0.1;
-            }
-            draw() {
-                ctx.fillStyle = `rgba(100, 100, 100, ${this.opacity})`;
-                ctx.beginPath();
-                ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
-                ctx.fill();
-            }
-        }
-
-        function initParticles() {
-            particles = [];
-            for (let i = 0; i < particleCount; i++) {
-                particles.push(new Particle());
-            }
-        }
-
-        function animateParticles() {
-            ctx.clearRect(0, 0, canvas.width, canvas.height); // Limpa o canvas
-            for (let i = 0; i < particles.length; i++) {
-                particles[i].update();
-                particles[i].draw();
-            }
-            requestAnimationFrame(animateParticles);
-        }
-
-        window.addEventListener('resize', setCanvasSize);
-
-        // --- Lógica do HUD e Abas ---
-        const tabs = document.querySelectorAll(".tab");
-        const leftPanes = {
-            overview: document.querySelector(".left-panel .pane-overview"),
-            inventory: document.querySelector(".left-panel .pane-inventory"),
-            equipment: document.querySelector(".left-panel .pane-equipment"),
-        };
-        const rightPanes = {
-            overview: document.querySelector(".right-panel .pane-overview-right"),
-            inventory: document.querySelector(".right-panel .pane-inventory-right"),
-            equipment: document.querySelector(".right-panel .pane-equipment-right"),
-        };
-        const centerPanel = document.querySelector(".center-panel");
-        const avatarContainer = document.querySelector(".avatar-container");
-        const armorSides = document.querySelectorAll(".armor-side");
-        const inventoryFilter = document.querySelector(".inventory-filter");
-        const filterBtns = document.querySelectorAll(".filter-btn");
-        const categoryContainers = document.querySelectorAll(".category-container");
-
-        function handleTabClick(tab) {
-    const key = tab.dataset.tab;
-
-    // Ativa a aba clicada
-    tabs.forEach(t => t.classList.remove("active"));
-    tab.classList.add("active");
-
-    // Mostra o painel esquerdo correspondente
-    Object.values(leftPanes).forEach(p => p.style.display = "none");
-    leftPanes[key].style.display = (key === "inventory") ? "flex" : "block";
-    if (key === "inventory") {
-        leftPanes[key].style.flexDirection = "column";
+    function setCanvasSize() {
+        canvas.width = window.innerWidth;
+        canvas.height = window.innerHeight;
     }
 
-    // Mostra o painel direito correspondente
-    Object.values(rightPanes).forEach(p => p.style.display = "none");
-    rightPanes[key].style.display = (key === "inventory" || key === "equipment") ? "flex" : "block";
-    if (key === "inventory" || key === "equipment") {
-        rightPanes[key].style.flexDirection = "column";
+    class Particle {
+        constructor() {
+            this.reset();
+        }
+        reset() {
+            this.x = Math.random() * canvas.width;
+            this.y = Math.random() * canvas.height;
+            this.size = Math.random() * particleSize + 0.2;
+            this.speedX = (Math.random() * 0.4 - 0.2) * particleSpeed;
+            this.speedY = (Math.random() * 0.4 - 0.2) * particleSpeed;
+            this.opacity = Math.random() * 0.5 + 0.1;
+        }
+        update() {
+            this.x += this.speedX;
+            this.y += this.speedY;
+            this.opacity -= 0.001;
+            if (this.opacity <= 0 || this.x < -10 || this.x > canvas.width + 10 || this.y < -10 || this.y > canvas.height + 10) {
+                this.reset();
+            }
+        }
+        draw() {
+            ctx.fillStyle = `rgba(100, 100, 100, ${this.opacity})`;
+            ctx.beginPath();
+            ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
+            ctx.fill();
+        }
     }
 
-    // Central panel ajustes
-    if (key === "equipment") {
-        avatarContainer.style.display = "flex";
-        armorSides.forEach(el => el.style.display = "flex");
-        inventoryFilter.style.display = "none";
-        centerPanel.style.display = "flex";
-    } else if (key === "inventory") {
-        avatarContainer.style.display = "none";
-        armorSides.forEach(el => el.style.display = "none");
-        inventoryFilter.style.display = "flex";
-        centerPanel.style.display = "none";
+    function initParticles() {
+        particles = [];
+        for (let i = 0; i < particleCount; i++) {
+            particles.push(new Particle());
+        }
+    }
 
-        // Ativa o filtro “Tudo” ao entrar
-        filterBtns.forEach(b => b.classList.remove("active"));
-        filterBtns[0].classList.add("active");
-        const filterCategory = filterBtns[0].dataset.filter;
+    function animateParticles() {
+        ctx.clearRect(0, 0, canvas.width, canvas.height);
+        particles.forEach(p => { p.update(); p.draw(); });
+        requestAnimationFrame(animateParticles);
+    }
 
-        categoryContainers.forEach(c => {
-            c.style.display = (filterCategory === "all" || c.dataset.category === filterCategory) ? "block" : "none";
+
+    // --- HUD, Abas e Inventário ---
+    const tabs = document.querySelectorAll(".tab");
+    const leftPanes = {
+        overview: document.querySelector(".pane-overview"),
+        inventory: document.querySelector(".pane-inventory"),
+        equipment: document.querySelector(".pane-equipment")
+    };
+    const rightPanes = {
+        overview: document.querySelector(".pane-overview-right"),
+        inventory: document.querySelector(".pane-inventory-right"),
+        equipment: document.querySelector(".pane-equipment-right")
+    };
+    const centerPanel = document.querySelector(".center-panel");
+    const avatarContainer = document.querySelector(".avatar-container");
+    const armorSides = document.querySelectorAll(".armor-side");
+    const inventoryFilter = document.querySelector(".inventory-filter");
+    const filterBtns = document.querySelectorAll(".filter-btn");
+    const categoryContainers = document.querySelectorAll(".category-container");
+
+    function handleTabClick(tab) {
+        const key = tab.dataset.tab;
+
+        // ativa visualmente a aba
+        tabs.forEach(t => t.classList.toggle("active", t === tab));
+
+        // mostra painel esquerdo
+        Object.keys(leftPanes).forEach(k => {
+            leftPanes[k].style.display = (k === key)
+                ? (k === "inventory" ? "flex" : "block")
+                : "none";
+            if (k === "inventory") leftPanes[k].style.flexDirection = "column";
         });
 
-    } else {
-        avatarContainer.style.display = "flex";
-        armorSides.forEach(el => el.style.display = "none");
-        inventoryFilter.style.display = "none";
-        centerPanel.style.display = "flex";
-    }
-}
-        // --- Lógica de Atributos e HUD Bars ---
-        const estado = {
-            nivel: 3, xp: 6700, xpMax: 10000, pontosDisponiveis: 4,
-            hp: 100, hpMax: 100, mp: 50, mpMax: 50, gold: 1250, crystals: 25,
-            atributos: { forca:1, destreza:1, constituicao:1, inteligencia:1, espirito:1, carisma:1 }
-        };
+        // mostra painel direito
+        Object.keys(rightPanes).forEach(k => {
+            rightPanes[k].style.display = (k === key)
+                ? (k === "inventory" || k === "equipment" ? "flex" : "block")
+                : "none";
+            if (k === "inventory" || k === "equipment") rightPanes[k].style.flexDirection = "column";
+        });
 
-        function atualizarInterface() {
-            // HUD Topo
-            document.getElementById("hud-level-value").textContent = estado.nivel;
-            document.getElementById("hud-xp-bar").style.width = (estado.xp / estado.xpMax * 100) + "%";
-            document.getElementById("hud-xp-bar").setAttribute("data-value", `${Math.floor(estado.xp / estado.xpMax * 100)}%`);
-
-            document.getElementById("hud-hp-bar").style.width = (estado.hp / estado.hpMax * 100) + "%";
-            document.getElementById("hud-hp-bar").setAttribute("data-value", `${estado.hp}/${estado.hpMax}`);
-
-            document.getElementById("hud-mp-bar").style.width = (estado.mp / estado.mpMax * 100) + "%";
-            document.getElementById("hud-mp-bar").setAttribute("data-value", `${estado.mp}/${estado.mpMax}`);
-
-            document.getElementById("hud-gold").textContent = estado.gold;
-            document.getElementById("hud-crystals").textContent = estado.crystals;
-
-            // Painel de Visão Geral
-            document.getElementById("pontos-disponiveis").textContent = estado.pontosDisponiveis;
-            for (let k in estado.atributos) {
-                const span = document.getElementById("valor-"+k);
-                if (span) {
-                    span.childNodes[0].nodeValue = estado.atributos[k] + " ";
-                }
-                // A barra de atributos vai até 20 para ter uma progressão visível
-                const bar = document.getElementById("barra-"+k);
-                if (bar) {
-                    bar.style.width = Math.min((estado.atributos[k] / 20) * 100, 100) + "%";
-                }
+        // painel central e avatar
+        if (key === "inventory") {
+            centerPanel.style.display = "none";
+            avatarContainer.style.display = "none";
+            inventoryFilter.style.display = "flex";
+            // ativa filtro "Tudo"
+            filterBtns.forEach(b => b.classList.remove("active"));
+            filterBtns[0].classList.add("active");
+            const filtro = filterBtns[0].dataset.filter;
+            categoryContainers.forEach(c => {
+                c.style.display = (filtro === "all" || c.dataset.category === filtro) ? "block" : "none";
+            });
+        } else {
+            centerPanel.style.display = "flex";
+            inventoryFilter.style.display = "none";
+            if (key === "equipment") {
+                avatarContainer.style.display = "flex";
+                armorSides.forEach(el => el.style.display = "flex");
+            } else {
+                avatarContainer.style.display = "flex";
+                armorSides.forEach(el => el.style.display = "none");
             }
         }
+    }
 
-        function adicionarPonto(at) {
-            if (estado.pontosDisponiveis <= 0) return;
+
+    // --- Gestão de Atributos e HUD Bars ---
+    const estado = {
+        nivel: 3, xp: 6700, xpMax: 10000,
+        hp: 100, hpMax: 100, mp: 50, mpMax: 50,
+        gold: 1250, crystals: 25,
+        pontosDisponiveis: 4,
+        atributos: { forca:1,destreza:1,constituicao:1,inteligencia:1,espirito:1,carisma:1 }
+    };
+
+    function atualizarInterface() {
+        // HUD topo
+        document.getElementById("hud-level-value").textContent = estado.nivel;
+        const xpBar = document.getElementById("hud-xp-bar");
+        xpBar.style.width = (estado.xp/estado.xpMax*100) + "%";
+        xpBar.setAttribute("data-value", Math.floor(estado.xp/estado.xpMax*100) + "%");
+
+        const hpBar = document.getElementById("hud-hp-bar");
+        hpBar.style.width = (estado.hp/estado.hpMax*100) + "%";
+        hpBar.setAttribute("data-value", `${estado.hp}/${estado.hpMax}`);
+
+        const mpBar = document.getElementById("hud-mp-bar");
+        mpBar.style.width = (estado.mp/estado.mpMax*100) + "%";
+        mpBar.setAttribute("data-value", `${estado.mp}/${estado.mpMax}`);
+
+        document.getElementById("hud-gold").textContent = estado.gold;
+        document.getElementById("hud-crystals").textContent = estado.crystals;
+
+        // atributos
+        document.getElementById("pontos-disponiveis").textContent = estado.pontosDisponiveis;
+        Object.keys(estado.atributos).forEach(k => {
+            const span = document.getElementById("valor-" + k);
+            if (span) span.childNodes[0].nodeValue = estado.atributos[k] + " ";
+            const bar = document.getElementById("barra-" + k);
+            if (bar) bar.style.width = Math.min((estado.atributos[k]/20)*100,100) + "%";
+        });
+    }
+
+    function adicionarPonto(at) {
+        if (estado.pontosDisponiveis > 0) {
             estado.atributos[at]++;
             estado.pontosDisponiveis--;
             atualizarInterface();
         }
+    }
 
-        function editarNome() {
-            const span = document.getElementById("nome-personagem");
-            const currentText = span.textContent.replace("✎","").trim();
-            const novo  = prompt("Digite um novo nome:", currentText);
-            if (novo && novo.length > 1) {
-                span.innerHTML = novo + ' <button class="edit-button" onclick="editarNome()">✎</button>';
-            }
+    function editarNome() {
+        const span = document.getElementById("nome-personagem");
+        const current = span.textContent.replace("✎","").trim();
+        const novo = prompt("Digite um novo nome:", current);
+        if (novo && novo.length > 1) {
+            span.innerHTML = `${novo} <button class="edit-button" onclick="editarNome()">✎</button>`;
         }
+    }
 
-        // --- Inicialização ---
-        document.addEventListener("DOMContentLoaded", () => {
-            // Adiciona listeners para botões de atributo
-            document.querySelectorAll("[data-add]").forEach(btn =>
-                btn.addEventListener("click", ()=> adicionarPonto(btn.dataset.add))
-            );
 
-            atualizarInterface(); // Atualiza o HUD e painel inicial
+    // --- Inicialização ao Carregar a Página ---
+    document.addEventListener("DOMContentLoaded", () => {
+        // canvas de partículas
+        setCanvasSize();
+        initParticles();
+        animateParticles();
+        window.addEventListener('resize', setCanvasSize);
 
-            // Ativa a aba "Visão Geral" por padrão no carregamento
-            const initialTab = document.querySelector(".tab.active");
-            if (initialTab) {
-                handleTabClick(initialTab);
-            }
+        // clique nas abas
+        tabs.forEach(tab =>
+            tab.addEventListener("click", () => handleTabClick(tab))
+        );
 
-            // Inicializa o background de partículas
-            setCanvasSize();
-            initParticles();
-            animateParticles();
+        // filtros do inventário
+        filterBtns.forEach(btn => {
+            btn.addEventListener("click", () => {
+                filterBtns.forEach(b => b.classList.remove("active"));
+                btn.classList.add("active");
+                const filtro = btn.dataset.filter;
+                categoryContainers.forEach(c => {
+                    c.style.display = (filtro === "all" || c.dataset.category === filtro)
+                        ? "block" : "none";
+                });
+            });
         });
-// Garante que categorias só aparecem quando estiver na aba inventário
-function verificarAbaAtiva() {
-    const isInventario = document.querySelector('.pane-inventory').style.display === 'block';
-    document.querySelectorAll('.category-container').forEach(cat => {
-        if (isInventario) {
-            cat.classList.remove('hidden-category');
-        } else {
-            cat.classList.add('hidden-category');
-        }
-    });
-}
 
-// Ativa verificação sempre que clicar numa aba
-document.querySelectorAll('.tab').forEach(tab => {
-    tab.addEventListener('click', () => {
-        setTimeout(verificarAbaAtiva, 50); // pequeno delay pra esperar troca de aba
+        // botões de adicionar ponto
+        document.querySelectorAll("[data-add]").forEach(btn =>
+            btn.addEventListener("click", () => adicionarPonto(btn.dataset.add))
+        );
+
+        // inicializa HUD e abas
+        atualizarInterface();
+        const initial = document.querySelector(".tab.active") || tabs[0];
+        handleTabClick(initial);
     });
-});
-    </script>
+</script>
 </body>
 </html>
