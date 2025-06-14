@@ -974,59 +974,58 @@
         function handleTabClick(tab) {
             const key = tab.dataset.tab;
 
-            // 1) Ativa a aba
-            tabs.forEach(t => t.classList.remove("active"));
-            tab.classList.add("active");
+            function handleTabClick(tab) {
+    const key = tab.dataset.tab;
 
-            // 2) Mostra o painel esquerdo correspondente
-            Object.values(leftPanes).forEach(p => p.style.display = "none");
-            leftPanes[key].style.display = "block"; // Visão geral e Equipamento usam block, Inventário usa flex
-            if (key === "inventory") {
-                leftPanes[key].style.display = "flex";
-                leftPanes[key].style.flexDirection = "column";
+    // Ativa a aba clicada
+    tabs.forEach(t => t.classList.remove("active"));
+    tab.classList.add("active");
+
+    // Mostra o painel esquerdo correspondente
+    Object.values(leftPanes).forEach(p => p.style.display = "none");
+    leftPanes[key].style.display = (key === "inventory") ? "flex" : "block";
+    if (key === "inventory") {
+        leftPanes[key].style.flexDirection = "column";
+    }
+
+    // Mostra o painel direito correspondente
+    Object.values(rightPanes).forEach(p => p.style.display = "none");
+    rightPanes[key].style.display = (key === "inventory" || key === "equipment") ? "flex" : "block";
+    if (key === "inventory" || key === "equipment") {
+        rightPanes[key].style.flexDirection = "column";
+    }
+
+    // Central panel ajustes
+    if (key === "equipment") {
+        avatarContainer.style.display = "flex";
+        armorSides.forEach(el => el.style.display = "flex");
+        inventoryFilter.style.display = "none";
+        centerPanel.style.display = "flex";
+    } else if (key === "inventory") {
+        avatarContainer.style.display = "none";
+        armorSides.forEach(el => el.style.display = "none");
+        inventoryFilter.style.display = "flex";
+        centerPanel.style.display = "none";
+
+        // Aqui está o ponto que ativa o filtro “Tudo” ao entrar
+        filterBtns.forEach(b => b.classList.remove("active"));
+        filterBtns[0].classList.add("active");
+        const filterCategory = filterBtns[0].dataset.filter;
+
+        categoryContainers.forEach(c => {
+            if (filterCategory === "all" || c.dataset.category === filterCategory) {
+                c.style.display = "block";
+            } else {
+                c.style.display = "none";
             }
+        });
 
-            // 3) Mostra o painel direito correspondente
-            Object.values(rightPanes).forEach(p => p.style.display = "none");
-            rightPanes[key].style.display = "block"; // Similar ao esquerdo
-            if (key === "inventory" || key === "equipment") {
-                rightPanes[key].style.display = "flex";
-                rightPanes[key].style.flexDirection = "column";
-            }
-
-            // 4) Ajusta o painel central (avatar, armadura, filtro de inventário)
-            if (key === "equipment") {
-                avatarContainer.style.display = "flex"; // Mostra o avatar
-                armorSides.forEach(el => el.style.display = "flex"); // Mostra slots de armadura
-                inventoryFilter.style.display = "none"; // Esconde filtro de inventário
-                centerPanel.style.display = "flex";
-            } else if (key === "inventory") {
-                avatarContainer.style.display = "none"; // Esconde o avatar
-                armorSides.forEach(el => el.style.display = "none"); // Esconde slots de armadura
-                inventoryFilter.style.display = "flex"; // Mostra filtro de inventário
-                centerPanel.style.display = "none"; // Oculta o painel central quando no inventário
-            } else { // overview
-                avatarContainer.style.display = "flex"; // Mostra o avatar
-                armorSides.forEach(el => el.style.display = "none"); // Esconde slots de armadura
-                inventoryFilter.style.display = "none"; // Esconde filtro de inventário
-                centerPanel.style.display = "flex";
-            }
-
-            // 5) Lógica de filtro e visibilidade das categorias
-if (key === "inventory") {
-    // Ativa botão "Tudo" por padrão
-    filterBtns.forEach(b => b.classList.remove("active"));
-    filterBtns[0].classList.add("active");
-
-    // Exibe todas as categorias
-    categoryContainers.forEach(c => {
-        c.style.display = "block";
-    });
-} else {
-    // Garante que todas as categorias estejam escondidas ao sair do inventário
-    categoryContainers.forEach(c => {
-        c.style.display = "none";
-    });
+    } else {
+        avatarContainer.style.display = "flex";
+        armorSides.forEach(el => el.style.display = "none");
+        inventoryFilter.style.display = "none";
+        centerPanel.style.display = "flex";
+    }
 }
 
         tabs.forEach(tab =>
