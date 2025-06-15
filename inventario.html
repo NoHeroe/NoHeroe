@@ -198,36 +198,60 @@ body {
 }
 
 /* --- Abas Principais --- */
+/* --- Abas Principais (horizontal também no desktop) --- */
 .tabs-container {
     display: flex;
     justify-content: center;
+    flex-wrap: wrap;
     gap: 10px;
     margin-bottom: 20px;
-    flex-wrap: wrap;
 }
+
 .tab {
     background: var(--slot-bg);
     border: 1px solid var(--panel-border);
     color: var(--text-muted);
-    padding: 8px 18px;
-    border-radius: 8px;
+    padding: 6px 14px;
+    border-radius: 6px;
     font-family: "Cinzel Decorative", serif;
-    font-size: 0.9em;
+    font-size: 0.85em;
     cursor: pointer;
     transition: all 0.2s ease;
     text-transform: uppercase;
     box-shadow: 0 0 5px var(--shadow-color);
 }
+
 .tab.active {
     background: var(--accent-purple);
     color: var(--dark-bg);
     border-color: var(--accent-purple);
-    box-shadow: 0 0 15px var(--glow-color);
+    box-shadow: 0 0 12px var(--glow-color);
 }
+
 .tab:hover:not(.active) {
-    background: rgba(var(--accent-purple-rgb),0.2);
+    background: rgba(var(--accent-purple-rgb), 0.2);
     color: var(--accent-purple);
     border-color: var(--accent-purple);
+}
+
+@media (min-width: 768px) {
+    .tabs-container {
+        flex-direction: row;
+        justify-content: center;
+        align-items: center;
+        border-bottom: 1px solid var(--panel-border);
+        margin-bottom: 30px;
+        padding-bottom: 10px;
+    }
+
+    .tab {
+        font-size: 0.8em;
+        padding: 6px 12px;
+        max-width: 200px;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+    }
 }
 
 /* --- Layout dos Painéis Internos --- */
