@@ -257,11 +257,13 @@ body {
 /* --- Avatar e Slots --- */
 .avatar-container {
     display: flex;
+    flex-direction: row;
     align-items: center;
     justify-content: center;
     gap: 10px;
-    position: relative;
-    flex-direction: column;
+    width: 100%;
+    flex-wrap: nowrap;
+    padding: 10px 0;
 }
 
 .armor-side {
@@ -270,19 +272,59 @@ body {
     gap: 8px;
 }
 
-.armor-side.left,
-.armor-side.right {
-    position: relative;
+.armor-side.left {
+    align-items: flex-end;
 }
 
-@media (min-width: 768px) {
+.armor-side.right {
+    align-items: flex-start;
+}
+
+.avatar-placeholder {
+    flex-shrink: 0;
+    width: 200px;
+    height: 280px;
+    background: linear-gradient(145deg,#2a2a2a,#1a1a1a);
+    border: 3px dashed var(--accent-purple);
+    border-radius: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: var(--accent-purple);
+    font-family: "Cinzel Decorative", serif;
+    font-size: 1.8em;
+    font-weight: 700;
+    text-shadow: 0 0 15px var(--glow-color);
+    box-shadow: 0 0 25px rgba(0,0,0,0.7), inset 0 0 10px rgba(255,255,255,0.1);
+    transition: all 0.3s ease;
+}
+
+.avatar-placeholder:hover {
+    transform: scale(1.02);
+    box-shadow: 0 0 35px var(--glow-color), inset 0 0 15px rgba(255,255,255,0.15);
+}
+@media (max-width: 767px) {
     .avatar-container {
         flex-direction: row;
+        flex-wrap: nowrap;
+        align-items: flex-start;
+        justify-content: center;
+        gap: 6px;
     }
 
-    .armor-side.left,
-    .armor-side.right {
-        position: static;
+    .avatar-placeholder {
+        width: 140px;
+        height: 200px;
+        font-size: 1.3em;
+    }
+
+    .equip-slot {
+        width: 45px;
+        height: 45px;
+    }
+
+    .armor-side {
+        gap: 6px;
     }
 }
 .equip-slot,
