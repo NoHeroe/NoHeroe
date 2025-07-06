@@ -96,9 +96,23 @@
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
 }
-header {
-  transform: translateZ(0);
-  will-change: transform;
+.invisivel {
+  opacity: 0;
+  transform: translateX(0);
+  transition: opacity 1s ease, transform 1s ease;
+}
+
+.slide-left {
+  transform: translateX(-60px);
+}
+
+.slide-right {
+  transform: translateX(60px);
+}
+
+.entrou {
+  opacity: 1 !important;
+  transform: translateX(0) !important;
 }
 </style>
 
@@ -559,43 +573,23 @@ createParticles(Math.floor(150 * ratio));   // ou qualquer quantidade desejada
 });
 
 window.addEventListener("resize", resizeCanvas);
-  window.addEventListener("DOMContentLoaded", () => {
-  console.log("ScrollReveal ativado");
+  function revelarLateralmente(selector, direcao = 'left') {
+  const elementos = document.querySelectorAll(selector);
 
-  ScrollReveal().reveal('.reveal-left', {
-    origin: 'left',
-    distance: '80px',
-    duration: 1200,
-    delay: 150,
-    opacity: 0,
-    easing: 'ease-out',
-    reset: false,
-    mobile: true,
-    afterReveal: el => {
-      setTimeout(() => el.classList.add('float-levitate'), 800);
-    }
-  });
+  const observer = new IntersectionObserver(entradas => {
+    entradas.forEach(entrada => {
+      if (entrada.isIntersecting) {
+        entrada.target.classList.add('entrou');
+        observer.unobserve(entrada.target);
+      }
+    });
+  }, { threshold: 0.1 });
 
-  ScrollReveal().reveal('.reveal-right', {
-    origin: 'right',
-    distance: '80px',
-    duration: 1200,
-    delay: 150,
-    opacity: 0,
-    easing: 'ease-out',
-    reset: true,
-    mobile: true,
-    afterReveal: el => {
-      setTimeout(() => el.classList.add('float-levitate'), 800);
-    }
+  elementos.forEach(el => {
+    el.classList.add('invisivel', `slide-${direcao}`);
+    observer.observe(el);
   });
-// Força o navegador a "recalcular" o layout após revelações
-setTimeout(() => {
-  document.body.style.transform = 'scale(1)';
-  document.body.offsetHeight; // trigger reflow
-  document.body.style.transform = '';
-}, 1500);
-});
+}
 </script>
   </body>  
 </html> 
