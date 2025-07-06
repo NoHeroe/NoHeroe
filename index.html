@@ -585,6 +585,12 @@ window.addEventListener("resize", resizeCanvas);
       setTimeout(() => el.classList.add('float-levitate'), 800);
     }
   });
+// Força o navegador a "recalcular" o layout após revelações
+setTimeout(() => {
+  document.body.style.transform = 'scale(1)';
+  document.body.offsetHeight; // trigger reflow
+  document.body.style.transform = '';
+}, 1500);
 });
 </script>
   </body>  
