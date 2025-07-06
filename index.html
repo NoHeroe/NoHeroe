@@ -426,7 +426,7 @@ Como funciona o sistema
 
 <canvas id="brasasCanvas"></canvas>
 
-<script src="https://unpkg.com/scrollreveal"></script>
+<script src="https://unpkg.com/scrollreveal@4.0.9/dist/scrollreveal.min.js"></script>
 
  <script>  
   // Scroll suave  
@@ -559,31 +559,32 @@ window.addEventListener("resize", resizeCanvas);
   console.log("ScrollReveal ativado");
 
   ScrollReveal().reveal('.reveal-left', {
-  origin: 'left',
-  distance: '80px',
-  duration: 1200,
-  delay: 150,
-  opacity: 0,
-  easing: 'ease-out',
-  reset: false,
-  mobile: true,
-  afterReveal: el => {
-    setTimeout(() => el.classList.add('float-levitate'), 800);
-  }
-});
+    origin: 'left',
+    distance: '80px',
+    duration: 1200,
+    delay: 150,
+    opacity: 0,
+    easing: 'ease-out',
+    reset: false,
+    mobile: true,
+    afterReveal: el => {
+      setTimeout(() => el.classList.add('float-levitate'), 800);
+    }
+  });
 
-ScrollReveal().reveal('.reveal-right', {
-  origin: 'right',
-  distance: '80px',
-  duration: 1200,
-  delay: 150,
-  opacity: 0,
-  easing: 'ease-out',
-  reset: true,
-  mobile: true,
-  afterReveal: el => {
-    setTimeout(() => el.classList.add('float-levitate'), 800);
-  }
+  ScrollReveal().reveal('.reveal-right', {
+    origin: 'right',
+    distance: '80px',
+    duration: 1200,
+    delay: 150,
+    opacity: 0,
+    easing: 'ease-out',
+    reset: true,
+    mobile: true,
+    afterReveal: el => {
+      setTimeout(() => el.classList.add('float-levitate'), 800);
+    }
+  });
 });
 </script>
   </body>  
