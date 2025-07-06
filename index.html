@@ -7,6 +7,7 @@
   <title>NoHeroes | Home</title>  
   <script src="https://cdn.tailwindcss.com"></script>  
   <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700&family=Inter:wght@400;500&family=Cinzel+Decorative:wght@400;700&display=swap" rel="stylesheet">  
+<script src="https://unpkg.com/scrollreveal"></script>
   <style>  
     body { font-family: 'Inter', sans-serif; background: #0a0a0a; color: #e5e5e5; }  
     h1, h2, .cinzel {  
@@ -220,43 +221,48 @@
     O que é NoHeroes?
   </h2>
 
-  <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-2 lg:grid-cols-4 gap-6">
-    
-    <!-- 1. História Viva -->
-    <div class="bg-[#1c1c1c] p-6 rounded-xl shadow-md animate-fade-in-left float-levitate" style="animation-delay: 0.3s">
-      <svg class="w-10 h-10 text-[#8f4fff] mx-auto mb-4" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24">
-        <path stroke-linecap="round" stroke-linejoin="round" d="M12 6v12m0-12a2 2 0 012-2h4a2 2 0 012 2v12a2 2 0 01-2 2h-4a2 2 0 01-2-2zm0 0a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2h4a2 2 0 002-2z"/>
-      </svg>
-      <h3 class="text-lg font-bold text-[#8f4fff] mb-2">Um Portal Multimídia</h3>
-      <p class="text-sm text-gray-300">Animes, mangás, livros, eBooks, apps. Um universo em expansão onde tudo é feito com propósito — e alma.</p>
-    </div>
+  <!-- Container de Cards -->
+<div class="grid grid-cols-1 sm:grid-cols-2 gap-6 mt-16">
 
-    <!-- 2. Evolução Real -->
-    <div class="bg-[#1c1c1c] p-6 rounded-xl shadow-md animate-fade-in-top float-levitate" style="animation-delay: 0.6s">
-      <svg class="w-10 h-10 text-[#facc15] mx-auto mb-4" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24">
-        <path stroke-linecap="round" stroke-linejoin="round" d="M12 6.5v11m0-11a4.5 4.5 0 114.5 4.5H7.5A4.5 4.5 0 0112 6.5z" />
-      </svg>
-      <h3 class="text-lg font-bold text-[#facc15] mb-2">Seu Dojo Digital</h3>
-      <p class="text-sm text-gray-300">Cada missão, leitura ou clique aqui ecoa fora da tela. Você cresce no jogo — e na vida. Um reflexo puxa o outro.</p>
-    </div>
+  <!-- 1. Um Portal Multimídia -->
+  <div class="bg-[#1c1c1c] p-6 rounded-xl glow-border float-levitate text-[#8f4fff]" id="card1">
+    <svg class="w-10 h-10 mx-auto mb-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4">
+      <path d="M12 3C17.5 3 21 7 21 12C21 17 17.5 21 12 21C6.5 21 3 17 3 12C3 7 6.5 3 12 3ZM12 6C10 6 8.7 8 8.7 12C8.7 16 10 18 12 18C14 18 15.3 16 15.3 12C15.3 8 14 6 12 6Z" stroke-linecap="round" stroke-linejoin="round"/>
+    </svg>
+    <h3 class="text-xl font-bold cinzel text-center mb-2">Um Portal Multimídia</h3>
+    <p class="text-sm text-gray-300 text-center">Animes, mangás, livros, eBooks e apps — um universo em expansão onde tudo é feito com propósito e alma.</p>
+  </div>
 
-    <!-- 3. Portal Criativo -->
-    <div class="bg-[#1c1c1c] p-6 rounded-xl shadow-md animate-fade-in-right float-levitate" style="animation-delay: 0.9s">
-      <svg class="w-10 h-10 text-[#8f4fff] mx-auto mb-4" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24">
-        <path stroke-linecap="round" stroke-linejoin="round" d="M13 10V3L4 14h7v7l9-11h-7z" />
-      </svg>
-      <h3 class="text-lg font-bold text-[#8f4fff] mb-2">Uma Frequência Criativa</h3>
-      <p class="text-sm text-gray-300">NoHeroes é um portal vivo onde ideias nascem, mutam, e se chocam. Uma rede para quem nunca se encaixou — mas sempre quis criar.</p>
-    </div>
+  <!-- 2. Seu Dojo Digital -->
+  <div class="bg-[#1c1c1c] p-6 rounded-xl glow-border float-levitate text-[#39ff14]" id="card2">
+    <svg class="w-10 h-10 mx-auto mb-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4">
+      <path d="M12 3a9 9 0 100 18 9 9 0 000-18Zm1.5 2.7c1.6.6 2.7 2.1 2.7 3.8 0 1.7-1.1 3.2-2.7 3.8M12 3c0 2-1.8 3.6-4 3.6" stroke-linecap="round" stroke-linejoin="round"/>
+    </svg>
+    <h3 class="text-xl font-bold cinzel text-center mb-2">Seu Dojo Digital</h3>
+    <p class="text-sm text-gray-300 text-center">Cada missão, leitura ou clique aqui ecoa fora da tela. Você cresce no jogo — e na vida. Um reflexo puxa o outro.</p>
+  </div>
 
-    <!-- 4. Mentorias e Suporte -->
-    <div class="bg-[#1c1c1c] p-6 rounded-xl shadow-md animate-fade-in-up float-levitate" style="animation-delay: 1.2s">
-      <svg class="w-10 h-10 text-[#facc15] mx-auto mb-4" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24">
-        <path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7M4 6h16v12H4z" />
-      </svg>
-      <h3 class="text-lg font-bold text-[#facc15] mb-2">A forja dos Sonhos</h3>
-      <p class="text-sm text-gray-300">Ajudamos você a tirar da mente o que vive preso há anos. Sites, projetos, marcas, ideias — aqui, a gente transforma sonhos em realidade palpável.</p>
-    </div>
+  <!-- 3. Uma Frequência Criativa -->
+  <div class="bg-[#1c1c1c] p-6 rounded-xl glow-border float-levitate text-[#6c5ce7]" id="card3">
+    <svg class="w-10 h-10 mx-auto mb-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4">
+      <path d="M3 12c2-4 6-7 9-7s7 3 9 7-6 7-9 7-7-3-9-7Z" stroke-linecap="round" stroke-linejoin="round"/>
+      <path d="M3 12h18" stroke-linecap="round"/>
+    </svg>
+    <h3 class="text-xl font-bold cinzel text-center mb-2">Uma Frequência Criativa</h3>
+    <p class="text-sm text-gray-300 text-center">NoHeroes é um portal vivo onde ideias nascem, mutam e se chocam. Uma rede para quem nunca se encaixou — mas sempre quis criar.</p>
+  </div>
+
+  <!-- 4. A Forja dos Sonhos -->
+  <div class="bg-[#1c1c1c] p-6 rounded-xl glow-border float-levitate text-[#facc15]" id="card4">
+    <svg class="w-10 h-10 mx-auto mb-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4">
+      <path d="M3 17h18M12 4v13M6 17v3h12v-3" stroke-linecap="round" stroke-linejoin="round"/>
+    </svg>
+    <h3 class="text-xl font-bold cinzel text-center mb-2">A Forja dos Sonhos</h3>
+    <p class="text-sm text-gray-300 text-center">Ajudamos você a tirar da mente o que vive preso há anos. Sites, projetos, ideias — aqui, transformamos sonhos em realidade palpável.</p>
+  </div>
+
+</div>
+
   </div>
 
   <!-- Botão -->
