@@ -228,7 +228,7 @@
 <div class="grid grid-cols-1 sm:grid-cols-2 gap-6 mt-16">
 
   <!-- 1. Um Portal Multimídia -->
- <div class="bg-[#1c1c1c] p-6 rounded-xl shadow-md reveal-left float-levitate text-center">
+ <div class="bg-[#1c1c1c] p-6 rounded-xl shadow-md reveal-left text-center">
   <svg class="mx-auto mb-4" width="40" height="40" viewBox="0 0 24 24" fill="none">
     <defs>
       <linearGradient id="grad-vortex" x1="0%" y1="0%" x2="100%" y2="100%">
@@ -247,7 +247,7 @@
 </div>
 
   <!-- 2. Seu Dojo Digital -->
-  <div class="bg-[#1c1c1c] p-6 rounded-xl shadow-md reveal-right float-levitate text-center">
+  <div class="bg-[#1c1c1c] p-6 rounded-xl shadow-md reveal-right text-center">
   <svg class="mx-auto mb-4" width="40" height="40" viewBox="0 0 24 24" fill="none">
     <defs>
       <linearGradient id="grad-dojo" x1="0%" y1="0%" x2="100%" y2="100%">
@@ -268,7 +268,7 @@
 </div>
 
   <!-- 3. Uma Frequência Criativa -->
-  <div class="bg-[#1c1c1c] p-6 rounded-xl shadow-md reveal-left float-levitate text-center">
+  <div class="bg-[#1c1c1c] p-6 rounded-xl shadow-md reveal-left text-center">
   <svg class="mx-auto mb-4" width="40" height="40" viewBox="0 0 24 24" fill="none">
     <defs>
       <linearGradient id="grad-freq" x1="0%" y1="0%" x2="100%" y2="100%">
@@ -287,7 +287,7 @@
 </div>
 
   <!-- 4. A Forja dos Sonhos -->
-  <div class="bg-[#1c1c1c] p-6 rounded-xl shadow-md reveal-right float-levitate text-center">
+  <div class="bg-[#1c1c1c] p-6 rounded-xl shadow-md reveal-right text-center">
   <svg class="mx-auto mb-4" width="40" height="40" viewBox="0 0 24 24" fill="none">
     <defs>
       <linearGradient id="grad-forja" x1="0%" y1="0%" x2="100%" y2="100%">
@@ -559,26 +559,31 @@ window.addEventListener("resize", resizeCanvas);
   console.log("ScrollReveal ativado");
 
   ScrollReveal().reveal('.reveal-left', {
-    origin: 'left',
-    distance: '80px',
-    duration: 1000,
-    delay: 150,
-    opacity: 0,
-    scale: 0.95,
-    reset: true,
-    mobile: true
-  });
+  origin: 'left',
+  distance: '80px',
+  duration: 1200,
+  delay: 150,
+  opacity: 0,
+  easing: 'ease-out',
+  reset: false,
+  mobile: true,
+  afterReveal: el => {
+    setTimeout(() => el.classList.add('float-levitate'), 800);
+  }
+});
 
-  ScrollReveal().reveal('.reveal-right', {
-    origin: 'right',
-    distance: '80px',
-    duration: 1000,
-    delay: 150,
-    opacity: 0,
-    scale: 0.95,
-    reset: true,
-    mobile: true
-  });
+ScrollReveal().reveal('.reveal-right', {
+  origin: 'right',
+  distance: '80px',
+  duration: 1200,
+  delay: 150,
+  opacity: 0,
+  easing: 'ease-out',
+  reset: true,
+  mobile: true,
+  afterReveal: el => {
+    setTimeout(() => el.classList.add('float-levitate'), 800);
+  }
 });
 </script>
   </body>  
