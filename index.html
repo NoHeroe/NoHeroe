@@ -556,51 +556,30 @@ createParticles(Math.floor(150 * ratio));   // ou qualquer quantidade desejada
 
 window.addEventListener("resize", resizeCanvas);
   window.addEventListener("DOMContentLoaded", () => {
+  console.log("ScrollReveal ativado");
+
   ScrollReveal().reveal('.reveal-left', {
     origin: 'left',
-    distance: '60px',
+    distance: '80px',
     duration: 1000,
-    delay: 200,
-    easing: 'ease-out',
+    delay: 150,
     opacity: 0,
     scale: 0.95,
-    reset: true
+    reset: true,
+    mobile: true
   });
 
   ScrollReveal().reveal('.reveal-right', {
     origin: 'right',
-    distance: '60px',
+    distance: '80px',
     duration: 1000,
-    delay: 200,
-    easing: 'ease-out',
+    delay: 150,
     opacity: 0,
     scale: 0.95,
-    reset: true
+    reset: true,
+    mobile: true
   });
 });
-window.addEventListener("DOMContentLoaded", () => {
-  console.log("ScrollReveal ativado.");
-
-  ScrollReveal().reveal('.reveal-left', {
-    origin: 'left',
-    distance: '80px',
-    duration: 1000,
-    delay: 150,
-    opacity: 0,
-    reset: true,
-    mobile: true
-  });
-
-  ScrollReveal().reveal('.reveal-right', {
-    origin: 'right',
-    distance: '80px',
-    duration: 1000,
-    delay: 150,
-    opacity: 0,
-    reset: true,
-    mobile: true
-  });
-}); 
 </script>
   </body>  
 </html> 
