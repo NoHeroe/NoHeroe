@@ -99,6 +99,9 @@
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
 }
+.reveal-left, .reveal-right {
+  opacity: 0;
+}
 </style>
 
 </head>  
@@ -580,6 +583,29 @@ window.addEventListener("resize", resizeCanvas);
     reset: true
   });
 });
+window.addEventListener("DOMContentLoaded", () => {
+  console.log("ScrollReveal ativado.");
+
+  ScrollReveal().reveal('.reveal-left', {
+    origin: 'left',
+    distance: '80px',
+    duration: 1000,
+    delay: 150,
+    opacity: 0,
+    reset: true,
+    mobile: true
+  });
+
+  ScrollReveal().reveal('.reveal-right', {
+    origin: 'right',
+    distance: '80px',
+    duration: 1000,
+    delay: 150,
+    opacity: 0,
+    reset: true,
+    mobile: true
+  });
+}); 
 </script>
   </body>  
 </html> 
