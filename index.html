@@ -230,7 +230,7 @@
 <div class="grid grid-cols-1 sm:grid-cols-2 gap-6 mt-16">
 
   <!-- 1. Um Portal Multimídia -->
- <div class="bg-[#1c1c1c] p-6 rounded-xl shadow-md animate-fade-in-left float-levitate text-center" style="animation-delay: 0.3s">
+ <div class="bg-[#1c1c1c] p-6 rounded-xl shadow-md reveal-left animate-fade-in-left float-levitate text-center" style="animation-delay: 0.3s">
   <svg class="mx-auto mb-4" width="40" height="40" viewBox="0 0 24 24" fill="none">
     <defs>
       <linearGradient id="grad-vortex" x1="0%" y1="0%" x2="100%" y2="100%">
@@ -249,7 +249,7 @@
 </div>
 
   <!-- 2. Seu Dojo Digital -->
-  <div class="bg-[#1c1c1c] p-6 rounded-xl shadow-md animate-fade-in-right float-levitate text-center" style="animation-delay: 0.6s">
+  <div class="bg-[#1c1c1c] p-6 rounded-xl shadow-md reveal-right animate-fade-in-right float-levitate text-center" style="animation-delay: 0.6s">
   <svg class="mx-auto mb-4" width="40" height="40" viewBox="0 0 24 24" fill="none">
     <defs>
       <linearGradient id="grad-dojo" x1="0%" y1="0%" x2="100%" y2="100%">
@@ -270,7 +270,7 @@
 </div>
 
   <!-- 3. Uma Frequência Criativa -->
-  <div class="bg-[#1c1c1c] p-6 rounded-xl shadow-md animate-fade-in-left float-levitate text-center" style="animation-delay: 0.9s">
+  <div class="bg-[#1c1c1c] p-6 rounded-xl shadow-md reveal-left animate-fade-in-left float-levitate text-center" style="animation-delay: 0.9s">
   <svg class="mx-auto mb-4" width="40" height="40" viewBox="0 0 24 24" fill="none">
     <defs>
       <linearGradient id="grad-freq" x1="0%" y1="0%" x2="100%" y2="100%">
@@ -289,7 +289,7 @@
 </div>
 
   <!-- 4. A Forja dos Sonhos -->
-  <div class="bg-[#1c1c1c] p-6 rounded-xl shadow-md animate-fade-in-right float-levitate text-center" style="animation-delay: 1.2s">
+  <div class="bg-[#1c1c1c] p-6 rounded-xl shadow-md reveal-right animate-fade-in-right float-levitate text-center" style="animation-delay: 1.2s">
   <svg class="mx-auto mb-4" width="40" height="40" viewBox="0 0 24 24" fill="none">
     <defs>
       <linearGradient id="grad-forja" x1="0%" y1="0%" x2="100%" y2="100%">
@@ -557,38 +557,26 @@ createParticles(Math.floor(150 * ratio));   // ou qualquer quantidade desejada
 });
 
 window.addEventListener("resize", resizeCanvas);
-
-ScrollReveal().reveal('#card1', {
+  ScrollReveal().reveal('.reveal-left', {
     origin: 'left',
-    distance: '40px',
-    duration: 1000,
+    distance: '50px',
+    duration: 1200,
     delay: 200,
-    easing: 'ease-in-out',
-    reset: false
+    opacity: 0,
+    scale: 0.9,
+    easing: 'ease-out',
+    reset: true
   });
-  ScrollReveal().reveal('#card2', {
-    origin: 'top',
-    distance: '40px',
-    duration: 1000,
-    delay: 400,
-    easing: 'ease-in-out',
-    reset: false
-  });
-  ScrollReveal().reveal('#card3', {
+
+  ScrollReveal().reveal('.reveal-right', {
     origin: 'right',
-    distance: '40px',
-    duration: 1000,
-    delay: 600,
-    easing: 'ease-in-out',
-    reset: false
-  });
-  ScrollReveal().reveal('#card4', {
-    origin: 'bottom',
-    distance: '40px',
-    duration: 1000,
-    delay: 800,
-    easing: 'ease-in-out',
-    reset: false
+    distance: '50px',
+    duration: 1200,
+    delay: 200,
+    opacity: 0,
+    scale: 0.9,
+    easing: 'ease-out',
+    reset: true
   });
 </script>
   </body>  
