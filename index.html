@@ -93,6 +93,11 @@
 .float-levitate {
   animation: levitate 4s ease-in-out infinite;
 }
+.gradiente-titulo {
+  background: linear-gradient(to right, #8f4fff, #facc15);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
 </style>
 
 </head>  
@@ -225,19 +230,25 @@
 <div class="grid grid-cols-1 sm:grid-cols-2 gap-6 mt-16">
 
   <!-- 1. Um Portal Multimídia -->
-  <div class="bg-[#1c1c1c] p-6 rounded-xl glow-border float-levitate text-[#8f4fff]" id="card1">
-    <svg width="40" height="40" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-  <defs>
-    <linearGradient id="grad-vortex" x1="0%" y1="0%" x2="100%" y2="100%">
-      <stop offset="0%" stop-color="#8f4fff"/>
-      <stop offset="100%" stop-color="#facc15"/>
-    </linearGradient>
-  </defs>
-  <path d="M12 2a10 10 0 100 20M12 6a6 6 0 100 12" stroke="url(#grad-vortex)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-</svg>
-    <h3 class="text-xl font-bold cinzel text-center mb-2">Um Portal Multimídia</h3>
-    <p class="text-sm text-gray-300 text-center">Animes, mangás, livros, eBooks e apps — um universo em expansão onde tudo é feito com propósito e alma.</p>
-  </div>
+  <div class="bg-[#1c1c1c] p-6 rounded-xl shadow-md animate-fade-in-left float-levitate text-center" style="animation-delay: 0.3s">
+  <svg class="mx-auto mb-4" width="40" height="40" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+    <defs>
+      <linearGradient id="grad-vortex" x1="0%" y1="0%" x2="100%" y2="100%">
+        <stop offset="0%" stop-color="#8f4fff"/>
+        <stop offset="100%" stop-color="#facc15"/>
+      </linearGradient>
+    </defs>
+    <path d="M12 2a10 10 0 100 20M12 6a6 6 0 100 12" stroke="url(#grad-vortex)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+  </svg>
+
+  <h3 class="text-lg font-bold gradiente-titulo mb-2 font-[Cinzel Decorative]">Um Portal Multimídia</h3>
+  <p class="text-sm text-gray-300 mb-4">Animes, mangás, livros, eBooks, apps. Um universo em expansão onde tudo é feito com propósito — e alma.</p>
+
+  <button onclick="document.querySelector('#universo').scrollIntoView({ behavior: 'smooth' })"
+    class="px-3 py-1 text-sm rounded-full bg-[#8f4fff]/10 border border-[#8f4fff] text-[#8f4fff] hover:bg-[#8f4fff]/20 transition">
+    Explorar o Universo
+  </button>
+</div>
 
   <!-- 2. Seu Dojo Digital -->
   <div class="bg-[#1c1c1c] p-6 rounded-xl glow-border float-levitate text-[#39ff14]" id="card2">
