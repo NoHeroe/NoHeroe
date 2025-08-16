@@ -170,14 +170,14 @@ html{-webkit-tap-highlight-color:transparent}
   </aside>  <script>
   // ===== Auth redirect (mantém comportamento, mas evita canvas no <head>) =====
   (function(){
-    const token = localStorage.getItem('NoHeroes_token');
-    if(!token){
-      console.warn('⚠️ Token ausente no localStorage');
-      location.href = 'login.html';
-    } else {
-      window.tokenJWT = token;
-    }
-  })();
+  const token = localStorage.getItem('NoHeroes_token');
+  if(!token){
+    console.warn('⚠️ Token ausente (mas sem redirect nesta versão de teste)');
+    window.tokenJWT = null; // deixa seguir sem travar
+  } else {
+    window.tokenJWT = token;
+  }
+})();
 
   // ===== Helpers =====
   const fmtBRL = n => (n||0).toLocaleString('pt-BR',{style:'currency',currency:'BRL'});
