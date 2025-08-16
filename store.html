@@ -1,1372 +1,411 @@
 <!DOCTYPE html><html lang="pt-BR">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Loja | NoHeroes</title>
-
-<script>
-if (window.innerWidth <= 768) {
-  window.location.href = "store-mobile.html";
-}
-</script>
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>NoHeroes | Loja Mobile v2</title>
+  <link href="https://fonts.googleapis.com/css2?family=Unbounded:wght@400;700&display=swap" rel="stylesheet">
   <style>
-/* RESET */
-
-*{ margin: 0; padding: 0; box-sizing: border-box; } html, body { font-family: 'Inter', sans-serif; background: #000; color: #fff; height: 100%; overflow-x: hidden; overflow-y: auto; }
-
-/* TÍTULOS DOS BLOCOS DESKTOP */ .titulo-bloco { position: absolute; top: 1rem; left: 1.5rem; font-size: 2rem; font-weight: bold; text-shadow: 0 0 10px currentColor; z-index: 10; }
-
-.titulo-centralizado { top: 1rem; left: 50%; transform: translateX(-50%); }
-
-.cor-roxa { color: #c084fc; text-shadow: 0 0 20px #c084fc; } .cor-azul { color: #3b82f6; text-shadow: 0 0 20px #3b82f6; } .cor-verde { color: #4ade80; text-shadow: 0 0 20px #4ade80; } .cor-vermelho { color: #f43f5e; text-shadow: 0 0 20px #f43f5e; } .cor-dourado { color: #facc15; text-shadow: 0 0 20px #facc15; } .cor-branca { color: #fff; text-shadow: 0 0 20px #ffffff; }
-
-/* CONTAINER DESKTOP */ .desktop-visual #container-desktop {
-  scroll-snap-type: y mandatory;
-  scroll-behavior: smooth;
-  padding: 0;
-}
-
-/* SECTION DESKTOP */ .desktop-visual section { height: 88vh; scroll-snap-align: start; scroll-snap-stop: always; display: flex; align-items: center; justify-content: center; }
-
-.desktop-visual .section-content { width: 80vw; max-width: 1200px; height: 76vh; background-size: cover; background-position: center; background-repeat: no-repeat; border-radius: 16px; display: flex; flex-direction: column; align-items: center; justify-content: center; padding: 2rem; position: relative; overflow: hidden; }
-
-/* Tenda Principal – Glow Branco */
-#bloco1 .section-content {
-  box-shadow: 0 0 30px rgba(255, 255, 255, 0.25);
-}
-
-/* Mangás – Glow Roxo */
-#bloco2 .section-content {
-  box-shadow: 0 0 30px rgba(147, 51, 234, 0.7);
-}
-
-/* Animes – Glow Azul */
-#bloco3 .section-content {
-  box-shadow: 0 0 30px rgba(59, 130, 246, 0.7);
-}
-
-/* Ebooks – Glow Verde */
-#bloco4 .section-content {
-  box-shadow: 0 0 30px rgba(74, 222, 128, 0.7);
-}
-
-/* Mentorias – Glow Vermelho */
-#bloco5 .section-content {
-  box-shadow: 0 0 30px rgba(244, 63, 94, 0.7);
-}
-
-/* Extras – Glow Dourado */
-#bloco6 .section-content {
-  box-shadow: 0 0 30px rgba(250, 204, 21, 0.7);
-}
-
-/* MENU FIXO */ .menu { position: fixed; top: 20px; left: 20px; z-index: 20; display: flex; flex-direction: column; gap: .5rem; }
-
-/* BOTÕES REESTILIZADOS COM VISUAL DARK + BORDAS COLORIDAS + GLOW */ .menu button { border: 2px solid #444; background-color: #000; border-radius: 12px; font-size: 0.9rem; font-weight: bold; padding: 0.6rem 1.2rem; color: #fff; cursor: pointer; transition: all 0.3s ease; box-shadow: none; position: relative; overflow: hidden; }
-
-.menu button::before { content: ""; position: absolute; inset: 0; border-radius: inherit; z-index: -1; filter: blur(6px); opacity: 0.5; }
-
-.menu button:hover { transform: scale(1.05); }
-
-/* BOTÃO: INÍCIO (branco) */ .menu button:nth-child(1) { border-color: #fff; color: #fff; } .menu button:nth-child(1)::before { background: #fff; }
-
-/* BOTÃO: MANGÁS (roxo) */ .menu button:nth-child(2) { border-color: #9333ea; color: #9333ea; } .menu button:nth-child(2)::before { background: #9333ea; }
-
-/* BOTÃO: ANIMES (azul) */ .menu button:nth-child(3) { border-color: #3b82f6; color: #3b82f6; } .menu button:nth-child(3)::before { background: #3b82f6; }
-
-/* BOTÃO: EBOOKS (verde) */ .menu button:nth-child(4) { border-color: #22c55e; color: #22c55e; } .menu button:nth-child(4)::before { background: #22c55e; }
-
-/* BOTÃO: MENTORIAS (vermelho) */ .menu button:nth-child(5) { border-color: #f43f5e; color: #f43f5e; } .menu button:nth-child(5)::before { background: #f43f5e; }
-
-/* BOTÃO: EXTRAS (dourado) */ .menu button:nth-child(6) { border-color: #facc15; color: #facc15; } .menu button:nth-child(6)::before { background: #facc15; }
-
-/* CAROUSEL */ .carousel-wrapper { width: 60%; position: relative; display: flex; align-items: center; margin: 1rem 0; }
-
-.product-card { flex: 0 0 clamp(180px, 25%, 240px); scroll-snap-align: center; background: rgba(17,17,17,0.8); border: 1px solid #333; border-radius: 12px; padding: 1rem; text-align: center; font-size: 0.85rem; }
-
-.arrow { position: absolute; top: 50%; transform: translateY(-50%); background: rgba(0,0,0,0.6); color: #fff; border: none; padding: 0.5rem; border-radius: 9999px; cursor: pointer; z-index: 5; }
-
-.arrow.left  { left: calc(20% - 1rem); } .arrow.right { right: calc(20% - 1rem); }
-
-/* BOTÕES DA TENDA */ .botao-tenda {
-  background: #000;
-  border: 2px solid;
-  border-radius: 12px;
-  padding: 5px 16px;
-  font-weight: bold;
-  font-size: 0.8rem;
-  cursor: pointer;
-  transition: all 0.3s ease;
-  position: absolute;
-  bottom: 15vh;
-  transform: translateX(-50%);
-  z-index: 15;
-  background-clip: text;
-  -webkit-background-clip: text;
-  color: transparent;
-  -webkit-text-fill-color: transparent;
-  text-shadow: none;
-}
-
-/* GRADIENTES COM ANIMAÇÃO */
-@keyframes gradiente {
-  0% { background-position: 0% 50%; }
-  50% { background-position: 100% 50%; }
-  100% { background-position: 0% 50%; }
-}
-
-.botao-manga {
-  left: 31%;
-  border-color: #9333ea;
-  background-image: linear-gradient(270deg, #9333ea, #7e22ce, #9333ea);
-  background-size: 300% 300%;
-  animation: gradiente 4s ease infinite;
-}
-
-.botao-anime {
-  left: 41%;
-  border-color: #3b82f6;
-  background-image: linear-gradient(270deg, #3b82f6, #2563eb, #3b82f6);
-  background-size: 300% 300%;
-  animation: gradiente 6s ease infinite;
-}
-
-.botao-ebook {
-  left: 50%;
-  border-color: #22c55e;
-  background-image: linear-gradient(270deg, #22c55e, #16a34a, #22c55e);
-  background-size: 300% 300%;
-  animation: gradiente 6s ease infinite;
-}
-
-.botao-mentoria {
-  left: 60%;
-  border-color: #ef4444;
-  background-image: linear-gradient(270deg, #ef4444, #b91c1c, #ef4444);
-  background-size: 300% 300%;
-  animation: gradiente 6s ease infinite;
-}
-
-.botao-extras {
-  left: 69%;
-  border-color: #facc15;
-  background-image: linear-gradient(270deg, #facc15, #fde68a, #facc15);
-  background-size: 300% 300%;
-  animation: gradiente 6s ease infinite;
-}
-
-/* NPCs PADRÃO */ .npc-mercador, .npc-manga { position: absolute; bottom: 18vh; height: 200px; z-index: 10; pointer-events: auto; filter: drop-shadow(0 0 10px rgba(147, 51, 234, 0.4)); }
-
-.npc-mercador { left: 51.5%; transform: translateX(-50%); } .npc-manga    { left: 6vw; } .npc-anime    { left: 6vw; } .npc-ebook    { left: 6vw; } .npc-mentoria { left: 6vw; } .npc-extras   { left: 6vw; }
-
-/* FALAS DOS NPCs */ .fala, #fala-bloco1, #fala-bloco2, #fala-bloco3, #fala-bloco4, #fala-bloco5, #fala-bloco6 { background: rgba(0,0,0,0.85); border: 2px solid #9333ea; border-radius: 10px; padding: 0.75rem; color: #fff; font-size: 0.9rem; max-width: 260px; position: absolute; z-index: 20; animation: fadeIn 0.3s ease forwards; }
-
-#fala-bloco1 { margin-bottom: 60px; position: relative; } #fala-bloco2 { bottom: 36vh; left: 6vw; } #fala-bloco3 { bottom: 36vh; left: 6vw; } #fala-bloco4 { bottom: 36vh; left: 6vw; } #fala-bloco5 { bottom: 36vh; left: 6vw; } #fala-bloco6 { bottom: 36vh; left: 6vw; }
-
-.fala.escondida { display: none; }
-
-@keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to   { opacity: 1; transform: translateY(0); } }
-
-/* ELEMENTOS VISUAIS */ .mato-topo { position: absolute; top: 0; left: 0; height: auto; width: auto; max-width: 600px; max-height: 40vh; pointer-events: none; z-index: 1; }
-
-.gramado-bottom { position: absolute; bottom: 0; left: 0; width: 100vw; height: auto; pointer-events: none; z-index: 21; transform: translateY(10%); }
-
-#vagalumes { position: absolute; top: 0; left: 0; width: 100%; height: 100%; pointer-events: none; z-index: 30; overflow: hidden; }
-
-.vagalume { position: absolute; width: 6px; height: 6px; border-radius: 50%; background: radial-gradient(circle, #caff6a, transparent 70%); opacity: 0.2; transition: transform 10s linear, opacity 1s ease; }
-
-#particulas-roxas {
-  position: absolute;
-  top: 0; left: 0;
-  width: 100%; height: 100%;
-  overflow: hidden;
-  pointer-events: none;
-  z-index: 10;
-}
-
-.particula-roxa {
-  position: absolute;
-  width: 8px;
-  height: 8px;
-  background: radial-gradient(circle, #c084fc 0%, transparent 70%);
-  border-radius: 50%;
-  opacity: 10;
-  animation: flutuar-roxo linear infinite;
-}
-
-@keyframes flutuar-roxo {
-  from {
-    transform: translateY(20vh) scale(0.5);
-    opacity: 0.3;
-  }
-  to {
-    transform: translateY(-70vh) scale(1);
-    opacity: 0;
-  }
-}
-#nevoeiro-bloco3 {
-  position: absolute;
-  bottom: 0;
-  left: 0;
-  width: 100%;
-  height: 60%;
-  pointer-events: none;
-  z-index: 6;
-  background: radial-gradient(ellipse at 50% 100%, rgba(59,130,246,0.08), transparent 70%);
-  filter: blur(35px);
-  opacity: 0.4;
-}
-#particulas-vermelhas {
-  position: absolute;
-  top: 0; left: 0;
-  width: 100%; height: 100%;
-  pointer-events: none;
-  z-index: 10;
-  overflow: hidden;
-}
-
-.barra-vermelha {
-  position: absolute;
-  width: 2px;
-  height: 20px;
-  background: linear-gradient(to top, #f43f5e, transparent);
-  opacity: 0.6;
-  animation: subir-barras linear infinite;
-}
-
-@keyframes subir-barras {
-  0% {
-    transform: translateY(100vh);
-    opacity: 0;
-  }
-  30% {
-    opacity: 0.8;
-  }
-  100% {
-    transform: translateY(-100vh);
-    opacity: 0;
-  }
-}
-
-#kanji-chuva {
-  position: absolute;
-  top: 0; left: 0;
-  width: 100%;
-  height: 100%;
-  pointer-events: none;
-  z-index: 12;
-  overflow: hidden;
-}
-
-.kanji {
-  position: absolute;
-  color: #facc15;
-  font-family: 'Noto Sans JP', sans-serif;
-  font-size: 1.2rem;
-  text-shadow: 0 0 8px #facc15;
-  opacity: 0.8;
-  animation: queda-kanji linear infinite;
-}
-
-@keyframes queda-kanji {
-  0% {
-    transform: translateY(-120%);
-    opacity: 0;
-    filter: brightness(1.2);
-  }
-  10% {
-    opacity: 1;
-    filter: brightness(1.1);
-  }
-  70% {
-    opacity: 0.8;
-    filter: brightness(1);
-  }
-  90% {
-    opacity: 0.5;
-    filter: brightness(0.6);
-  }
-  100% {
-    transform: translateY(100vh);
-    opacity: 0;
-    filter: brightness(0.2);
-  }
-}
-
-/* ESPAÇADOR */ .espacador { height: 90vh; flex-shrink: 0; pointer-events: none; }
-
-#container-desktop {
-  height: 100vh;
-  overflow-y: auto;
-  scrollbar-width: none;           /* Firefox */
-  -ms-overflow-style: none;        /* IE e Edge */
-}
-#container-desktop::-webkit-scrollbar {
-  display: none;                   /* Chrome, Safari */
-}
-#rodape .section-content.footer-content {
-  background: #000;
-  box-shadow: none;
-  justify-content: center;
-  align-items: center;
-  text-align: center;
-  color: #ccc;
-  padding: 2rem;
-}
-/* NPC Mangás posicionado e dobrado */
-.npc-manga {
-  position: absolute;
-  bottom: 0vh;
-  right: 3vw;
-  height: 400px;
-  z-index: 10;
-  pointer-events: auto;
-  filter: drop-shadow(0 0 15px rgba(147, 51, 234, 0.6));
-}
-/* NPC ANIME - BLOCO 3 */
-.npc-anime {
-  position: absolute;
-  bottom: 0vh;
-  right: 3vw;
-  height: 400px;
-  z-index: 10;
-  pointer-events: auto;
-  filter: drop-shadow(0 0 15px rgba(59, 130, 246, 0.6)); /* azul */
-}
-
-/* NPC EBOOK - BLOCO 4 */
-.npc-ebook {
-  position: absolute;
-  bottom: 0vh;
-  right: 5vw;
-  height: 300px;
-  z-index: 10;
-  pointer-events: auto;
-  filter: drop-shadow(0 0 15px rgba(34, 197, 94, 0.6));
-}
-
-
-/* NPC MENTORIA - BLOCO 5 */
-.npc-mentoria {
-  position: absolute !important;
-  bottom: 10vh;
-  right: 1vw !important;
-  height: 350px;
-  z-index: 9;
-  pointer-events: auto;
-  filter: drop-shadow(0 0 15px rgba(239, 68, 68, 0.6)); /* vermelho */
-}
-
-/* NPC EXTRAS - BLOCO 6 */
-.npc-extras {
-  position: absolute;
-  bottom: 0vh;
-  right: 4vw;
-  height: 380px;
-  z-index: 15;
-  pointer-events: auto;
-  filter: drop-shadow(0 0 15px rgba(250, 204, 21, 0.6)); /* dourado */
-}
-
-#bloco2 .card-display {
-  display: flex;
-  flex-direction: column;
-  align-items: flex-start;
-  justify-content: center;
-  position: absolute;
-  right: 10vw; /* equivalente à divisão 2/3 da tela */
-  top: 10%;
-  width: clamp(240px, 28%, 300px);
-  gap: 1rem;
-}
-
-#bloco2 .card-display .product-card {
-  background: rgba(17, 17, 17, 0.85);
-  border: 1px solid #333;
-  border-radius: 12px;
-  padding: 1rem;
-  text-align: center;
-  font-size: 0.9rem;
-  cursor: pointer;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 0.5rem;
-  width: 100%;
-}
-
-#bloco2 .product-card img {
-  width: 100%;
-  border-radius: 8px;
-  object-fit: cover;
-}
-
-#bloco2 .card-controls {
-  display: flex;
-  justify-content: center;
-  gap: 1rem;
-  width: 100%;
-}
-
-#bloco2 .card-controls .arrow {
-  background: rgba(0, 0, 0, 0.6);
-  color: #fff;
-  border: none;
-  padding: 0.5rem 0.75rem;
-  border-radius: 9999px;
-  cursor: pointer;
-  font-size: 1.2rem;
-}
-/* BLOCO 3 - ANIMES */
-#bloco3 .card-display {
-  display: flex;
-  flex-direction: column;
-  align-items: flex-start;
-  justify-content: center;
-  position: absolute;
-  right: 10vw;
-  top: 10%;
-  width: clamp(240px, 28%, 300px);
-  gap: 1rem;
-}
-#bloco3 .product-card {
-  background: rgba(17, 17, 17, 0.85);
-  border: 1px solid #333;
-  border-radius: 12px;
-  padding: 1rem;
-  text-align: center;
-  font-size: 0.9rem;
-  cursor: pointer;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 0.5rem;
-  width: 100%;
-}
-#bloco3 .product-card img {
-  width: 100%;
-  border-radius: 8px;
-  object-fit: cover;
-}
-#bloco3 .card-controls {
-  display: flex;
-  justify-content: center;
-  gap: 1rem;
-  width: 100%;
-}
-#bloco3 .card-controls .arrow {
-  background: rgba(0, 0, 0, 0.6);
-  color: #fff;
-  border: none;
-  padding: 0.5rem 0.75rem;
-  border-radius: 9999px;
-  cursor: pointer;
-  font-size: 1.2rem;
-}
-
-/* BLOCO 4 - EBOOKS */
-#bloco4 .card-display {
-  display: flex;
-  flex-direction: column;
-  align-items: flex-start;
-  justify-content: center;
-  position: absolute;
-  right: 10vw;
-  top: 10%;
-  width: clamp(240px, 28%, 300px);
-  gap: 1rem;
-}
-#bloco4 .product-card {
-  background: rgba(17, 17, 17, 0.85);
-  border: 1px solid #333;
-  border-radius: 12px;
-  padding: 1rem;
-  text-align: center;
-  font-size: 0.9rem;
-  cursor: pointer;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 0.5rem;
-  width: 100%;
-}
-#bloco4 .product-card img {
-  width: 100%;
-  border-radius: 8px;
-  object-fit: cover;
-}
-#bloco4 .card-controls {
-  display: flex;
-  justify-content: center;
-  gap: 1rem;
-  width: 100%;
-}
-#bloco4 .card-controls .arrow {
-  background: rgba(0, 0, 0, 0.6);
-  color: #fff;
-  border: none;
-  padding: 0.5rem 0.75rem;
-  border-radius: 9999px;
-  cursor: pointer;
-  font-size: 1.2rem;
-}
-
-/* BLOCO 5 - MENTORIAS */
-#bloco5 .card-display {
-  display: flex;
-  flex-direction: column;
-  align-items: flex-start;
-  justify-content: center;
-  position: absolute;
-  right: 10vw;
-  top: 10%;
-  width: clamp(240px, 28%, 300px);
-  gap: 1rem;
-}
-#bloco5 .product-card {
-  background: rgba(17, 17, 17, 0.85);
-  border: 1px solid #333;
-  border-radius: 12px;
-  padding: 1rem;
-  text-align: center;
-  font-size: 0.9rem;
-  cursor: pointer;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 0.5rem;
-  width: 100%;
-}
-#bloco5 .product-card img {
-  width: 100%;
-  border-radius: 8px;
-  object-fit: cover;
-}
-#bloco5 .card-controls {
-  display: flex;
-  justify-content: center;
-  gap: 1rem;
-  width: 100%;
-}
-#bloco5 .card-controls .arrow {
-  background: rgba(0, 0, 0, 0.6);
-  color: #fff;
-  border: none;
-  padding: 0.5rem 0.75rem;
-  border-radius: 9999px;
-  cursor: pointer;
-  font-size: 1.2rem;
-}
-
-/* BLOCO 6 - EXTRAS */
-#bloco6 .card-display {
-  display: flex;
-  flex-direction: column;
-  align-items: flex-start;
-  justify-content: center;
-  position: absolute;
-  right: 10vw;
-  top: 10%;
-  width: clamp(240px, 28%, 300px);
-  gap: 1rem;
-}
-#bloco6 .product-card {
-  background: rgba(17, 17, 17, 0.85);
-  border: 1px solid #333;
-  border-radius: 12px;
-  padding: 1rem;
-  text-align: center;
-  font-size: 0.9rem;
-  cursor: pointer;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 0.5rem;
-  width: 100%;
-  z-index: 13;
-}
-#bloco6 .product-card img {
-  width: 100%;
-  border-radius: 8px;
-  object-fit: cover;
-}
-#bloco6 .card-controls {
-  display: flex;
-  justify-content: center;
-  gap: 1rem;
-  width: 100%;
-}
-#bloco6 .card-controls .arrow {
-  background: rgba(0, 0, 0, 0.6);
-  color: #fff;
-  border: none;
-  padding: 0.5rem 0.75rem;
-  border-radius: 9999px;
-  cursor: pointer;
-  font-size: 1.2rem;
-}
-.botao-personagem {
-  position: absolute;
-  bottom: 1rem;
-  right: 1rem;
-  width: 34px;
-  height: 34px;
-  background: #9333ea;
-  border-radius: 50%;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  cursor: pointer;
-  z-index: 30;
-  box-shadow: 0 0 6px #9333ea;
-  transition: transform 0.2s ease;
-}
-
-.botao-personagem:hover {
-  transform: scale(1.1);
-}
-
-.botao-personagem img {
-  width: 20px;
-  height: 20px;
-  filter: invert(1);
-}
-
-.modal-personagem {
-  position: absolute;
-  bottom: 4.5rem;
-  right: 1rem;
-  background: rgba(0, 0, 0, 0.85);
-  color: #fff;
-  font-size: 0.85rem;
-  padding: 1rem;
-  border-radius: 10px;
-  max-width: 220px;
-  z-index: 40;
-  box-shadow: 0 0 10px #9333ea88;
-}
-
-.modal-personagem.escondido {
-  display: none;
-}
-
-.modal-personagem .conteudo-modal {
-  pointer-events: none;
-}
-#botao-modal img {
-  border-radius: 50%;
-  width: 40px;
-  height: 40px;
-  object-fit: cover;
-}
-#botao-carrinho {
-  position: fixed;
-  top: 20px;
-  right: 20px;
-  width: 60px;
-  height: 60px;
-  border-radius: 12px;
-  background-color: #9333ea; /* roxo */
-  border: 2px solid #fff;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  z-index: 50;
-  cursor: pointer;
-  transition: transform 0.2s ease;
-}
-#botao-carrinho:hover {
-  transform: scale(1.05);
-}
-#botao-carrinho img {
-  width: 55px;
-  height: 55px;
-}
-.modal-carrinho {
-  position: fixed;
-  top: 60px;
-  right: 20px;
-  width: 300px;
-  background: #111;
-  border: 2px solid #9333ea;
-  border-radius: 12px;
-  padding: 1rem;
-  z-index: 49;
-  color: #fff;
-  box-shadow: 0 0 20px rgba(147, 51, 234, 0.5);
-}
-.modal-carrinho.escondido {
-  display: none;
-}
-.modal-carrinho h3 {
-  margin-bottom: 0.5rem;
-}
-.modal-carrinho ul {
-  list-style: none;
-  padding: 0;
-  margin-bottom: 1rem;
-}
-.modal-carrinho li {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  background: #222;
-  padding: 6px 10px;
-  border-radius: 6px;
-  margin-bottom: 6px;
-  font-size: 0.85rem;
-}
-.modal-carrinho li button {
-  background: transparent;
-  border: none;
-  color: #f43f5e;
-  font-weight: bold;
-  cursor: pointer;
-}
-.modal-carrinho button {
-  width: 100%;
-  padding: 0.5rem;
-  background: #9333ea;
-  color: white;
-  border: none;
-  border-radius: 8px;
-  font-weight: bold;
-  cursor: pointer;
-}
-
-</style>
-<script>
-  function goTo(id) {
-    const el = document.getElementById(id);
-    if (el) el.scrollIntoView({ behavior: 'smooth' });
-  }
-</script>
+    :root{
+      --roxo:#a855f7; --roxo-600:#9333ea; --roxo-300:#c084fc;
+      --dourado:#facc15; --cinza:#1b1b1b; --fundo:#0a0a0a; --claro:#f4f4f4; --borda:#2b2b2b;
+    }
+    *{margin:0;padding:0;box-sizing:border-box}
+    html,body{height:100%}
+    body{
+      font-family:'Unbounded',system-ui,-apple-system,Segoe UI,Roboto,Ubuntu,'Open Sans',sans-serif;
+      background:radial-gradient(1200px 800px at 70% -10%, rgba(168,85,247,.12), transparent 60%) , var(--fundo);
+      color:var(--claro);
+      overflow-x:hidden;
+    }/* ===== Layout ===== */
+.app{display:flex;min-height:100dvh}
+.nav-lateral{
+  width:86px;flex:0 0 86px;background:linear-gradient(180deg,#101010,#151515);
+  border-right:1px solid var(--borda);position:sticky;top:0;height:100dvh;z-index:20
+}
+.nav-lateral .logo{
+  display:flex;align-items:center;justify-content:center;height:66px;border-bottom:1px solid var(--borda)
+}
+.nav-lateral .logo img{width:46px;filter:drop-shadow(0 0 6px #a855f7)}
+.nav-menu{display:flex;flex-direction:column}
+.nav-btn{appearance:none;background:none;border:0;color:#9ca3af;cursor:pointer;padding:.9rem .4rem;border-bottom:1px solid var(--borda);font-size:.8rem;letter-spacing:.02em}
+.nav-btn:hover{background:#0f0f0f;color:#d1d5db}
+.nav-btn.ativo{background:linear-gradient(90deg, rgba(168,85,247,.18), transparent);color:var(--roxo);font-weight:700;box-shadow:inset 3px 0 0 var(--roxo)}
+
+main{
+  flex:1;min-width:0;position:relative
+}
+
+/* Topbar + Cart */
+.topbar{position:sticky;top:0;z-index:30;backdrop-filter:blur(8px);background:rgba(10,10,10,.6);border-bottom:1px solid var(--borda)}
+.topbar-inner{display:flex;align-items:center;justify-content:space-between;gap:1rem;padding:.8rem 1rem}
+.titulo{font-size:1.05rem;color:var(--roxo);text-shadow:0 0 8px rgba(168,85,247,.45)}
+.cart-btn{position:relative;display:inline-flex;align-items:center;justify-content:center;width:44px;height:44px;border-radius:10px;background:rgba(0,0,0,.7);border:1px solid var(--roxo);box-shadow:0 0 12px rgba(168,85,247,.45);cursor:pointer}
+.cart-btn:hover{box-shadow:0 0 16px rgba(168,85,247,.7)}
+.cart-btn img{width:22px;height:22px;filter:drop-shadow(0 0 6px var(--roxo))}
+.cart-badge{position:absolute;top:-6px;right:-6px;background:#ef4444;color:white;border-radius:999px;font-size:.7rem;padding:2px 6px;line-height:1}
+
+/* Seções */
+.sections{scroll-behavior:smooth}
+section{min-height:100dvh;padding:2rem 1rem;display:grid;place-items:center;position:relative}
+.bloco{width:min(880px,92vw);margin-inline:auto}
+.bloco header{text-align:center;margin-bottom:1rem}
+.bloco h2{font-size:1.3rem;color:var(--roxo);text-shadow:0 0 10px var(--roxo)}
+.lead{opacity:.85;max-width:36ch;margin:.5rem auto 0;text-align:center}
+
+/* Product Rail (um card por categoria – swipe / arrows) */
+.rail{position:relative;display:flex;align-items:center;justify-content:center}
+.card{position:relative;display:block;width:min(360px,92vw);background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.08);border-radius:14px;padding:1rem;box-shadow:0 0 18px rgba(168,85,247,.18);backdrop-filter:blur(12px);transition:transform .25s ease}
+.card:hover{transform:translateY(-2px)}
+.card img{width:100%;aspect-ratio:4/3;object-fit:cover;border-radius:10px;margin:.5rem 0}
+.card h3{font-size:1.1rem;margin-bottom:.25rem}
+.rarity{font-size:.85rem;color:var(--roxo);font-weight:700;margin-bottom:.35rem}
+.price{display:flex;gap:.5rem;align-items:baseline;margin:.35rem 0}
+.price .brl,.price .coin{color:var(--dourado);font-weight:800}
+.actions{display:grid;gap:.5rem}
+.btn{--bg:var(--roxo);--fg:#0a0a0a;appearance:none;border:1px solid var(--roxo);background:var(--bg);color:var(--fg);font-weight:800;border-radius:10px;padding:.6rem 1rem;cursor:pointer}
+.btn.secondary{--bg:transparent;--fg:var(--roxo)}
+.btn:disabled{opacity:.55;cursor:not-allowed}
+
+.badge{position:absolute;top:.6rem;left:.6rem;background:var(--roxo);color:#0a0a0a;font-weight:800;font-size:.75rem;padding:.2rem .45rem;border-radius:6px}
+
+.nav-arrow{position:absolute;top:50%;transform:translateY(-50%);background:rgba(0,0,0,.4);border:0;color:white;font-size:1.6rem;border-radius:10px;padding:.4rem .6rem;cursor:pointer}
+.nav-arrow:hover{background:rgba(168,85,247,.65)}
+.arrow-prev{left:-.25rem} .arrow-next{right:-.25rem}
+@media(max-width:768px){.nav-arrow{display:none}}
+
+/* Cart panel */
+.cart-panel{position:fixed;right:1rem;top:66px;width:min(320px,92vw);background:#0b0b0b;border:1px solid var(--roxo);border-radius:12px;box-shadow:0 0 22px rgba(168,85,247,.35);padding:1rem;z-index:50;display:none}
+.cart-panel.open{display:block}
+.cart-title{font-size:1rem;color:#fff;margin-bottom:.7rem}
+.cart-list{display:grid;gap:.6rem;max-height:260px;overflow:auto}
+.cart-item{display:grid;grid-template-columns:44px 1fr auto;gap:.6rem;align-items:center;background:rgba(0,0,0,.55);border:1px solid var(--roxo);border-radius:10px;padding:.5rem}
+.cart-item img{width:44px;height:44px;border-radius:8px;object-fit:cover}
+.cart-item .name{font-size:.9rem}
+.cart-item .meta{font-size:.78rem;opacity:.7}
+.cart-item .rm{appearance:none;background:none;border:0;color:#f87171;font-size:1.1rem;cursor:pointer}
+.cart-total{margin-top:.6rem;border-top:1px solid var(--borda);padding-top:.6rem}
+.cart-total .line{display:flex;justify-content:space-between;margin:.2rem 0}
+.cart-total .withfee{color:var(--roxo);text-shadow:0 0 4px var(--roxo)}
+.pay-select, .input{width:100%;background:#000;border:1px solid var(--roxo);border-radius:8px;color:#fff;padding:.5rem;font-size:.9rem;margin:.4rem 0}
+
+/* Info drawer */
+.info{position:fixed;inset:auto 0 0 auto;width:min(360px,92vw);height:95dvh;background:#0a0a0a;border-left:2px solid var(--roxo);box-shadow:-2px 0 12px var(--roxo);padding:1rem;transform:translateX(100%);transition:transform .35s ease;z-index:60;overflow:auto}
+.info.open{transform:translateX(0)}
+.info h3{color:var(--roxo);margin-bottom:.6rem}
+.info img{width:100%;border-radius:10px;margin:.5rem 0}
+.info p{font-size:.9rem;line-height:1.45;color:#d1d5db}
+.info .close{position:absolute;top:.6rem;right:.6rem;appearance:none;background:none;border:0;color:#f87171;font-size:1.4rem;cursor:pointer}
+
+/* Brasas Canvas */
+#brasasCanvas{position:fixed;inset:0;z-index:-1;pointer-events:none}
+html{-webkit-tap-highlight-color:transparent}
+
+  </style>
 </head>
 <body>
-
-<!-- Desktop only -->
-<div class="desktop-visual">
-  <div id="container-desktop">
-   
-  <!-- Menu lateral fixo -->
-  <div class="menu">
-    <button onclick="goTo('bloco1')">Início</button>
-    <button onclick="goTo('bloco2')">Mangás</button>
-    <button onclick="goTo('bloco3')">Animes</button>
-    <button onclick="goTo('bloco4')">Ebooks</button>
-    <button onclick="goTo('bloco5')">Mentorias</button>
-    <button onclick="goTo('bloco6')">Extras</button>
-  </div>
-<!-- Botão do Carrinho -->
-<button id="botao-carrinho" onclick="abrirCarrinho()">
-  <img src="assets/icons/cart.png" alt="Carrinho" />
-</button>
-
-<!-- BLOCO 1 -->
-<section id="bloco1">
-  <div class="section-content" style="background-image: url('assets/bg-oriental.jpg'); position: relative;">
-<div id="vagalumes">
-  <div class="vagalume"></div>
-  <div class="vagalume"></div>
-  <div class="vagalume"></div>
-  <div class="vagalume"></div>
-  <div class="vagalume"></div>
-  <div class="vagalume"></div>
-  <div class="vagalume"></div>
-  <div class="vagalume"></div>
-  <div class="vagalume"></div>
-</div>
-<!-- Botão para abrir modal -->
-<div class="botao-personagem" onclick="abrirModal(this)">
-  <img src="assets/icons/hood-icon.png" alt="Personagem" />
-</div>
-
-<!-- Modal do personagem -->
-<div class="modal-personagem escondido" onclick="fecharTodosModais()">
-  <div class="conteudo-modal">
-    <p><h3>Mercador das Sombras</h3>
-<p>
-Um lacaio do Vazio em missão secreta. À primeira vista, parece apenas um vendedor excêntrico,
-mas é o responsável por guardar os artefatos e convidar visitantes intrigantes para passagens ocultas.
-Ele é o único com acesso ao sistema de compras e ao carrinho — nada sai da loja sem passar por ele.
-</p></p>
-  </div>
-</div>
-    <h1 class="titulo-bloco">Tenda Principal</h1>
-  <!-- Foreground do topo esquerdo -->
-  <img src="assets/mato-topo.png" class="mato-topo" alt="folhagem topo">
-
-  <!-- Foreground do gramado inferior -->
-  <img src="assets/gramado-bottom.png" class="gramado-bottom" alt="gramado inferior">
-    <!-- NPC Mercador -->
-    <img src="assets/npc-mercador.png" alt="NPC Mercador" class="npc-mercador" onclick="falar('bloco1')">
-<div class="fala escondida" id="fala-bloco1"></div>
+  <!-- Background -->
+  <canvas id="brasasCanvas" aria-hidden="true"></canvas>  <div class="app">
+    <!-- Nav -->
+    <aside class="nav-lateral" role="navigation" aria-label="Seções da loja">
+      <div class="logo"><img src="assets/images/logo noheroes.png" alt="NoHeroes"></div>
+      <nav class="nav-menu">
+        <button class="nav-btn ativo" data-idx="0">Início</button>
+        <button class="nav-btn" data-idx="1">Mangás</button>
+        <button class="nav-btn" data-idx="2">Animes</button>
+        <button class="nav-btn" data-idx="3">Ebooks</button>
+        <button class="nav-btn" data-idx="4">Mentorias</button>
+        <button class="nav-btn" data-idx="5">Extras</button>
+      </nav>
+    </aside><!-- Main -->
+<main>
+  <div class="topbar">
+    <div class="topbar-inner">
+      <div class="titulo">Loja NoHeroes</div>
+      <button id="btnCart" class="cart-btn" aria-haspopup="true" aria-controls="cartPanel" aria-expanded="false">
+        <img src="assets/icons/cart.png" alt="Carrinho">
+        <span id="cartBadge" class="cart-badge">0</span>
+      </button>
     </div>
-</section>
-
-<div class="espacador"></div>
-
-<!-- BLOCO 2 -->
-<section id="bloco2">
-  <div class="section-content" style="background-image: url('assets/bg-subterraneo-1.jpg'); position: relative;">
-    <h2 class="titulo-bloco cor-roxa">Mangás</h2>
-
-    <!-- Partículas Roxas -->
-    <div id="particulas-roxas"></div>
-<!-- Botão para abrir modal -->
-<div class="botao-personagem" onclick="abrirModal(this)">
-  <img src="assets/icons/hood-icon.png" alt="Personagem" />
-</div>
-
-<!-- Modal do personagem -->
-<div class="modal-personagem escondido" onclick="fecharTodosModais()">
-  <div class="conteudo-modal">
-    <p><h3>Vassala Sombria</h3>
-<p>
-Fiel serva do mesmo mestre do Mercador, atua como segurança e avaliadora dos visitantes.
-Sua frieza e lealdade inquebrantável a tornam implacável. Reluta em interações humanas,
-mas há quem diga que uma boa conversa ou uma oferta irresistível podem fazê-la hesitar.
-</p></p>
   </div>
-</div>
-    <div class="card-display">
-      <div class="product-card" id="card-bloco2" onclick="falar('bloco2')">
-        <em style="opacity:.4">Carregando mangás...</em>
+
+  <div class="sections">
+    <!-- Início -->
+    <section id="sec-0">
+      <div class="bloco">
+        <header>
+          <h2>Bem-vindo à Loja</h2>
+          <p class="lead">Explore itens, conteúdos e experiências do universo <strong>NoHeroes</strong> – roxo x dourado, brasas e muito estilo.</p>
+        </header>
       </div>
-      <div class="card-controls">
-        <button class="arrow left" onclick="navegarCardBloco2(-1)">&larr;</button>
-        <button class="arrow right" onclick="navegarCardBloco2(1)">&rarr;</button>
-      </div>
+    </section>
+
+    <!-- Categorias -->
+    <section id="sec-1"><div class="bloco"><header><h2>Mangás</h2></header><div class="rail"><button class="nav-arrow arrow-prev" data-cat="Mangá">‹</button><article id="card-Mangá" class="card" aria-live="polite"></article><button class="nav-arrow arrow-next" data-cat="Mangá">›</button></div></div></section>
+    <section id="sec-2"><div class="bloco"><header><h2>Animes</h2></header><div class="rail"><button class="nav-arrow arrow-prev" data-cat="Anime">‹</button><article id="card-Anime" class="card" aria-live="polite"></article><button class="nav-arrow arrow-next" data-cat="Anime">›</button></div></div></section>
+    <section id="sec-3"><div class="bloco"><header><h2>Ebooks</h2></header><div class="rail"><button class="nav-arrow arrow-prev" data-cat="Ebook">‹</button><article id="card-Ebook" class="card" aria-live="polite"></article><button class="nav-arrow arrow-next" data-cat="Ebook">›</button></div></div></section>
+    <section id="sec-4"><div class="bloco"><header><h2>Mentorias</h2></header><div class="rail"><button class="nav-arrow arrow-prev" data-cat="Mentoria">‹</button><article id="card-Mentoria" class="card" aria-live="polite"></article><button class="nav-arrow arrow-next" data-cat="Mentoria">›</button></div></div></section>
+    <section id="sec-5"><div class="bloco"><header><h2>Extras</h2></header><div class="rail"><button class="nav-arrow arrow-prev" data-cat="Extras">‹</button><article id="card-Extras" class="card" aria-live="polite"></article><button class="nav-arrow arrow-next" data-cat="Extras">›</button></div></div></section>
+  </div>
+</main>
+
+  </div>  <!-- Cart Panel -->  <aside id="cartPanel" class="cart-panel" role="dialog" aria-modal="false" aria-labelledby="cartTitle">
+    <h3 id="cartTitle" class="cart-title">Seu carrinho</h3>
+    <div id="cartList" class="cart-list"></div>
+    <div class="cart-total">
+      <div class="line"><span>Subtotal</span><span id="cartSubtotal">R$ 0,00</span></div>
+      <select id="payMethod" class="pay-select" aria-label="Método de pagamento">
+        <option value="">Selecione...</option>
+        <option value="mercadopago">Mercado Pago (4,99%)</option>
+        <option value="paypal">PayPal (4,79% + R$0,60)</option>
+        <option value="moeda">Moeda Interna (0%)</option>
+      </select>
+      <div class="line withfee"><span>Total com taxa</span><span id="cartWithFee">R$ 0,00</span></div>
+      <div id="payAction"></div>
     </div>
+  </aside>  <!-- Info Drawer -->  <aside id="infoDrawer" class="info" role="dialog" aria-modal="false" aria-labelledby="infoTitle">
+    <button class="close" id="infoClose" aria-label="Fechar">✕</button>
+    <h3 id="infoTitle"></h3>
+    <img id="infoImg" alt="">
+    <p id="infoDesc"></p>
+  </aside>  <script>
+  // ===== Auth redirect (mantém comportamento, mas evita canvas no <head>) =====
+  (function(){
+    const token = localStorage.getItem('NoHeroes_token');
+    if(!token){
+      console.warn('⚠️ Token ausente no localStorage');
+      location.href = 'login.html';
+    } else {
+      window.tokenJWT = token;
+    }
+  })();
 
-    <img src="assets/npc-manga.png" alt="NPC Mangás" class="npc-manga" onclick="falar('bloco2')" />
-    <div class="fala escondida" id="fala-bloco2"></div>
-  </div>
-</section>
+  // ===== Helpers =====
+  const fmtBRL = n => (n||0).toLocaleString('pt-BR',{style:'currency',currency:'BRL'});
+  const taxas = { mercadopago:0.0499, paypalPerc:0.0479, paypalFixo:0.60, moeda:0 };
+  const withFee = (subtotal, m) => m==='mercadopago'? subtotal*(1+taxas.mercadopago) : m==='paypal'? subtotal*(1+taxas.paypalPerc)+taxas.paypalFixo : subtotal;
 
-<div class="espacador"></div>
+  const CARD_IDS = { 'Mangá':'card-Mangá','Anime':'card-Anime','Ebook':'card-Ebook','Mentoria':'card-Mentoria','Extras':'card-Extras' };
+  const SECTIONS = ['sec-0','sec-1','sec-2','sec-3','sec-4','sec-5'];
 
-<!-- BLOCO 3 -->
-<section id="bloco3">
-  <div class="section-content" style="background-image: url('assets/bg-subterraneo-2.jpg'); position: relative;">
+  let produtos = { 'Mangá':[], 'Anime':[], 'Ebook':[], 'Mentoria':[], 'Extras':[] };
+  let idx = { 'Mangá':0, 'Anime':0, 'Ebook':0, 'Mentoria':0, 'Extras':0 };
+  let cart = [];
 
-    <h2 class="titulo-bloco cor-azul">Animes</h2>
+  // ===== UI bindings =====
+  const qs = s=>document.querySelector(s);
+  const qsa=s=>[...document.querySelectorAll(s)];
+  const btnCart = qs('#btnCart'); const cartPanel=qs('#cartPanel');
+  const cartBadge=qs('#cartBadge'); const cartList=qs('#cartList');
+  const cartSubtotal=qs('#cartSubtotal'); const cartWithFee=qs('#cartWithFee');
+  const payMethod=qs('#payMethod'); const payAction=qs('#payAction');
+  const infoDrawer=qs('#infoDrawer'); const infoClose=qs('#infoClose');
 
-    <!-- Nevoeiro animado -->
-    <div id="nevoeiro-bloco3"></div>
-<!-- Botão para abrir modal -->
-<div class="botao-personagem" onclick="abrirModal(this)">
-  <img src="assets/icons/hood-icon.png" alt="Personagem" />
-</div>
+  // Nav lateral → rolagem suave
+  qsa('.nav-btn').forEach(b=>b.addEventListener('click',()=>{
+    const i = Number(b.dataset.idx); qsa('.nav-btn').forEach(x=>x.classList.toggle('ativo',x===b));
+    document.getElementById(SECTIONS[i]).scrollIntoView({behavior:'smooth'});
+  }));
 
-<!-- Modal do personagem -->
-<div class="modal-personagem escondido" onclick="fecharTodosModais()">
-  <div class="conteudo-modal">
-    <p><h3>O Velho da Gruta</h3>
-<p>
-Preso há séculos em uma caverna esquecida, sobrevive em meio à escuridão vendendo orbes
-de memória em troca de mantimentos. Suas palavras são desconexas, mas carregadas de sabedoria
-e pistas sobre mundos perdidos. Ninguém sabe seu verdadeiro nome — apenas que ele observa... sempre.
-</p></p>
-  </div>
-</div>
-    <div class="card-display">
-      <div class="product-card" id="card-bloco3" onclick="falar('bloco3')">
-        <em style="opacity:.4">Carregando animes...</em>
-      </div>
-      <div class="card-controls">
-        <button class="arrow left" onclick="navegarCardBloco3(-1)">&larr;</button>
-        <button class="arrow right" onclick="navegarCardBloco3(1)">&rarr;</button>
-      </div>
-    </div>
+  // Setas
+  qsa('.nav-arrow').forEach(el=>{
+    el.addEventListener('click',()=> navigate(el.dataset.cat, el.classList.contains('arrow-next')? +1 : -1));
+  });
 
-    <img src="assets/npc-anime.png" alt="NPC Animes" class="npc-anime" onclick="falar('bloco3')" />
-    <div class="fala escondida" id="fala-bloco3"></div>
+  // Carrinho toggle
+  btnCart.addEventListener('click',()=>{
+    cartPanel.classList.toggle('open');
+    btnCart.setAttribute('aria-expanded', cartPanel.classList.contains('open'));
+    renderCart();
+  });
 
-  </div>
-</section>
+  payMethod.addEventListener('change',()=>{ renderCartTotals(); renderPayCTA(); });
 
-<div class="espacador"></div>
+  // Drawer Info
+  infoClose.addEventListener('click',()=> infoDrawer.classList.remove('open'));
 
-<!-- HTML atualizado do bloco 4 (Ebooks) -->
-<section id="bloco4">
-  <div class="section-content" style="background-image: url('assets/bg-subterraneo-3.jpg'); position: relative;"><!-- Botão para abrir modal -->
-<div class="botao-personagem" onclick="abrirModal(this)">
-  <img src="assets/icons/hood-icon.png" alt="Personagem" />
-</div>
-
-<!-- Modal do personagem -->
-<div class="modal-personagem escondido" onclick="fecharTodosModais()">
-  <div class="conteudo-modal">
-    <p><h3>Fories Ortiz</h3>
-<p>
-A armadura viva que um dia foi o general supremo de um reino agora extinto.
-Carrega em si as almas de todo seu batalhão. Isolado na biblioteca ancestral,
-protege os livros amaldiçoados e os grimórios proibidos de mãos erradas.
-Seu olhar silencioso julga se o leitor é digno... ou tolo.
-</p></p>
-  </div>
-</div>
-    <h2 class="titulo-bloco cor-verde">Ebooks</h2><div class="card-display">
-  <div class="product-card" id="card-bloco4" onclick="falar('bloco4')">
-    <em style="opacity:.4">Carregando ebooks...</em>
-  </div>
-  <div class="card-controls">
-    <button class="arrow left" onclick="navegarCardBloco4(-1)">&larr;</button>
-    <button class="arrow right" onclick="navegarCardBloco4(1)">&rarr;</button>
-  </div>
-</div>
-
-<img src="assets/npc-ebook.png" alt="NPC Ebooks" class="npc-ebook" onclick="falar('bloco4')" />
-<div class="fala escondida" id="fala-bloco4"></div>
-
-  </div>
-</section>
-
-<div class="espacador"></div>
-
-<!-- HTML atualizado do bloco 5 (Mentorias) -->
-<section id="bloco5">
-  <div class="section-content" style="background-image: url('assets/bg-subterraneo-4.jpg'); position: relative;">
-
-<div id="particulas-vermelhas"></div><!-- Botão para abrir modal -->
-<div class="botao-personagem" onclick="abrirModal(this)">
-  <img src="assets/icons/hood-icon.png" alt="Personagem" />
-</div>
-
-<!-- Modal do personagem -->
-<div class="modal-personagem escondido" onclick="fecharTodosModais()">
-  <div class="conteudo-modal">
-    <p><h3>Ryukess, o Draconiano Ladino</h3>
-<p>
-Último sobrevivente de sua linhagem extinta, mestre das artes proibidas e dos ensinamentos perdidos.
-Motivado por vingança e sabedoria, abriu sua mente e seu esconderijo para oferecer mentorias profundas
-— únicas em todo o continente. Mas cuidado: seus pactos não são reversíveis.
-</p></p>
-  </div>
-</div>
-    <h2 class="titulo-bloco cor-vermelho">Mentorias</h2><div class="card-display">
-
-  <div class="product-card" id="card-bloco5" onclick="falar('bloco5')">
-    <em style="opacity:.4">Carregando mentorias...</em>
-  </div>
-  <div class="card-controls">
-    <button class="arrow left" onclick="navegarCardBloco5(-1)">&larr;</button>
-    <button class="arrow right" onclick="navegarCardBloco5(1)">&rarr;</button>
-  </div>
-</div>
-
-<img src="assets/npc-mentoria.png" alt="NPC Mentoria" class="npc-mentoria" onclick="falar('bloco5')" />
-<div class="fala escondida" id="fala-bloco5"></div>
-
-  </div>
-</section>
-
-<div class="espacador"></div>
-
-<!-- HTML atualizado do bloco 6 (Extras) -->
-<section id="bloco6">
-  <div class="section-content" style="background-image: url('assets/bg-subterraneo-5.jpg'); position: relative;">
-
-<div id="kanji-chuva"></div>
-<!-- Botão para abrir modal -->
-<div class="botao-personagem" onclick="abrirModal(this)">
-  <img src="assets/icons/hood-icon.png" alt="Personagem" />
-</div>
-
-<!-- Modal do personagem -->
-<div class="modal-personagem escondido" onclick="fecharTodosModais()">
-  <div class="conteudo-modal">
-    <p><h3>O Colecionador</h3>
-<p>
-Apaixonado por criaturas raras, o Colecionador mantém em seus sarcófagos seres de todos os tipos.
-Sua origem e motivações são desconhecidas, mas sua presença é sempre seguida de silêncio e temor.
-Evite fazer perguntas... a curiosidade pode ter um preço.
-</p></p>
-  </div>
-</div>
-    <h2 class="titulo-bloco cor-dourado">Extras</h2><div class="card-display">
-
-  <div class="product-card" id="card-bloco6" onclick="falar('bloco6')">
-    <em style="opacity:.4">Carregando extras...</em>
-  </div>
-
-  <div class="card-controls">
-    <button class="arrow left" onclick="navegarCardBloco6(-1)">&larr;</button>
-    <button class="arrow right" onclick="navegarCardBloco6(1)">&rarr;</button>
-  </div>
-</div>
-
-<img src="assets/npc-extras.png" alt="NPC Extras" class="npc-extras" onclick="falar('bloco6')" />
-<div class="fala escondida" id="fala-bloco6"></div>
-
-  </div>
-</section>
-
-<div class="espacador"></div>
-
-<!-- Rodapé agora DENTRO do container -->
-<section id="rodape">
-  <div class="section-content footer-content">
-    <a href="linktree.html"
-      <p style="font-size: 0.85rem; color: #aaa; margin-top: 0.25rem;">Linktree</p>
-    </a>
-    <p>Explore. Escolha. Caia. Evolua.</p>
-    <p style="margin-top: 0.5rem;">Toda escolha tem um preço. Toda queda, uma razão.</p>
-    <p style="font-size: 0.75rem; margin-top: 1rem; color: #666;">© 2025 NoHeroes. Todos os direitos reservados.</p>
-  </div>
-</section>
-</div>
-
-<div class="espacador"></div>
-
-<div id="modal-carrinho" class="modal-carrinho escondido">
-  <div class="conteudo-carrinho">
-    <h3>Seu Carrinho</h3>
-    <ul id="lista-carrinho"></ul>
-    <button onclick="comprarAgora()">Comprar</button>
-  </div>
-</div>
-
-
- <script>
-  const falasRPG = {
-    // Desktop
-    bloco1: [
-  "Ora, ora, um visitante... ou seria um comprador? Escolha com cuidado, pois não há volta.",
-  "Cada botão que você vê é uma promessa. Algumas perigosas, todas irresistíveis.",
-  "As decisões feitas aqui moldarão mais que sua noite. Talvez moldem seu destino.",
-  "Veja bem... Um simples clique pode ser o começo de uma história da qual não escapará tão cedo.",
-  "Todos vêm apenas para olhar, mas saem carregando algo... Você também sentirá essa necessidade.",
-  "Posso guardar suas escolhas no carrinho... É claro, se tiver coragem suficiente para fazê-las.",
-  "Cuidado ao explorar a loja, algumas mercadorias têm um preço maior que ouro: elas custam sua paz.",
-  "Esteja atento às passagens ocultas, pois apenas os curiosos encontram aquilo que realmente buscam.",
-  "Ah, a sensação de possuir algo novo... Especialmente se esse 'algo' puder mudar seu mundo para sempre.",
-  "Vá em frente, toque nos botões... Eles foram feitos exatamente para seduzir pessoas como você.",
-  "Se você estiver preparado, tenho uma passagem secreta para produtos ainda mais... extraordinários.",
-  "Siga adiante, meu caro. A loja é uma teia, e você, a presa que adorará ficar presa."
-],
-    bloco2: [
-  "Não permitirei que toque em nada antes que o dinheiro esteja comigo!",
-  "Leve um e descubra o mistério por trás de Caelum.",
-  "Se está aqui o mestre deve ter autorizado sua visita, ao contrário nem estaria vivo...",
-  "Não subestime essas escrituras, o valor delas deveria ser bem mais alto.",
-  "Interessante... poucos chegaram tão perto dos meus segredos. Vai mesmo desistir agora?",
-  "Comprar é só o começo. O verdadeiro prazer é descobrir o que está escondido nas próximas páginas...",
-  "Continue assim e talvez eu abra uma exceção... somente desta vez, claro.",
-  "Você não vai querer partir sem levar algo... ou alguém... Não é mesmo?",
-  "Olhe mais de perto, visitante. Você sabe que deseja isso tanto quanto eu desejo ver você comprar.",
-  "Fique um pouco mais, escolha com cuidado. Prometo não machucá-lo... muito.",
-],
-    bloco3: [
-  "Essas orbes me mantiveram vivo quando a escuridão tentou me devorar... elas contam histórias que ninguém deveria esquecer.",
-  "Alimente este velho, e talvez eu deixe você assistir ao destino de civilizações que caíram no esquecimento.",
-  "Cada esfera é uma janela para o que já foi, e algumas contêm verdades que os deuses desejam apagar...",
-  "Se você tem coragem, aceite a faca. Ela é o preço para descobrir o que aconteceu com aqueles que entraram aqui antes de você.",
-  "Tantos mundos aprisionados nestas orbes... pegue uma e veja, mas cuidado para não se perder dentro delas.",
-  "Eles dizem que estou louco, mas são as vozes dessas orbes que me mantém lúcido. Você ousaria escutá-las também?"
-],
-    bloco4: [
-  "Nem todas as histórias devem ser lidas... mas talvez você seja digno.",
-  "Cada manuscrito aqui custou uma vida. Não desperdice essa chance única.",
-  "O poder dessas páginas pode erguer reinos ou destruí-los—use com sabedoria.",
-  "Protejo estes escritos até que alguém digno, talvez você, os reivindique.",
-  "Minha espada já quebrou mil lâminas, mas é o conhecimento que guardo que realmente estremece mundos.",
-  "Se você compreende o valor dessas palavras, talvez entenda minha solidão."
-],
-    bloco5: [
-  "Cada mentorado é uma lâmina nova na vingança do conhecimento. Você será afiado ou descartado?",
-  "Conhecimento é poder, e vingança é sabedoria aplicada. Qual dos dois te trouxe aqui hoje?",
-  "Muitos morrem antes de conhecerem os segredos que tenho. Não cometa o mesmo erro que eles.",
-  "Quem aprende comigo não recebe apenas lições, mas armas afiadas para batalhas inevitáveis.",
-  "Dizem que estou extinto... Mas quem domina o oculto nunca desaparece completamente, não é mesmo?",
-  "A ignorância matou meu irmão. Não permita que mate você também."
-],
-    bloco6: [
-  "Alguns chamam de bônus... Eu os chamo de espécimes raros.",
-  "Você deseja acesso ao que está atrás da porta? Hmm... interessante.",
-  "Esses fragmentos... cada um carrega resquícios de criaturas que já possuí.",
-  "Nem todos sobrevivem ao consumir o conteúdo VIP... Mas a tentativa é divertida.",
-  "Escolha algo único... antes que eu decida adicionar você à minha coleção.",
-  "O Extra não é supérfluo. É a diferença entre o esquecimento... e a eternidade."
-],
-  };
-
-  function falar(blocoId) {
-    const el = document.getElementById("fala-" + blocoId);
-    if (!el) return;
-    const frases = falasRPG[blocoId];
-    if (!frases) return;
-    const random = frases[Math.floor(Math.random() * frases.length)];
-    el.textContent = random;
-    el.classList.remove("escondida");
-    setTimeout(() => el.classList.add("escondida"), 5000);
-  }
-
-  function goTo(id) {
-    const el = document.getElementById(id);
-    if (el) el.scrollIntoView({ behavior: "smooth", block: "start" });
-  }
-
-  function iniciarVooVagalumes() {
-    const container = document.getElementById("vagalumes");
-    if (!container) return;
-    const cw = container.offsetWidth,
-      ch = container.offsetHeight;
-    const vagalumes = container.querySelectorAll(".vagalume");
-
-    vagalumes.forEach((el, i) => {
-      function mover() {
-        el.style.transform = `translate(${Math.random() * cw}px, ${
-          Math.random() * ch
-        }px)`;
-        setTimeout(mover, 6000 + Math.random() * 3000);
-      }
-      function piscar() {
-        (function loop() {
-          el.style.opacity = (Math.random() * 0.8 + 0.2).toFixed(2);
-          setTimeout(loop, 2000 + Math.random() * 4000);
-        })();
-      }
-      setTimeout(() => {
-        mover();
-        piscar();
-      }, i * 300);
-    });
-  }
-  window.addEventListener("DOMContentLoaded", iniciarVooVagalumes);
-
-  const produtosBloco2 = [
-  { nome: "ROAR Vol. 1", status: "em breve", imagem: "rebirth-thumb.jpg" },
-  { nome: "ROAR Vol. 2", status: "em breve", imagem: "rebirth-thumb.jpg" },
-  { nome: "ROAR Vol. 3", status: "em breve", imagem: "rebirth-thumb.jpg" },
-  { nome: "FREQ Vol. 1", status: "em breve", imagem: "freq-thumb.jpg" },
-  { nome: "Echoes Vol. 1", status: "em breve", imagem: "echoes-thumb.jpg" }
-];
-
-let indexAtualBloco2 = 0;
-
-function navegarCardBloco2(direcao) {
-  if (!produtosBloco2.length) return;
-  indexAtualBloco2 = (indexAtualBloco2 + direcao + produtosBloco2.length) % produtosBloco2.length;
-  renderizarCardBloco2();
-}
-
-function renderizarCardBloco2() {
-  const el = document.getElementById("card-bloco2");
-  if (!el) return;
-  const p = produtosBloco2[indexAtualBloco2];
-
-  el.innerHTML = `
-    <img src="assets/images/${p.imagem}" alt="${p.nome}" />
-    <strong>${p.nome}</strong>
-    <span style="opacity: 0.6;">(${p.status})</span>
-  `;
-}
-
-document.addEventListener("DOMContentLoaded", renderizarCardBloco2);
-
-const produtosBloco3 = [
-  { nome: "Anime 1", status: "em breve", imagem: "anime1-thumb.jpg" },
-  { nome: "Anime 2", status: "em breve", imagem: "anime2-thumb.jpg" },
-  { nome: "Anime 3", status: "em breve", imagem: "anime3-thumb.jpg" }
-];
-
-let indexAtualBloco3 = 0;
-function navegarCardBloco3(d) {
-  indexAtualBloco3 = (indexAtualBloco3 + d + produtosBloco3.length) % produtosBloco3.length;
-  renderizarCardBloco3();
-}
-function renderizarCardBloco3() {
-  const el = document.getElementById("card-bloco3");
-  if (!el) return;
-  const p = produtosBloco3[indexAtualBloco3];
-  el.innerHTML = `<img src="assets/images/${p.imagem}" alt="${p.nome}" /><strong>${p.nome}</strong><span style="opacity: 0.6;">(${p.status})</span>`;
-}
-document.addEventListener("DOMContentLoaded", renderizarCardBloco3);
-
-const produtosBloco4 = [
-  { nome: "eBook 1", status: "em breve", imagem: "ebook1-thumb.jpg" },
-  { nome: "eBook 2", status: "em breve", imagem: "ebook2-thumb.jpg" },
-  { nome: "eBook 3", status: "em breve", imagem: "ebook3-thumb.jpg" }
-];
-
-let indexAtualBloco4 = 0;
-function navegarCardBloco4(d) {
-  indexAtualBloco4 = (indexAtualBloco4 + d + produtosBloco4.length) % produtosBloco4.length;
-  renderizarCardBloco4();
-}
-function renderizarCardBloco4() {
-  const el = document.getElementById("card-bloco4");
-  if (!el) return;
-  const p = produtosBloco4[indexAtualBloco4];
-  el.innerHTML = `<img src="assets/images/${p.imagem}" alt="${p.nome}" /><strong>${p.nome}</strong><span style="opacity: 0.6;">(${p.status})</span>`;
-}
-document.addEventListener("DOMContentLoaded", renderizarCardBloco4);
-
-const produtosBloco5 = [
-  { nome: "Mentoria 1", status: "em breve", imagem: "mentoria1-thumb.jpg" },
-  { nome: "Mentoria 2", status: "em breve", imagem: "mentoria2-thumb.jpg" },
-  { nome: "Mentoria 3", status: "em breve", imagem: "mentoria3-thumb.jpg" }
-];
-
-let indexAtualBloco5 = 0;
-function navegarCardBloco5(d) {
-  indexAtualBloco5 = (indexAtualBloco5 + d + produtosBloco5.length) % produtosBloco5.length;
-  renderizarCardBloco5();
-}
-function renderizarCardBloco5() {
-  const el = document.getElementById("card-bloco5");
-  if (!el) return;
-  const p = produtosBloco5[indexAtualBloco5];
-  el.innerHTML = `<img src="assets/images/${p.imagem}" alt="${p.nome}" /><strong>${p.nome}</strong><span style="opacity: 0.6;">(${p.status})</span>`;
-}
-document.addEventListener("DOMContentLoaded", renderizarCardBloco5);
-
-const produtosBloco6 = [
-  { nome: "Arte Conceito", status: "em breve", imagem: "arte-thumb.jpg" },
-  { nome: "Soundtrack", status: "em breve", imagem: "soundtrack-thumb.jpg" },
-  { nome: "Conteúdo VIP", status: "em breve", imagem: "vip-thumb.jpg" }
-];
-
-let indexAtualBloco6 = 0;
-function navegarCardBloco6(d) {
-  indexAtualBloco6 = (indexAtualBloco6 + d + produtosBloco6.length) % produtosBloco6.length;
-  renderizarCardBloco6();
-}
-function renderizarCardBloco6() {
-  const el = document.getElementById("card-bloco6");
-  if (!el) return;
-  const p = produtosBloco6[indexAtualBloco6];
-  el.innerHTML = `<img src="assets/images/${p.imagem}" alt="${p.nome}" /><strong>${p.nome}</strong><span style="opacity: 0.6;">(${p.status})</span>`;
-}
-document.addEventListener("DOMContentLoaded", renderizarCardBloco6);
-
-  function gerarParticulasRoxas() {
-    const container = document.getElementById("particulas-roxas");
-    if (!container) return;
-
-    for (let i = 0; i < 25; i++) {
-      const p = document.createElement("div");
-      p.classList.add("particula-roxa");      // <— aqui!
-      p.style.left = Math.random() * 100 + "%";
-      p.style.bottom = "0";
-      p.style.animationDelay = Math.random() * 4 + "s";
-      p.style.animationDuration = (3 + Math.random() * 2) + "s";
-      const size = 4 + Math.random() * 6 + "px";
-      p.style.width = size;
-      p.style.height = size;
-      container.appendChild(p);
+  // ===== Data load =====
+  async function loadProducts(){
+    try{
+      const res = await fetch('https://api.noheroes.com.br/shop');
+      const json = await res.json();
+      (json.data||[]).forEach(p=>{
+        const cat = normalizeCat(p.category);
+        if(cat && produtos[cat]) produtos[cat].push(p);
+      });
+      renderAllCards();
+      attachSwipe();
+    }catch(e){
+      console.error('Erro ao carregar produtos', e);
+      // estados vazios
+      Object.keys(CARD_IDS).forEach(cat=>{
+        const c = document.getElementById(CARD_IDS[cat]);
+        if(c) c.innerHTML = `<div style="text-align:center;opacity:.8;padding:.8rem">Falha ao carregar. <button class='btn secondary' onclick='location.reload()'>Tentar novamente</button></div>`;
+      });
     }
   }
 
-  document.addEventListener("DOMContentLoaded", gerarParticulasRoxas);
-
-function gerarParticulasVermelhas() {
-  const container = document.getElementById("particulas-vermelhas");
-  if (!container) return;
-
-  for (let i = 0; i < 50; i++) {
-    const barra = document.createElement("div");
-    barra.classList.add("barra-vermelha");
-    barra.style.left = Math.random() * 100 + "%";
-    barra.style.bottom = "0";
-    barra.style.animationDuration = (2 + Math.random() * 3) + "s";
-    barra.style.animationDelay = (Math.random() * 5) + "s";
-    container.appendChild(barra);
-  }
-}
-
-document.addEventListener("DOMContentLoaded", gerarParticulasVermelhas);
-
-function gerarKanjiChuva() {
-  const container = document.getElementById("kanji-chuva");
-  if (!container) return;
-
-  const kanjis = ["収集者", "破壊者", "収集", "殺す", "進化", "増殖", "支配", "制御"];
-
-  function criarKanji() {
-    const span = document.createElement("span");
-    span.classList.add("kanji");
-
-    const kanji = kanjis[Math.floor(Math.random() * kanjis.length)];
-    span.textContent = kanji[Math.floor(Math.random() * kanji.length)];
-
-    span.style.left = `${Math.random() * 100}%`;
-    span.style.top = "-5%";
-    span.style.fontSize = `${0.8 + Math.random()}rem`;
-    span.style.animationDuration = `${6 + Math.random() * 6}s`;
-
-    container.appendChild(span);
-
-    // Remove o kanji após 14s para evitar sobrecarga
-    setTimeout(() => {
-      if (span.parentElement) span.remove();
-    }, 10000);
+  function normalizeCat(c){
+    if(!c) return '';
+    const k = String(c).toLowerCase();
+    if(k.startsWith('mang')) return 'Mangá';
+    if(k.startsWith('ani')) return 'Anime';
+    if(k.startsWith('ebo')) return 'Ebook';
+    if(k.startsWith('men')) return 'Mentoria';
+    if(k.startsWith('ext')) return 'Extras';
+    return '';
   }
 
-  setInterval(criarKanji, 150);
-}
-
-document.addEventListener("DOMContentLoaded", gerarKanjiChuva);
-function abrirModal(botao) {
-  // Fecha todos antes
-  document.querySelectorAll('.modal-personagem').forEach(modal => {
-    modal.classList.add('escondido');
-  });
-
-  // Abre o que pertence ao botão clicado
-  const modal = botao.nextElementSibling;
-  if (modal) modal.classList.remove('escondido');
-}
-
-function fecharTodosModais() {
-  document.querySelectorAll('.modal-personagem').forEach(modal => {
-    modal.classList.add('escondido');
-  });
-}
-
-// Fecha modal ao clicar fora de qualquer modal
-document.addEventListener('click', function (e) {
-  if (!e.target.closest('.botao-personagem') && !e.target.closest('.modal-personagem')) {
-    fecharTodosModais();
+  // ===== Cards =====
+  function renderAllCards(){
+    Object.keys(CARD_IDS).forEach(cat=> renderCard(cat));
   }
-});
-const carrinho = [];
 
-function abrirCarrinho() {
-  const modal = document.getElementById("modal-carrinho");
-  modal.classList.toggle("escondido");
-}
+  function renderCard(cat){
+    const list = produtos[cat]; const i = idx[cat] % Math.max(list.length,1); const c = document.getElementById(CARD_IDS[cat]);
+    if(!c) return;
+    if(!list.length){ c.innerHTML = `<div style="text-align:center;opacity:.8;padding:1rem">Sem itens nesta categoria.</div>`; return; }
 
-function adicionarAoCarrinho(produto) {
-  carrinho.push(produto);
-  atualizarCarrinho();
-}
+    const p = list[i];
+    const emBreve = /em\s*_?breve/i.test(String(p.status||''));
+    const priceParts = [];
+    if(p.priceReal) priceParts.push(`<span class='brl'>${fmtBRL(Number(p.priceReal))}</span>`);
+    if(p.priceCoins) priceParts.push(`<span class='coin'>${p.priceCoins} ✪</span>`);
+    const priceHTML = priceParts.length? priceParts.join(' / ') : `<span class='brl'>Gratuito</span>`;
 
-function removerDoCarrinho(index) {
-  carrinho.splice(index, 1);
-  atualizarCarrinho();
-}
+    const safeDesc = String(p.description||'Sem descrição.').replace(/`/g,"'").replace(/\\/g,'\\\\');
 
-function atualizarCarrinho() {
-  const lista = document.getElementById("lista-carrinho");
-  lista.innerHTML = "";
-
-  carrinho.forEach((item, i) => {
-    const li = document.createElement("li");
-    li.innerHTML = `
-      ${item}
-      <button onclick="removerDoCarrinho(${i})">X</button>
+    c.innerHTML = `
+      ${emBreve?`<span class='badge'>EM BREVE</span>`:''}
+      <button class='btn secondary' style='position:absolute;top:.6rem;right:.6rem' aria-label='Mais informações' onclick="showInfo(\`${p.name}\`,\`${p.imageUrl||p.image||''}\`,\`${safeDesc}\`)">i</button>
+      <img src='${p.imageUrl||p.image||''}' alt='${p.name}'>
+      <h3>${p.name}</h3>
+      <div class='rarity'>${p.rarity||''}</div>
+      <div class='price'>${priceHTML}</div>
+      <div class='actions'>
+        <button class='btn' ${emBreve? 'disabled' : ''} onclick="addToCart('${p.id}')">${emBreve? 'Em breve' : 'Adicionar ao carrinho'}</button>
+      </div>
     `;
-    lista.appendChild(li);
-  });
-}
+  }
 
-function comprarAgora() {
-  alert("Processando compra...");
-}
+  function attachSwipe(){
+    Object.keys(CARD_IDS).forEach(cat=>{
+      const el = document.getElementById(CARD_IDS[cat]); if(!el) return;
+      let sx=0, ex=0; el.addEventListener('touchstart',e=> sx=e.changedTouches[0].screenX,{passive:true});
+      el.addEventListener('touchend',e=>{ ex=e.changedTouches[0].screenX; if(ex<sx-30) navigate(cat, +1); else if(ex>sx+30) navigate(cat,-1); },{passive:true});
+    });
+  }
 
-</script>
-</body>
+  function navigate(cat, step){
+    const list = produtos[cat]||[]; if(!list.length) return;
+    idx[cat] = (idx[cat] + step + list.length) % list.length;
+    renderCard(cat);
+  }
+
+  // ===== Cart =====
+  function addToCart(id){
+    const p = Object.values(produtos).flat().find(x=> String(x.id)===String(id));
+    if(!p) return;
+    const existing = cart.find(x=> String(x.id)===String(id));
+    if(existing) existing.quantity += 1; else cart.push({ id:p.id, name:p.name, imageUrl:p.imageUrl||p.image||'', priceReal:Number(p.priceReal||p.price||0), quantity:1 });
+    renderCart();
+  }
+  function removeFromCart(id){ cart = cart.filter(x=> String(x.id)!==String(id)); renderCart(); }
+
+  function renderCart(){
+    cartList.innerHTML='';
+    let subtotal=0;
+    cart.forEach(i=>{ subtotal += (i.priceReal||0)*i.quantity; cartList.insertAdjacentHTML('beforeend', `
+      <div class='cart-item'>
+        <img src='${i.imageUrl}' alt='${i.name}'>
+        <div>
+          <div class='name'>${i.name}</div>
+          <div class='meta'>${i.quantity}× ${fmtBRL(i.priceReal||0)}</div>
+        </div>
+        <button class='rm' aria-label='Remover' onclick="removeFromCart('${i.id}')">×</button>
+      </div>`);
+    });
+    cartBadge.textContent = String(cart.reduce((s,i)=>s+i.quantity,0));
+    cartSubtotal.textContent = fmtBRL(subtotal);
+    renderCartTotals();
+    renderPayCTA();
+  }
+
+  function renderCartTotals(){
+    const subtotal = parseBRL(cartSubtotal.textContent);
+    cartWithFee.textContent = fmtBRL(withFee(subtotal, payMethod.value));
+  }
+
+  function renderPayCTA(){
+    const m = payMethod.value; const labels={mercadopago:'Pagar com Mercado Pago',paypal:'Pagar com PayPal',moeda:'Pagar com Moeda'};
+    payAction.innerHTML = m? `<button class='btn' id='btnCheckout'>${labels[m]}</button>` : '';
+    const btn = document.getElementById('btnCheckout'); if(btn) btn.addEventListener('click', checkout);
+  }
+
+  function parseBRL(s){
+    return Number(String(s||'0').replace(/R\$\s?/,'').replace(/\./g,'').replace(',', '.'))||0;
+  }
+
+  async function checkout(){
+    if(!cart.length){ alert('Seu carrinho está vazio.'); return; }
+    const method = payMethod.value; if(!method){ alert('Selecione um método de pagamento.'); return; }
+
+    const token = localStorage.getItem('NoHeroes_token')||'';
+    let email='';
+    try{ email = JSON.parse(atob(token.split('.')[1])).email || ''; }catch{ }
+    if(!email){ alert('Não consegui obter seu e-mail. Faça login novamente.'); return; }
+
+    const btn = document.getElementById('btnCheckout'); if(btn){ btn.disabled=true; btn.textContent='Processando...'; }
+
+    try{
+      if(method==='mercadopago'){
+        const items = cart.map(i=>({ id:i.id, name:i.name, imageUrl:i.imageUrl, quantity:i.quantity, priceComTaxa: Number(withFee(i.priceReal||0,'mercadopago').toFixed(2)) }));
+        const body = { items, email };
+        const res = await fetch('https://api.noheroes.com.br/criar-pagamento', { method:'POST', headers:{ 'Content-Type':'application/json', Authorization:`Bearer ${token}` }, body:JSON.stringify(body)});
+        const data = await res.json(); if(!res.ok) throw new Error(data.error||'Erro no servidor');
+        location.href = data.init_point; return;
+      }
+
+      // PayPal & Moeda
+      const subtotal = parseBRL(cartSubtotal.textContent);
+      const totalWithFee = withFee(subtotal, method);
+      const body2 = { items: cart.map(i=>({id:i.id, quantity:i.quantity})), totalWithFee, ...(method==='moeda'? {useCoins:true}: {}) };
+      const res2 = await fetch('https://api.noheroes.com.br/criar-pagamento', { method:'POST', headers:{ 'Content-Type':'application/json', Authorization:`Bearer ${token}` }, body:JSON.stringify(body2)});
+      const data2 = await res2.json(); if(!res2.ok) throw new Error(data2.error||'Erro ao finalizar compra.');
+      alert('✅ Compra finalizada com sucesso!'); cart=[]; renderCart();
+    }catch(e){ alert('❌ '+ e.message); }
+    finally{ if(btn){ btn.disabled=false; renderPayCTA(); } }
+  }
+
+  // ===== Info Drawer =====
+  function showInfo(nome,img,desc){
+    document.getElementById('infoTitle').textContent = nome;
+    document.getElementById('infoImg').src = img;
+    document.getElementById('infoImg').alt = nome;
+    document.getElementById('infoDesc').textContent = desc;
+    infoDrawer.classList.add('open');
+  }
+  window.showInfo = showInfo; // usado no HTML inline dos cards
+
+  // ===== Brasas =====
+  const cvs=document.getElementById('brasasCanvas'); const ctx=cvs.getContext('2d'); let W=0,H=0,parts=[];
+  function resize(){ W=cvs.width=innerWidth; H=cvs.height=innerHeight; }
+  addEventListener('resize', resize, {passive:true}); resize();
+  class Part{ constructor(init=false){ this.reset(init);} reset(init){ this.x=Math.random()*W; this.y=init? Math.random()*H : H+Math.random()*80; this.r=1+Math.random()*2.5; this.vy=0.25+Math.random()*0.5; this.vx=(Math.random()-.5)*.5; this.a=.35+Math.random()*.35; }
+    up(){ this.y-=this.vy; this.x+=this.vx; if(this.y<-10||this.x<-50||this.x>W+50) this.reset(); }
+    draw(){ ctx.beginPath(); ctx.arc(this.x,this.y,this.r,0,Math.PI*2); ctx.fillStyle=`rgba(168,85,247,${this.a})`; ctx.shadowColor='#a855f7'; ctx.shadowBlur=12; ctx.fill(); }
+  }
+  function spawn(n){ for(let i=0;i<n;i++) parts.push(new Part(true)); }
+  function loop(){ ctx.clearRect(0,0,W,H); for(const p of parts){ p.up(); p.draw(); } requestAnimationFrame(loop); }
+  spawn(140); loop();
+
+  // ===== Boot =====
+  (async function init(){
+    // Preload e-mail (silencioso)
+    try{
+      const raw = localStorage.getItem('NoHeroes_token')||'';
+      if(raw){ await fetch('https://api.noheroes.com.br/user/me',{ headers:{ Authorization:`Bearer ${raw}` }}); }
+    }catch{}
+    await loadProducts();
+  })();
+  </script></body>
 </html>
